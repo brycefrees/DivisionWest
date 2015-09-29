@@ -707,11 +707,11 @@ jQuery(function(jQuery) {
 		
 	//create the menu with javascript
 	function sf_setup_metatabs() {
+	
+		var sfMetaBox = jQuery('#sf_meta_box');
 		
-		if(jQuery('#swift_page_builder').length > 0) {
-			jQuery('#swift_page_builder').after('<div class="sf-meta-tabs-wrap postbox"><div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span>Meta Options</span></h3><div id="sf-tabbed-meta-boxes"></div></div>');
-		} else {
-			jQuery('#normal-sortables').prepend('<div class="sf-meta-tabs-wrap postbox"><div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span>Meta Options</span></h3><div id="sf-tabbed-meta-boxes"></div></div>');
+		if ( sfMetaBox.length === 0 ) {
+			return;
 		}
 		
 		jQuery(tabBoxes).appendTo('#sf-tabbed-meta-boxes');

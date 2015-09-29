@@ -27,7 +27,7 @@
                 
                 $super_search = $search_text = $shop_url = "";
                 
-                $shop_url = get_permalink( woocommerce_get_page_id( 'shop' ) );
+                $shop_url = get_permalink( wc_get_page_id( 'shop' ) );
                 
                 if (sf_theme_supports('super-search-config')) {
                                 	
@@ -175,6 +175,11 @@
                 $sf_ss_dropdown .= '</li>';
 
                 foreach ( $terms as $term ) {
+                	
+                	if ( !isset($term->slug) || !isset($term->term_id) ) { 
+                		return;
+                	}
+                	
                     if ( $term->slug == $default_term_id || $term->term_id == $default_term_id ) {
                         $sf_ss_dropdown .= '<li class="selected">';
                     } else {

@@ -36,7 +36,10 @@ switch ( $col_type ) {
 					<p><label><span class="gwa-checkbox<?php echo !empty( $postdata['custom']['img']['responsive'] ) || empty( $postdata['custom']['img']['data'] ) ? ' gwa-checked' : ''; ?>" tabindex="0"><span></span><input type="checkbox" name="custom[img][responsive]" tabindex="-1" value="1" <?php echo !empty( $postdata['custom']['img']['responsive'] ) || empty( $postdata['custom']['img']['data'] ) ? ' checked="checked"' : ''; ?>></span><?php _e( 'Responsive image?', 'go_pricing_textdomain' ); ?></label></p>					
 					<?php endif; ?>							
 				</div>
-				<div class="gwa-input-btn"<?php echo ( !empty( $postdata['custom']['img']['data'] ) ? 'style="display:none;"': '' ); ?>><input type="text" name="custom[img][data]" value="<?php echo ( !empty( $postdata['custom']['img']['data'] ) ?  esc_attr( $postdata['custom']['img']['data'] ) : '' ); ?>"><a href="#" title="<?php esc_attr_e( 'Add', 'go_pricing_textdomain' ); ?>" data-action="img-upload"><i class="fa fa-plus-circle"></i></a></div>
+				<input type="hidden" name="custom[img][alt]" data-attr="alt" value="<?php echo ( !empty( $postdata['custom']['img']['alt'] ) ? esc_attr( $postdata['custom']['img']['alt'] ) : '' ); ?>">
+				<input type="hidden" name="custom[img][width]" data-attr="width" value="<?php echo ( !empty( $postdata['custom']['img']['width'] ) ? esc_attr( $postdata['custom']['img']['width'] ) : '' ); ?>">
+				<input type="hidden" name="custom[img][height]" data-attr="height" value="<?php echo ( !empty( $postdata['custom']['img']['height'] ) ? esc_attr( $postdata['custom']['img']['height'] ) : '' ); ?>">					
+				<div class="gwa-input-btn"<?php echo ( !empty( $postdata['custom']['img']['data'] ) ? 'style="display:none;"': '' ); ?>><input type="text" name="custom[img][data]" value="<?php echo ( !empty( $postdata['custom']['img']['data'] ) ? esc_attr( $postdata['custom']['img']['data'] ) : '' ); ?>"><a href="#" title="<?php esc_attr_e( 'Add', 'go_pricing_textdomain' ); ?>" data-action="img-upload"><i class="fa fa-plus-circle"></i></a></div>
 			</div>
 		</td>
 		<td class="gwa-abox-info"><p class="gwa-info"><i class="fa fa-info-circle"></i><?php _e( 'Background image of the header.', 'go_pricing_textdomain' ); ?></p></td>

@@ -14,8 +14,18 @@ if ( !class_exists( 'GW_GoPricing' ) ) die;
 <div class="go-pricing-col">				
 		<div class="go-pricing-col-content">
 		
+		<!-- Column Controls -->		
+		<div class="gwa-col-assets gwa-clearfix">
+			<div class="gwa-col-assets-nav-main">
+				<a href="#" title="<?php esc_attr_e( 'Delete', 'go_pricing_textdomain' ); ?>" data-action="delete-col" data-confirm="<?php esc_attr_e( 'Are you sure you want to delete the column?', 'go_pricing_textdomain' ); ?>" class="gwa-bg-color3"><i class="fa fa-ban"></i></a>
+				<a href="#" title="<?php esc_attr_e( 'Clone', 'go_pricing_textdomain' ); ?>" data-action="clone-col"  data-confirm="<?php esc_attr_e( 'Are you sure you wanto clone the column?', 'go_pricing_textdomain' ); ?>" class="gwa-bg-color2"><i class="fa fa-adjust"></i></a><a href="#" title="<?php esc_attr_e( 'Expand / Collapse', 'go_pricing_textdomain' ); ?>" data-action="expand-col" class="gwa-bg-color4"><i class="fa fa-plus-circle"></i><i class="fa fa-minus-circle"></i></a>
+			</div>
+			<?php do_action( 'go_pricing_column_assets_html', isset( $table_data ) ? $table_data : '' ); ?>			
+		</div>
+		<!-- / Column Controls -->		
+		
 		<!-- General Options -->
-		<div class="gwa-abox gwa-closed" data-type="general" data-color="#81ae27">
+		<div class="gwa-abox gwa-closed" data-type="general" data-color="#90c820">
 			<div class="gwa-abox-header">
 				<div class="gwa-abox-header-icon-general"></div>
 				<div class="gwa-abox-title"><?php _e( 'General Options', 'go_pricing_textdomain' ); ?><small><?php _e( 'Global Column Settings', 'go_pricing_textdomain' ); ?></small></div>
@@ -78,16 +88,6 @@ if ( !class_exists( 'GW_GoPricing' ) ) die;
 		</div>
 		<!-- / Footer Options -->
 		
-		<!-- Column Controls -->
-		<div class="gwa-abox">
-			<div class="gwa-abox-content">
-				<div class="go-pricing-col-ctrl">
-					<a href="#" title="<?php esc_attr_e( 'Delete', 'go_pricing_textdomain' ); ?>" data-action="delete-col" data-confirm="<?php esc_attr_e( 'Are you sure you want to delete the column?', 'go_pricing_textdomain' ); ?>" class="gwa-btn-style3 gwa-mr10"><i class="fa fa-ban"></i></a><a href="#" title="<?php esc_attr_e( 'Clone', 'go_pricing_textdomain' ); ?>" data-action="clone-col"  data-confirm="<?php esc_attr_e( 'Are you sure you wanto clone the column?', 'go_pricing_textdomain' ); ?>" class="gwa-btn-style2 gwa-mr10"><i class="fa fa-adjust"></i></a><a href="#" title="<?php esc_attr_e( 'Expand / Collapse', 'go_pricing_textdomain' ); ?>" data-action="expand-col" class="gwa-btn-style4"><i class="fa fa-plus-circle"></i><i class="fa fa-minus-circle"></i></a>
-				</div>
-			</div>
-		</div>
-		<!-- / Column Controls -->
-																																						
 	</div>
 	
 </div>

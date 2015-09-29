@@ -85,16 +85,16 @@ if( !class_exists( 'Redux_Widget_Areas' ) ) {
 				 <div class="">
 				  <input type="hidden" name="redux-nonce" value="<?php echo $nonce ?>" />
 				  <div class="sidebar-name">
-				   <h3><?php echo __('Create Widget Area', 'swift-framework-admin'); ?> <span class="spinner"></span></h3>
+				   <h3><?php echo __('Create Widget Area', 'swiftframework'); ?> <span class="spinner"></span></h3>
 				  </div>
 				  <div class="sidebar-description">
 					<form id="addWidgetAreaForm" action="" method="post">
 				      <div class="widget-content">
-				        <input id="redux-add-widget-input" name="redux-add-widget-input" type="text" class="regular-text" title="<?php echo __('Name', 'swift-framework-admin'); ?>" placeholder="<?php echo __('Name', 'swift-framework-admin'); ?>" />
+				        <input id="redux-add-widget-input" name="redux-add-widget-input" type="text" class="regular-text" title="<?php echo __('Name', 'swiftframework'); ?>" placeholder="<?php echo __('Name', 'swiftframework'); ?>" />
 				      </div>
 				      <div class="widget-control-actions">
 				        <div class="aligncenter">
-				          <input class="addWidgetArea-button button-primary" type="submit" value="<?php echo __('Create Widget Area', 'swift-framework-admin'); ?>" />
+				          <input class="addWidgetArea-button button-primary" type="submit" value="<?php echo __('Create Widget Area', 'swiftframework'); ?>" />
 				        </div>
 				        <br class="clear">
 				      </div>

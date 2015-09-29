@@ -1049,7 +1049,7 @@ class YIT_CPT_Unlimited {
                     'fields' => apply_filters( 'yit_cptu_fields', array(
                         'type'      => array(
                             'label' => __( 'Type', 'yith-plugin-fw' ),
-                            'desc'  => __( 'Layout for this '.strtolower( $this->_labels['singular'] ) , 'yith-plugin-fw' ),
+                            'desc'  => sprintf( __( 'Layout for this %s' , 'yith-plugin-fw' ), strtolower( $this->_labels['singular'] ) ),
                             'type'  => 'select',
                             'options' => isset( $layouts ) ? $layouts : array(),
                             'std'   => '' ),
@@ -1630,14 +1630,14 @@ class YIT_CPT_Unlimited {
                     class: 'multi-uploader add-new-h2',
                     'data-uploader_title': '<?php printf( __( 'Add %s from images', 'yith-plugin-fw' ), $label_plural ) ?>',
                     'data-uploader_button_text': '<?php printf( __( 'Add %s', 'yith-plugin-fw' ), $label_plural ) ?>'
-                }).text('<?php _e( 'Add with multiupload', 'yith-plugin-fw' ) ?>');
+                }).text('<?php _e( 'Upload multiple files', 'yith-plugin-fw' ) ?>');
 
                 var spinner = $('<span />', {
                     class: 'spinner',
                     style: 'float: none;'
                 });
 
-                button.appendTo('.wrap h2').after(spinner);
+                button.appendTo('.wrap h2, .wrap h1').after(spinner);
 
             })(jQuery);
         </script>

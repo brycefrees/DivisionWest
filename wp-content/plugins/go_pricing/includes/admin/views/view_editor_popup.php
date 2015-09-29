@@ -22,6 +22,7 @@ $user_id = get_current_user_id();
 			<a href="#" title="Close" class="gwa-popup-close"></a>
 		</div>
 		<div class="gwa-popup-content-wrap">
+			<?php do_action( 'go_pricing_editor_popup_content_before_html', isset( $_POST ) ? $_POST : '' ); ?>
 			<div class="gwa-popup-content">	
 				<div class="gwa-abox">
 					<div class="gwa-abox-content-wrap">
@@ -31,6 +32,7 @@ $user_id = get_current_user_id();
 					 </div>
 				</div>
 			</div>
+			<?php do_action( 'go_pricing_editor_popup_content_after_html', isset( $_POST ) ? $_POST : '' ); ?>
 		</div>
 		<div class="gwa-popup-footer">
 			<div class="gwa-popup-assets gwa-fl">

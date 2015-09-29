@@ -7,7 +7,7 @@
 
         /** constructor */
         function lip_most_loved_widget() {
-            parent::WP_Widget( false, $name = __( 'Most Loved Items', 'swiftframework' ), array( 'description' => __( 'Show the most loved items', 'swift-framework-admin' ) ) );
+            parent::__construct( false, $name = __( 'Most Loved Items', 'swiftframework' ), array( 'description' => __( 'Show the most loved items', 'swiftframework' ) ) );
         }
 
         /** @see WP_Widget::widget */
@@ -74,7 +74,7 @@
             if ( isset( $instance['title'] ) ) {
                 $title = esc_attr( $instance['title'] );
             } else {
-                $title = __( "Most Loved", "swift-framework-admin" );
+                $title = __( "Most Loved", "swiftframework" );
             }
             if ( isset( $instance['number'] ) ) {
                 $number = esc_attr( $instance['number'] );
@@ -83,14 +83,14 @@
             }
             ?>
             <p>
-                <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'swift-framework-admin' ); ?></label>
+                <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'swiftframework' ); ?></label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>"
                        name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
                        value="<?php echo $title; ?>"/>
             </p>
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number to Show:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number to Show:', 'swiftframework' ); ?></label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'number' ); ?>"
                        name="<?php echo $this->get_field_name( 'number' ); ?>" type="text"
                        value="<?php echo $number; ?>"/>

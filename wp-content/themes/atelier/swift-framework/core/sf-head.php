@@ -40,6 +40,9 @@
                 <meta name="apple-mobile-web-app-title"
                       content="<?php echo esc_attr(__( $sf_options['custom_ios_title'], 'swiftframework' )); ?>">
             <?php } ?>
+            <?php if ( is_paged() ) { ?>
+            	<meta name="robots" content="noindex, follow" />
+            <?php } ?>
 
             <!--// PINGBACK & FAVICON //-->
             <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>"/>
@@ -210,12 +213,16 @@
             $enable_page_transitions = $sf_options['enable_page_transitions'];
             $page_transition         = $sf_options['page_transition'];
             $enable_header_shadow    = false;
+            $mobile_two_click        = false;
             if ( isset( $sf_options['enable_header_shadow'] ) ) {
                 $enable_header_shadow = $sf_options['enable_header_shadow'];
             }
             $product_image_shadows = true;
             if ( isset( $sf_options['product_image_shadows'] ) ) {
             	$product_image_shadows 	   = $sf_options['product_image_shadows'];
+            }
+            if ( isset( $sf_options['enable_mobile_two_click'] ) ) {
+                $mobile_two_click = $sf_options['enable_mobile_two_click'];
             }
             $enable_mini_header        = $sf_options['enable_mini_header'];
             $enable_mini_header_resize = $sf_options['enable_mini_header_resize'];
@@ -244,12 +251,27 @@
             	$enable_newsletter_sub_bar  = $sf_options['enable_newsletter_sub_bar'];
             }
 
-            if ( $post && !is_search() ) {
+            if ( $post && is_singular() && !is_search() ) {
                 $page_header_type     = sf_get_post_meta( $post->ID, 'sf_page_header_type', true );
                 $page_header_alt_logo = sf_get_post_meta( $post->ID, 'sf_page_header_alt_logo', true );
                 $page_slider          = sf_get_post_meta( $post->ID, 'sf_page_slider', true );
                 $page_design_style 	  = sf_get_post_meta( $post->ID, 'sf_page_design_style', true );
 				$enable_newsletter_sub_bar_page = sf_get_post_meta($post->ID, 'sf_enable_newsletter_bar', true);
+            }
+            if ( isset($sf_options['enable_newsletter_sub_bar_globally']) ) {
+            	$enable_newsletter_sub_bar_page  = $sf_options['enable_newsletter_sub_bar_globally'];
+            }
+
+            // Shop page check
+            $shop_page = false;
+            if ( ( function_exists( 'is_shop' ) && is_shop() ) || ( function_exists( 'is_product_category' ) && is_product_category() ) ) {
+                $shop_page = true;
+            }
+
+            if ( $shop_page ) {
+                if ( isset($sf_options['woo_page_header']) ) {
+                    $page_header_type = $sf_options['woo_page_header'];
+                }
             }
 
             if ( ( $page_header_type == "naked-light" || $page_header_type == "naked-dark" ) && ( $header_layout == "header-vert" || $header_layout == "header-vert-right" ) ) {
@@ -269,7 +291,6 @@
 			if ( sf_theme_opts_name() == "sf_atelier_options" ) {
 				//$page_class .= 'ss-parallax-disabled ';
 			}
-
 
             // Header Layout
             if ( $page_header_type == "standard-overlay" ) {
@@ -312,9 +333,10 @@
                 }
             }
 
-            // Responsive classes
+            // Responsive class
             $page_class .= $is_responsive . ' ';
 
+            // RTL class
             if ( is_rtl() || $enable_rtl || isset( $_GET['RTL'] ) ) {
                 $page_class .= 'rtl ';
             }
@@ -328,11 +350,18 @@
             	if ( $enable_sticky_header_hide ) {
             		$page_class .= "sh-show-hide ";
             	}
+            } else {
+            	$page_class .= "sticky-header-disabled ";
             }
 
             // Page Shadow
             if ( $enable_page_shadow ) {
                 $page_class .= "page-shadow ";
+            }
+
+            // Mobile 2 Click
+            if ( $mobile_two_click ) {
+                $page_class .= "mobile-two-click ";
             }
 
             // Page Transtions
@@ -444,6 +473,15 @@
 
 	        if ( $sf_options['disable_mobile_animations'] ) {
 	            $page_class .= "disable-mobile-animations ";
+	        }
+	        
+	        $global_filters = false;
+	        if ( isset($sf_options['enable_woo_global_filters']) ) {
+	        	$global_filters = $sf_options['enable_woo_global_filters'];
+	        	
+	        	if ( $global_filters ) {
+	        		$page_class .= 'woo-global-filters-enabled ';
+	        	}
 	        }
 
             // Return array of classes

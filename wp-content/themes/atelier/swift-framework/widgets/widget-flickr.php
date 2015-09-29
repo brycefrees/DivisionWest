@@ -16,7 +16,7 @@
                 'classname'   => 'flickr-widget',
                 'description' => 'Show off your favorite Flickr photos'
             );
-            $this->WP_Widget( 'flickr-widget', 'Swift Framework Flickr Widget', $widget_ops );
+            parent::__construct( 'flickr-widget', 'Swift Framework Flickr Widget', $widget_ops );
         }
 
         function form( $instance ) {
@@ -37,7 +37,7 @@
             ?>
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'swift-framework-admin' ); ?>
+                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'swiftframework' ); ?>
                     :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>"
                        name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
@@ -46,7 +46,7 @@
 
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'flickr_id' ); ?>"><?php _e( 'Flickr ID', 'swift-framework-admin' ); ?>
+                    for="<?php echo $this->get_field_id( 'flickr_id' ); ?>"><?php _e( 'Flickr ID', 'swiftframework' ); ?>
                     :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'flickr_id' ); ?>"
                        name="<?php echo $this->get_field_name( 'flickr_id' ); ?>" type="text"
@@ -58,7 +58,7 @@
 
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number of Photos', 'swift-framework-admin' ); ?>
+                    for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number of Photos', 'swiftframework' ); ?>
                     :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'number' ); ?>"
                        name="<?php echo $this->get_field_name( 'number' ); ?>" type="text"
@@ -105,7 +105,7 @@
                     function( $ ) {
                         var count = parseInt( <?php echo $count; ?>, 10 );
                         $.getJSON(
-                            "http://api.flickr.com/services/feeds/photos_public.gne?ids=<?php echo $flickrid; ?>&lang=en-us&format=json&jsoncallback=?",
+                            "//api.flickr.com/services/feeds/photos_public.gne?ids=<?php echo $flickrid; ?>&lang=en-us&format=json&jsoncallback=?",
                             function( data ) {
                                 $.each(
                                     data.items, function( index, item ) {

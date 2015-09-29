@@ -20,7 +20,7 @@ if ( ! class_exists( 'RWMB_File_Advanced_Field' ) )
 			wp_enqueue_media();
 			wp_enqueue_script( 'rwmb-file-advanced', RWMB_JS_URL . 'file-advanced.js', array( 'jquery', 'underscore' ), RWMB_VER, true );
 			wp_localize_script( 'rwmb-file-advanced', 'rwmbFileAdvanced', array(
-				'frameTitle' => __( 'Select Files', 'swift-framework-admin' ),
+				'frameTitle' => __( 'Select Files', 'swiftframework' ),
 			) );
 		}
 

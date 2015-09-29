@@ -22,7 +22,7 @@
  * @since      1.0.0
  * @package    swift-framework
  * @subpackage swift-framework/includes
- * @author     Your Name <email@example.com>
+ * @author     Swift Ideas
  */
 class SwiftFramework_i18n {
 

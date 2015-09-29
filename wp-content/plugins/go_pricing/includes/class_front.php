@@ -39,12 +39,16 @@ class GW_GoPricing_Front {
 		self::$plugin_prefix = $this->globals['plugin_prefix'];
 		self::$plugin_slug = $this->globals['plugin_slug'];
 		$this->plugin_url = $this->globals['plugin_url'];
+		$this->plugin_path = $this->globals['plugin_path'];
 
 		// Enqueue frontend styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_public_styles' ) );
 		
 		// Enqueue frontend scripts
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_public_scripts' ) );	
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_public_scripts' ) );
+		
+		// Live preview
+		add_action( 'init', array( $this, 'live_preview_safe' ) );
 		
 	}
 
@@ -95,6 +99,25 @@ class GW_GoPricing_Front {
 		global $wp_version;
 		if ( version_compare( $wp_version, 3.6, "<" ) ) wp_register_script( self::$plugin_slug . '-mediaelementjs', $this->plugin_url . 'assets/plugins/js/mediaelementjs/mediaelement-and-player.min.js', 'jquery', self::$plugin_version, true );
 
+	}
+	
+	
+	/**
+	 * Safe mode for live preview
+	 *
+	 * @return void
+	 */
+	 
+	public function live_preview_safe() {
+		
+		if ( !isset( $_GET['go_pricing_preview_id'] ) ) return;	
+		$general_settings = get_option( self::$plugin_prefix . '_table_settings' );
+		if ( !isset( $general_settings['safe-preview'] ) ) return;		
+		
+		$_GET['id'] = $_GET['go_pricing_preview_id'] ;
+		include_once ( $this->plugin_path . 'includes/preview.php' );
+		exit;
+		
 	}	
 
 }

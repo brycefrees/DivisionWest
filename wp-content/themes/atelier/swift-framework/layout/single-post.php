@@ -97,6 +97,7 @@
     /* AUTHOR */
     if ( ! $show_related ) {
         remove_action( 'sf_post_after_article', 'sf_post_related_articles', 10 );
+        remove_action( 'sf_post_after_article', 'sf_post_related_articles', 30 );
     }
 
     /* SOCIAL */
@@ -121,8 +122,7 @@
     <?php do_action( 'sf_post_before_article' ); ?>
 
     <!-- OPEN article -->
-    <article <?php post_class( 'clearfix single-post-' . $fw_media_display ); ?> id="<?php the_ID(); ?>" itemscope
-                                                                                 itemtype="http://schema.org/BlogPosting">
+    <article <?php post_class( 'clearfix single-post-' . $fw_media_display ); ?> id="<?php the_ID(); ?>" itemscope itemtype="http://schema.org/Article">
 
         <?php
             /**

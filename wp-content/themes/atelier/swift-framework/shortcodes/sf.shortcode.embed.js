@@ -14,6 +14,11 @@ function embedSelectedShortcode() {
         ////	SHORTCODE OPTION VARIABLES
         /////////////////////////////////////////
 
+        // Add to Cart Button
+        var addtocart_button_productid = document.getElementById( 'addtocart-button-productid' ).value;
+        var addtocart_button_colour = document.getElementById( 'addtocart-button-colour' ).value;
+        var addtocart_button_extraclass = document.getElementById( 'addtocart-button-extraclass' ).value;
+
         // Button
         var button_size = document.getElementById( 'button-size' ).value;
         var button_type = document.getElementById( 'button-type' ).value;
@@ -157,6 +162,15 @@ function embedSelectedShortcode() {
         // Lists
         var list_icon = document.getElementById( 'list-icon' ).value;
         var list_items = document.getElementById( 'list-items' ).value;
+		var list_extraclass = document.getElementById( 'list-extraclass' ).value;
+		
+		/////////////////////////////////////////
+        ////	ADD TO CART BUTTON SHORTCODE OUTPUT
+        /////////////////////////////////////////
+
+        if ( shortcode_select == 'shortcode-addtocart-button' ) {
+            shortcodeHTML = '[sf_addtocart_button product_id="' + addtocart_button_productid + '" colour="' + addtocart_button_colour + '" extraclass="' + addtocart_button_extraclass + '"]';
+        }
 
         /////////////////////////////////////////
         ////	BUTTON SHORTCODE OUTPUT
@@ -371,7 +385,7 @@ function embedSelectedShortcode() {
         /////////////////////////////////////////
 
         if ( shortcode_select == 'shortcode-lists' ) {
-            shortcodeHTML = '[list]<br/>';
+            shortcodeHTML = '[list extraclass="' + list_extraclass + '"]<br/>';
 
             for ( var li = 0; li < list_items; li++ ) {
                 shortcodeHTML += '[list_item icon="' + list_icon + '"]Item text ' + parseInt( li + 1 ) + '[/list_item]<br/>';

@@ -67,6 +67,7 @@ table tr > th {
 }
 .title-wrap a.sf-button {
 	float: left;
+	margin-left: 0;
 }
 .bold-design h3.spb-heading:after {
 	left: auto;
@@ -149,9 +150,6 @@ figcaption .thumb-info-alt > i {
 #top-bar .tb-right nav .menu {
 	float: left;
 }
-.header-right a.contact-menu-link {
-	float: left;
-}
 .shopping-bag-item a > i, .wishlist-item a > i {
 	margin-right: 0;
 	margin-left: 5px;
@@ -181,7 +179,18 @@ figcaption .thumb-info-alt > i {
 	padding-right: 0;
 	padding-left: 15px;
 }
+.full-center .header-4-alt .header-left {
+	float: right;
+	margin-left: 0;
+	margin-right: 25px;
+}
 .full-center .header-4 .float-menu, .full-center .header-5 .float-menu {
+	text-align: left;
+}
+.full-center .header-4 .header-right, .full-center .header-4-alt .header-right {
+	float: left;
+}
+.full-center .header-4 .float-menu, .full-center .header-4-alt .float-menu {
 	text-align: left;
 }
 .full-center .fw-header #logo {
@@ -231,6 +240,7 @@ figcaption .thumb-info-alt > i {
 .header-left .aux-item:first-child {
 	padding-left: 25px!important;
 	padding-right: 0;
+	border-right: 0;
 }
 .header-right .aux-item {
 	border-right: 2px solid #e3e3e3;
@@ -264,7 +274,10 @@ figcaption .thumb-info-alt > i {
 	right: -10px;
 	left: auto;
 }
-
+#header .header-left ul.menu>li.menu-search .ajax-search-wrap {
+	right: -10px;
+	left: auto;
+}
 
 /* --------------------------------------------
 	MENU STYLES
@@ -373,6 +386,32 @@ nav .menu li > a > i {
 .sf-side-slideout .vertical-menu nav .menu > li ul > li.menu-item a {
 	padding-left: 0!important;
 	padding-right: 15px!important;
+}
+.sf-side-slideout {
+	left: auto;
+	right: 0;	
+}
+#side-slideout-right-wrap {
+	left: 0;
+	right: auto;
+}
+.side-slideout-left-open #container {
+	-webkit-transform: none;
+	transform: none;
+	left: -300px;
+}
+.side-slideout-right-open #container {
+	-webkit-transform: none;
+	transform: none;
+	left: 300px;
+}
+.no-csstransforms .sf-side-slideout, .ie-mobile .sf-side-slideout {
+	left: auto;
+	right: 0;
+}
+.no-csstransforms #side-slideout-right-wrap, .ie-mobile #side-slideout-right-wrap {
+	left: 0;
+	right: auto;
 }
 
 /* --------------------------------------------
@@ -592,6 +631,17 @@ a.sf-button.sf-icon-reveal.large:hover span.text {
 	WOOCOMMERCE STYLES
 -------------------------------------------- */
 
+.variable-image-wrapper .img-wrap {
+	left: auto;
+	right: 15%;
+}
+.products .product figure figcaption .thumb-info h5, .woocommerce .products .preview-slider-item-wrapper .product-details h3, .products .product figure figcaption .thumb-info h4, .products .product figure figcaption .thumb-info h6, .products .product figure figcaption .thumb-info .gm-hover-price-wrap {
+	max-width: 100%;
+}
+.products .product.size-large figure figcaption .thumb-info h4, .products .product.size-large figure figcaption .thumb-info h5, .products .product.size-large figure figcaption .thumb-info h6, .products .product.size-large figure figcaption .thumb-info .gm-hover-price-wrap {
+	padding-left: 0;
+	padding-right: 10px;
+}
 .woocommerce .bag-summary span, .woocommerce-page .bag-summary span {
 	float: right;
 	margin-left: 5px;
@@ -855,6 +905,18 @@ p.comment-form-rating label {
 .woocommerce .woocommerce-error, .woocommerce .woocommerce-info, .woocommerce .woocommerce-message, .woocommerce-page .woocommerce-error, .woocommerce-page .woocommerce-info, .woocommerce-page .woocommerce-message {
 	text-align: right;
 	padding: 1em 3.5em 1em 1em!important;
+}
+.mini-list li figure {
+	float: right;
+}
+.mini-list li .product-details {
+	margin-left: 0;
+	margin-right: 85px;
+}
+.woocommerce ul.cart_list li img, .woocommerce ul.product_list_widget li img {
+	float: right;
+	margin-left: 15px;
+	margin-right: 0;
 }
 
 

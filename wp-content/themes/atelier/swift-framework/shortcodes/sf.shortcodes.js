@@ -20,6 +20,7 @@ var $j = jQuery.noConflict();
             // Setup the array of shortcode options
             $j.shortcode_select = {
                 '0': $j( [] ),
+                'shortcode-addtocart-button': $j( '#shortcode-addtocart-button' ),
                 'shortcode-buttons': $j( '#shortcode-buttons' ),
                 'shortcode-icons': $j( '#shortcode-icons' ),
                 'shortcode-iconbox': $j( '#shortcode-iconbox' ),
@@ -45,7 +46,9 @@ var $j = jQuery.noConflict();
             // Hide each option section
             $j.each(
                 $j.shortcode_select, function() {
-                    this.css( {display: 'none'} );
+                	if ( this.length > 0 ) {
+                    	this.css( {display: 'none'} );
+                   	}
                 }
             );
 

@@ -209,7 +209,7 @@
             <div class="campaign-info post-info clearfix">
                 <?php if ( $categories ) { ?>
                     <div class="categories-wrap"><?php _e( "Categories:", "swiftframework" ); ?><span
-                            class="categories"><?php echo esc_attr($categories); ?></span></div>
+                            class="categories"><?php echo $categories; ?></span></div>
                 <?php } ?>
                 <?php if ( has_tag() ) { ?>
                     <div class="tags-wrap"><?php _e( "Tags:", "swiftframework" ); ?><span

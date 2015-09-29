@@ -60,7 +60,7 @@ if ( ! comments_open() )
 					$commenter = wp_get_current_commenter();
 
 					$comment_form = array(
-						'title_reply'          => have_comments() ? __( 'Add a review', 'swiftframework' ) : __( 'Be the first to review', 'swiftframework' ) . ' &ldquo;' . get_the_title() . '&rdquo;',
+						'title_reply'          => have_comments() ? __( 'Add a Review', 'swiftframework' ) : __( 'Be the first to review', 'swiftframework' ) . ' &ldquo;' . get_the_title() . '&rdquo;',
 						'title_reply_to'       => __( 'Leave a Reply to %s', 'swiftframework' ),
 						'comment_notes_before' => '',
 						'comment_notes_after'  => '',

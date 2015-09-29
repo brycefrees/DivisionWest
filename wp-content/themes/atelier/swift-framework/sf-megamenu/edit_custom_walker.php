@@ -78,11 +78,11 @@
             if ( ! empty( $item->_invalid ) ) {
                 $classes[] = 'menu-item-invalid';
                 /* translators: %s: title of menu item which is invalid */
-                $title = sprintf( __( '%s (Invalid)', 'swift-framework-admin' ), $item->title );
+                $title = sprintf( __( '%s (Invalid)', 'swiftframework' ), $item->title );
             } elseif ( isset( $item->post_status ) && 'draft' == $item->post_status ) {
                 $classes[] = 'pending';
                 /* translators: %s: title of menu item in draft status */
-                $title = sprintf( __( '%s (Pending)', 'swift-framework-admin' ), $item->title );
+                $title = sprintf( __( '%s (Pending)', 'swiftframework' ), $item->title );
             }
 
             $title = empty( $item->label ) ? $title : $item->label;
@@ -107,7 +107,7 @@
                                     'move-menu_item'
                                 );
                             ?>" class="item-move-up"><abbr
-                                    title="<?php esc_attr_e( 'Move up', 'swift-framework-admin' ); ?>">
+                                    title="<?php esc_attr_e( 'Move up', 'swiftframework' ); ?>">
                                     &#8593;</abbr></a>
 	                        |
 	                        <a href="<?php
@@ -122,12 +122,12 @@
                                     'move-menu_item'
                                 );
                             ?>" class="item-move-down"><abbr
-                                    title="<?php esc_attr_e( 'Move down', 'swift-framework-admin' ); ?>">&#8595;</abbr></a>
+                                    title="<?php esc_attr_e( 'Move down', 'swiftframework' ); ?>">&#8595;</abbr></a>
 	                    </span>
 	                    <a class="item-edit" id="edit-<?php echo esc_attr($item_id); ?>"
-                           title="<?php esc_attr_e( 'Edit Menu Item', 'swift-framework-admin' ); ?>" href="<?php
+                           title="<?php esc_attr_e( 'Edit Menu Item', 'swiftframework' ); ?>" href="<?php
                             echo ( isset( $_GET['edit-menu-item'] ) && $item_id == $_GET['edit-menu-item'] ) ? admin_url( 'nav-menus.php' ) : add_query_arg( 'edit-menu-item', $item_id, remove_query_arg( $removed_args, admin_url( 'nav-menus.php#menu-item-settings-' . $item_id ) ) );
-                        ?>"><?php _e( 'Edit Menu Item', 'swift-framework-admin' ); ?></a>
+                        ?>"><?php _e( 'Edit Menu Item', 'swiftframework' ); ?></a>
 	                </span>
             </dt>
         </dl>
@@ -136,7 +136,7 @@
             <?php if ( 'custom' == $item->type ) : ?>
                 <p class="field-url description description-wide">
                     <label for="edit-menu-item-url-<?php echo esc_attr($item_id); ?>">
-                        <?php _e( 'URL', 'swift-framework-admin' ); ?><br/>
+                        <?php _e( 'URL', 'swiftframework' ); ?><br/>
                         <input type="text" id="edit-menu-item-url-<?php echo esc_attr($item_id); ?>"
                                class="widefat code edit-menu-item-url" name="menu-item-url[<?php echo esc_attr($item_id); ?>]"
                                value="<?php echo esc_attr( $item->url ); ?>"/>
@@ -145,7 +145,7 @@
             <?php endif; ?>
             <p class="description description-thin">
                 <label for="edit-menu-item-title-<?php echo esc_attr($item_id); ?>">
-                    <?php _e( 'Navigation Label', 'swift-framework-admin' ); ?><br/>
+                    <?php _e( 'Navigation Label', 'swiftframework' ); ?><br/>
                     <input type="text" id="edit-menu-item-title-<?php echo esc_attr($item_id); ?>"
                            class="widefat edit-menu-item-title" name="menu-item-title[<?php echo esc_attr($item_id); ?>]"
                            value="<?php echo esc_attr( $item->title ); ?>"/>
@@ -154,7 +154,7 @@
 
             <p class="description description-thin">
                 <label for="edit-menu-item-attr-title-<?php echo esc_attr($item_id); ?>">
-                    <?php _e( 'Title Attribute', 'swift-framework-admin' ); ?><br/>
+                    <?php _e( 'Title Attribute', 'swiftframework' ); ?><br/>
                     <input type="text" id="edit-menu-item-attr-title-<?php echo esc_attr($item_id); ?>"
                            class="widefat edit-menu-item-attr-title"
                            name="menu-item-attr-title[<?php echo esc_attr($item_id); ?>]"
@@ -166,13 +166,13 @@
                 <label for="edit-menu-item-target-<?php echo esc_attr($item_id); ?>">
                     <input type="checkbox" id="edit-menu-item-target-<?php echo esc_attr($item_id); ?>" value="_blank"
                            name="menu-item-target[<?php echo esc_attr($item_id); ?>]"<?php checked( $item->target, '_blank' ); ?> />
-                    <?php _e( 'Open link in a new window/tab', 'swift-framework-admin' ); ?>
+                    <?php _e( 'Open link in a new window/tab', 'swiftframework' ); ?>
                 </label>
             </p>
 
             <p class="field-css-classes description description-thin">
                 <label for="edit-menu-item-classes-<?php echo esc_attr($item_id); ?>">
-                    <?php _e( 'CSS Classes (optional)', 'swift-framework-admin' ); ?><br/>
+                    <?php _e( 'CSS Classes (optional)', 'swiftframework' ); ?><br/>
                     <input type="text" id="edit-menu-item-classes-<?php echo esc_attr($item_id); ?>"
                            class="widefat code edit-menu-item-classes" name="menu-item-classes[<?php echo esc_attr($item_id); ?>]"
                            value="<?php echo esc_attr( implode( ' ', $item->classes ) ); ?>"/>
@@ -181,7 +181,7 @@
 
             <p class="field-xfn description description-thin">
                 <label for="edit-menu-item-xfn-<?php echo esc_attr($item_id); ?>">
-                    <?php _e( 'Link Relationship (XFN)', 'swift-framework-admin' ); ?><br/>
+                    <?php _e( 'Link Relationship (XFN)', 'swiftframework' ); ?><br/>
                     <input type="text" id="edit-menu-item-xfn-<?php echo esc_attr($item_id); ?>"
                            class="widefat code edit-menu-item-xfn" name="menu-item-xfn[<?php echo esc_attr($item_id); ?>]"
                            value="<?php echo esc_attr( $item->xfn ); ?>"/>
@@ -190,204 +190,31 @@
 
             <p class="field-description description description-wide">
                 <label for="edit-menu-item-description-<?php echo esc_attr($item_id); ?>">
-                    <?php _e( 'Description', 'swift-framework-admin' ); ?><br/>
+                    <?php _e( 'Description', 'swiftframework' ); ?><br/>
                     <textarea id="edit-menu-item-description-<?php echo esc_attr($item_id); ?>"
                               class="widefat edit-menu-item-description" rows="3" cols="20"
                               name="menu-item-description[<?php echo esc_attr($item_id); ?>]"><?php echo esc_html( $item->description ); // textarea_escaped ?></textarea>
                     <span
-                        class="description"><?php _e( 'The description will be displayed in the menu if the current theme supports it.', 'swift-framework-admin' ); ?></span>
+                        class="description"><?php _e( 'The description will be displayed in the menu if the current theme supports it.', 'swiftframework' ); ?></span>
                 </label>
             </p>
             <?php
                 /* New fields insertion starts here */
             ?>
-            <!-- <p class="field-custom description description-wide">
-	                <label for="edit-menu-item-subtitle-<?php echo esc_attr($item_id); ?>">
-	                    <?php _e( 'Subtitle', 'swift-framework-admin' ); ?><br />
-	                    <input type="text" id="edit-menu-item-subtitle-<?php echo esc_attr($item_id); ?>" class="widefat edit-menu-item-custom" name="menu-item-subtitle[<?php echo esc_attr($item_id); ?>]" value="<?php echo esc_attr( $item->subtitle ); ?>" />
-	                </label>
-	            </p>-->
-            <!--<p class="field-custom description description-wide">
-	                <label for="edit-menu-is-megamenu-<?php echo esc_attr($item_id); ?>">
-	                    <?php _e( 'Enable Mega Menu', 'swift-framework-admin' ); ?><br />
-	                    <input type="checkbox" id="edit-menu-is-megamenu-<?php echo esc_attr($item_id); ?>" class="edit-menu-item-custom" id="menu-is-megamenu[<?php echo esc_attr($item_id); ?>]" name="menu-is-megamenu[<?php echo esc_attr($item_id); ?>]" value="1" <?php echo checked( ! empty( $item->ismegamenu ), 1, false ); ?> />
-	                </label>
-	            </p>
-	        -->
-            <div class="sf-menu-options">
-
-                <?php if ( $depth == 0 ) { ?>
-
-                    <h4>Mega Menu Options</h4>
-
-                    <p class="field-custom description description-wide">
-                        <label
-                            for="edit-menu-megamenu-<?php echo esc_attr($item_id); ?>"><?php _e( 'Enable Mega Menu', 'swift-framework-admin' ); ?>
-                            <input type="checkbox" id="edit-menu-megamenu-<?php echo esc_attr($item_id); ?>"
-                                   class="edit-menu-item-custom" id="menu-megamenu[<?php echo esc_attr($item_id); ?>]"
-                                   name="menu-megamenu[<?php echo esc_attr($item_id); ?>]"
-                                   value="1" <?php echo checked( ! empty( $item->megamenu ), 1, false ); ?> />
-                        </label>
-                    </p>
-                    <p class="field-custom description description-wide">
-                        <label
-                            for="edit-menu-megamenucols-<?php echo esc_attr($item_id); ?>"><?php _e( 'Mega Menu Columns', 'swift-framework-admin' ); ?></label>
-                        <select class="fat" id="edit-menu-megamenucols-<?php echo esc_attr($item_id); ?>"
-                                name="menu-megamenucols[<?php echo esc_attr($item_id); ?>]">
-                            <?php for ( $i = 1; $i <= 6; $i ++ ) {
-                                if ( $i == $item->megamenucols ) {
-                                    echo '<option selected="selected">' . $i . '</option>';
-                                } else {
-                                    echo '<option>' . $i . '</option>';
-                                }
-                            }
-                            ?>
-                        </select>
-                    </p>
-                    <p class="field-custom description description-wide">
-                        <label
-                            for="edit-menu-is-naturalwidth-<?php echo esc_attr($item_id); ?>"><?php _e( 'Natural Width Mega Menu', 'swift-framework-admin' ); ?>
-                            <input type="checkbox" id="edit-menu-is-naturalwidth-<?php echo esc_attr($item_id); ?>"
-                                   class="edit-menu-item-custom" id="menu-is-naturalwidth[<?php echo esc_attr($item_id); ?>]"
-                                   name="menu-is-naturalwidth[<?php echo esc_attr($item_id); ?>]"
-                                   value="1" <?php echo checked( ! empty( $item->isnaturalwidth ), 1, false ); ?> />
-                        </label>
-                    </p>
-                    <p class="field-custom description description-wide">
-                        <label
-                            for="edit-menu-is-altstyle-<?php echo esc_attr($item_id); ?>"><?php _e( 'Alternative Style Mega Menu', 'swift-framework-admin' ); ?>
-                            <input type="checkbox" id="edit-menu-is-altstyle-<?php echo esc_attr($item_id); ?>"
-                                   class="edit-menu-item-custom" id="menu-is-altstyle[<?php echo esc_attr($item_id); ?>]"
-                                   name="menu-is-altstyle[<?php echo esc_attr($item_id); ?>]"
-                                   value="1" <?php echo checked( ! empty( $item->altstyle ), 1, false ); ?> />
-                        </label>
-                    </p>
-                    <p class="field-custom description description-wide">
-                        <label
-                            for="edit-menu-hideheadings-<?php echo esc_attr($item_id); ?>"><?php _e( 'Hide Mega Menu Headings', 'swift-framework-admin' ); ?>
-                            <input type="checkbox" id="edit-menu-hideheadings-<?php echo esc_attr($item_id); ?>"
-                                   class="edit-menu-item-custom" id="menu-hideheadings[<?php echo esc_attr($item_id); ?>]"
-                                   name="menu-hideheadings[<?php echo esc_attr($item_id); ?>]"
-                                   value="1" <?php echo checked( ! empty( $item->hideheadings ), 1, false ); ?> />
-                        </label>
-                    </p>
-
-                    <p class="field-custom description description-wide" style="height: 10px;"></p>
-
-                <?php } ?>
-
-                <h4>Custom Menu Options</h4>
-
-                <p class="field-custom description description-wide">
-                    <label
-                        for="edit-menu-loggedinvis-<?php echo esc_attr($item_id); ?>"><?php _e( 'Visible only when logged in', 'swift-framework-admin' ); ?>
-                        <input type="checkbox" id="edit-menu-loggedinvis-<?php echo esc_attr($item_id); ?>"
-                               class="edit-menu-item-custom" id="menu-loggedinvis[<?php echo esc_attr($item_id); ?>]"
-                               name="menu-loggedinvis[<?php echo esc_attr($item_id); ?>]"
-                               value="1" <?php echo checked( ! empty( $item->loggedinvis ), 1, false ); ?> />
-                    </label>
-                </p>
-
-                <p class="field-custom description description-wide">
-                    <label
-                        for="edit-menu-loggedoutvis-<?php echo esc_attr($item_id); ?>"><?php _e( 'Visible only when logged out', 'swift-framework-admin' ); ?>
-                        <input type="checkbox" id="edit-menu-loggedoutvis-<?php echo esc_attr($item_id); ?>"
-                               class="edit-menu-item-custom" id="menu-loggedoutvis[<?php echo esc_attr($item_id); ?>]"
-                               name="menu-loggedoutvis[<?php echo esc_attr($item_id); ?>]"
-                               value="1" <?php echo checked( ! empty( $item->loggedoutvis ), 1, false ); ?> />
-                    </label>
-                </p>
-
-                <?php if ( $depth == 0 ) { ?>
-                	
-                	<?php if ( sf_theme_supports('menu-new-badge') ) { ?>
-                	
-                	<p class="field-custom description description-wide">
-                	    <label
-                	        for="edit-menu-newbadge-<?php echo esc_attr($item_id); ?>"><?php _e( 'New Badge', 'swift-framework-admin' ); ?>
-                	        <input type="checkbox" id="edit-menu-newbadge-<?php echo esc_attr($item_id); ?>"
-                	               class="edit-menu-item-custom" id="menu-newbadge[<?php echo esc_attr($item_id); ?>]"
-                	               name="menu-newbadge[<?php echo esc_attr($item_id); ?>]"
-                	               value="1" <?php echo checked( ! empty( $item->newbadge ), 1, false ); ?> />
-                	    </label>
-                	</p>
-                	
-                	<?php } ?>
-
-                    <p class="field-custom description description-wide">
-                        <label
-                            for="edit-menu-menuitembtn-<?php echo esc_attr($item_id); ?>"><?php _e( 'Button Style Menu Item', 'swift-framework-admin' ); ?>
-                            <input type="checkbox" id="edit-menu-menuitembtn-<?php echo esc_attr($item_id); ?>"
-                                   class="edit-menu-item-custom" id="menu-menuitembtn[<?php echo esc_attr($item_id); ?>]"
-                                   name="menu-menuitembtn[<?php echo esc_attr($item_id); ?>]"
-                                   value="1" <?php echo checked( ! empty( $item->menuitembtn ), 1, false ); ?> />
-                        </label>
-                    </p>
-
-                <?php } ?>
-
-                <p class="field-custom description description-thin"
-                   style="height: auto;overflow: hidden;width: 50%;float: none;">
-                    <label
-                        for="edit-menu-item-icon-<?php echo esc_attr($item_id); ?>"><?php _e( 'Menu Icon (Gizmo / Font Awesome)', 'swift-framework-admin' ); ?>
-                        <input type="text" id="edit-menu-item-icon-<?php echo esc_attr($item_id); ?>"
-                               class="widefat edit-menu-item-custom" name="menu-item-icon[<?php echo esc_attr($item_id); ?>]"
-                               placeholder="ss-star" value="<?php echo esc_attr( $item->menuicon ); ?>"/>
-                    </label>
-                </p>
-
-                <?php if ( $depth == 1 ) { ?>
-
-                    <h4>Mega Menu Column Options</h4>
-
-                    <p class="field-custom description description-wide">
-                        <label
-                            for="edit-menu-megatitle-<?php echo esc_attr($item_id); ?>"><?php _e( 'Mega Menu No Link Title', 'swift-framework-admin' ); ?>
-                            <input type="checkbox" id="edit-menu-megatitle-<?php echo esc_attr($item_id); ?>"
-                                   class="edit-menu-item-custom" id="menu-megatitle[<?php echo esc_attr($item_id); ?>]"
-                                   name="menu-megatitle[<?php echo esc_attr($item_id); ?>]"
-                                   value="1" <?php echo checked( ! empty( $item->megatitle ), 1, false ); ?> />
-                        </label>
-                    </p>
-
-                    <p class="field-custom description description-wide">
-                        <label
-                            for="edit-menu-nocolumnspacing-<?php echo esc_attr($item_id); ?>"><?php _e( 'No Menu Column Spacing (for custom html column)', 'swift-framework-admin' ); ?>
-                            <input type="checkbox" id="edit-menu-nocolumnspacing-<?php echo esc_attr($item_id); ?>"
-                                   class="edit-menu-item-custom" id="menu-nocolumnspacing[<?php echo esc_attr($item_id); ?>]"
-                                   name="menu-nocolumnspacing[<?php echo esc_attr($item_id); ?>]"
-                                   value="1" <?php echo checked( ! empty( $item->nocolumnspacing ), 1, false ); ?> />
-                        </label>
-                    </p>
-                    <p class="field-custom description description-wide">
-                        <label
-                            for="edit-menu-item-icon-<?php echo esc_attr($item_id); ?>"><?php _e( 'Custom HTML Column Width (optional)', 'swift-framework-admin' ); ?>
-                            <input type="text" id="edit-menu-item-width-<?php echo esc_attr($item_id); ?>"
-                                   class="widefat edit-menu-item-custom" name="menu-item-width[<?php echo esc_attr($item_id); ?>]"
-                                   value="<?php echo esc_attr( $item->menuwidth ); ?>"/>
-                        </label>
-                    <p><?php _e( 'Optionally set a width here for the menu column, ideal if you want to make it wider. Numeric value (no px).', 'swift-framework-admin' ); ?></p>
-                    </p>
-
-                    <p class="field-custom description description-wide">
-                        <label
-                            for="edit-menu-item-htmlcontent-<?php echo esc_attr($item_id); ?>"><?php _e( 'Custom HTML Column (within Mega Menu)', 'swift-framework-admin' ); ?>
-                            <textarea id="edit-menu-item-htmlcontent-<?php echo esc_attr($item_id); ?>"
-                                      name="menu-item-htmlcontent[<?php echo esc_attr($item_id); ?>]" cols="30"
-                                      rows="4"><?php echo esc_attr( $item->htmlcontent ); ?></textarea>
-                        </label>
-                    </p>
-
-                <?php } ?>
-            </div>
-
+            
+            <?php 
+	            // This is the added section
+	            do_action( 'wp_nav_menu_item_custom_fields', $item_id, $item, $depth, $args );
+	            // end added section 
+            ?>
+            
             <?php
                 /* New fields insertion ends here */
             ?>
             <div class="menu-item-actions description-wide submitbox">
                 <?php if ( 'custom' != $item->type && $original_title !== false ) : ?>
                     <p class="link-to-original">
-                        <?php printf( __( 'Original: %s', 'swift-framework-admin' ), '<a href="' . esc_attr( $item->url ) . '">' . esc_html( $original_title ) . '</a>' ); ?>
+                        <?php printf( __( 'Original: %s', 'swiftframework' ), '<a href="' . esc_attr( $item->url ) . '">' . esc_html( $original_title ) . '</a>' ); ?>
                     </p>
                 <?php endif; ?>
                 <a class="item-delete submitdelete deletion" id="delete-<?php echo esc_attr($item_id); ?>" href="<?php
@@ -400,13 +227,13 @@
                             remove_query_arg( $removed_args, admin_url( 'nav-menus.php' ) )
                         ),
                         'delete-menu_item_' . $item_id
-                    ); ?>"><?php _e( 'Remove', 'swift-framework-admin' ); ?></a> <span class="meta-sep"> | </span> <a
+                    ); ?>"><?php _e( 'Remove', 'swiftframework' ); ?></a> <span class="meta-sep"> | </span> <a
                     class="item-cancel submitcancel" id="cancel-<?php echo esc_attr($item_id); ?>"
                     href="<?php echo esc_url( add_query_arg( array(
                                 'edit-menu-item' => $item_id,
                                 'cancel'         => time()
                             ), remove_query_arg( $removed_args, admin_url( 'nav-menus.php' ) ) ) );
-                    ?>#menu-item-settings-<?php echo esc_attr($item_id); ?>"><?php _e( 'Cancel', 'swift-framework-admin' ); ?></a>
+                    ?>#menu-item-settings-<?php echo esc_attr($item_id); ?>"><?php _e( 'Cancel', 'swiftframework' ); ?></a>
             </div>
 
             <input class="menu-item-data-db-id" type="hidden" name="menu-item-db-id[<?php echo esc_attr($item_id); ?>]"

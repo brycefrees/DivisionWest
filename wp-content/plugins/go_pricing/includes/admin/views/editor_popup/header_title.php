@@ -40,6 +40,7 @@ $col_type = isset( $_POST['col_type'] ) ? $_POST['col_type'] : '';
 				endforeach;
 				?>
 			</select>
+		</td>
 		<td class="gwa-abox-info"><p class="gwa-info"><i class="fa fa-info-circle"></i><?php _e( 'Font family of the title.', 'go_pricing_textdomain' ); ?></p></td>
 	</tr>			
 	<tr>

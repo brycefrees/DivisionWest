@@ -35,7 +35,7 @@
             $widget_ops = array( 'classname' => 'twitter-widget', 'description' => 'Display your latest tweets.' );
 
             // Create the widget
-            $this->WP_Widget( 'twitter-widget', 'Swift Framework Tweets', $widget_ops );
+            parent::__construct( 'twitter-widget', 'Swift Framework Tweets', $widget_ops );
         }
 
 
@@ -130,14 +130,14 @@
 
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'swiftframework' ); ?></label>
                 <input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>"
                        name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo $instance['title']; ?>">
             </p>
 
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'username' ); ?>"><?php _e( 'Your Twitter username:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'username' ); ?>"><?php _e( 'Your Twitter username:', 'swiftframework' ); ?></label>
                 <input class="widefat" type="text" id="<?php echo $this->get_field_id( 'username' ); ?>"
                        name="<?php echo $this->get_field_name( 'username' ); ?>"
                        value="<?php echo $instance['username']; ?>">
@@ -145,7 +145,7 @@
 
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'posts' ); ?>"><?php _e( 'Display how many tweets?', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'posts' ); ?>"><?php _e( 'Display how many tweets?', 'swiftframework' ); ?></label>
                 <input class="widefat" type="text" id="<?php echo $this->get_field_id( 'posts' ); ?>"
                        name="<?php echo $this->get_field_name( 'posts' ); ?>" value="<?php echo $instance['posts']; ?>">
             </p>

@@ -35,24 +35,31 @@
 			if ( is_page() && $post ) {
             	$enable_newsletter_bar_page = sf_get_post_meta($post->ID, 'sf_enable_newsletter_bar', true);
 			}
+			
+			if ( isset($sf_options['enable_newsletter_sub_bar_globally']) ) {
+				$enable_newsletter_bar_page  = $sf_options['enable_newsletter_sub_bar_globally'];
+			}
 
             if ( ( $enable_newsletter_sub_bar && ( is_home() || is_front_page() ) ) || $enable_newsletter_bar_page ) {
             	$sub_bar_text 				= __( $sf_options['sub_bar_text'], "swiftframework" );
             	$sub_bar_code 				= __( $sf_options['sub_bar_code'], "swiftframework" );
             	$fullwidth_header    		= $sf_options['fullwidth_header'];
-
+                $page_layout             = $sf_options['page_layout'];
+                if ( isset( $_GET['layout'] ) ) {
+                    $page_layout = $_GET['layout'];
+                }
                 ?>
                 <!--// OPEN #sf-newsletter-bar //-->
                 <div id="sf-newsletter-bar">
 
-                	<?php if (!$fullwidth_header ) { ?>
+                	<?php if ( !$fullwidth_header || $page_layout == "boxed" ) { ?>
                 	<div class="container">
                 	<?php } ?>
                 		<h3 class="sub-text"><?php echo esc_attr($sub_bar_text); ?></h3>
-                		<div class="sub-code"><?php echo $sub_bar_code; ?></div>
+                		<div class="sub-code"><?php echo do_shortcode($sub_bar_code); ?></div>
                 		<a href="#" class="sub-close"><i class="sf-icon-close"></i></a>
 
-                	<?php if (!$fullwidth_header ) { ?>
+                	<?php if ( !$fullwidth_header || $page_layout == "boxed" ) { ?>
                 	</div>
                 	<?php } ?>
 
@@ -327,7 +334,7 @@
                 <footer id="copyright" class="<?php echo esc_attr($copyright_class); ?>">
                     <div class="container">
                         <div
-                            class="text-left"><?php echo do_shortcode( stripslashes( $copyright_text ) ); ?><?php echo esc_attr($swiftideas_backlink); ?></div>
+                            class="text-left"><?php echo do_shortcode( stripslashes( $copyright_text ) ); ?><?php echo $swiftideas_backlink; ?></div>
                         <?php if ( $copyright_right == "menu" ) { ?>
                             <nav class="footer-menu std-menu">
                                 <?php
@@ -453,6 +460,10 @@
             $slider_slideshowSpeed    = $sf_options['slider_slideshowSpeed'];
             $slider_animationSpeed    = $sf_options['slider_animationSpeed'];
             $slider_autoplay          = $sf_options['slider_autoplay'];
+            $slider_loop 			  = false;
+            if ( isset($sf_options['slider_loop']) ) {
+            	$slider_loop          	  = $sf_options['slider_loop'];
+            }
             $carousel_paginationSpeed = $sf_options['carousel_paginationSpeed'];
             $carousel_slideSpeed      = $sf_options['carousel_slideSpeed'];
             $carousel_autoplay        = $sf_options['carousel_autoplay'];
@@ -462,12 +473,24 @@
             $lightbox_skin            = $sf_options['lightbox_skin'];
             $lightbox_sharing         = $sf_options['lightbox_sharing'];
             $product_zoom_type        = $sf_options['product_zoom_type'];
+            $product_slider_thumbs_pos = "bottom";
+            $vertical_product_slider_height = "700";
+            if ( isset( $sf_options['product_slider_thumbs_pos'] ) ) {
+           		$product_slider_thumbs_pos = $sf_options['product_slider_thumbs_pos'];
+            }
+            if ( isset( $sf_options['vertical_product_slider_height'] ) ) {
+            	$vertical_product_slider_height = $sf_options['vertical_product_slider_height'];
+            }
             $quickview_text			  = __("Quickview", "swiftframework");
-            $cart_notification        = $sf_options['cart_notification'];
+            $cart_notification = "";
+            if ( isset ($sf_options['cart_notification']) ) {
+            	$cart_notification        = $sf_options['cart_notification'];
+            }
             ?>
             <div id="sf-option-params" data-slider-slidespeed="<?php echo esc_attr($slider_slideshowSpeed); ?>"
                  data-slider-animspeed="<?php echo esc_attr($slider_animationSpeed); ?>"
                  data-slider-autoplay="<?php echo esc_attr($slider_autoplay); ?>"
+                 data-slider-loop="<?php echo esc_attr($slider_loop); ?>"
                  data-carousel-pagespeed="<?php echo esc_attr($carousel_paginationSpeed); ?>"
                  data-carousel-slidespeed="<?php echo esc_attr($carousel_slideSpeed); ?>"
                  data-carousel-autoplay="<?php echo esc_attr($carousel_autoplay); ?>"
@@ -477,6 +500,8 @@
                  data-lightbox-skin="<?php echo esc_attr($lightbox_skin); ?>"
                  data-lightbox-sharing="<?php echo esc_attr($lightbox_sharing); ?>"
                  data-product-zoom-type="<?php echo esc_attr($product_zoom_type); ?>"
+                 data-product-slider-thumbs-pos="<?php echo esc_attr($product_slider_thumbs_pos); ?>"
+                 data-product-slider-vert-height="<?php echo esc_attr($vertical_product_slider_height); ?>"
                  data-quickview-text="<?php echo esc_attr($quickview_text); ?>"
 	             data-cart-notification="<?php echo esc_attr($cart_notification); ?>"></div>
 

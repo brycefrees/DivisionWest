@@ -17,7 +17,7 @@
 
     class sf_infocus extends WP_Widget {
         function sf_infocus() {
-            parent::WP_Widget( 'sf_infocus_widget', $name = 'Swift Framework In Focus' );
+            parent::__construct( 'sf_infocus_widget', $name = 'Swift Framework In Focus' );
         }
 
         function widget( $args, $instance ) {
@@ -143,14 +143,14 @@
             ?>
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php echo __( 'Title:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php echo __( 'Title:', 'swiftframework' ); ?></label>
                 <input id="<?php echo $this->get_field_id( 'title' ); ?>"
                        name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>"
                        class="widefat"/>
             </p>
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'post_id' ); ?>"><?php echo __( 'Post ID:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'post_id' ); ?>"><?php echo __( 'Post ID:', 'swiftframework' ); ?></label>
                 <input id="<?php echo $this->get_field_id( 'post_id' ); ?>"
                        name="<?php echo $this->get_field_name( 'post_id' ); ?>" type="text"
                        value="<?php echo $post_id; ?>" size="widefat"/>

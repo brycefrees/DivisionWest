@@ -6,15 +6,20 @@ ob_start();
 $absolute_path = __FILE__;
 $path_to_file = explode( 'wp-content', $absolute_path );
 $path_to_wp = $path_to_file[0];
-require_once( $path_to_wp . '/wp-load.php' );
-define( 'WP_USE_THEMES' , false);
+include_once( $path_to_wp . '/wp-load.php' );
+if ( !defined( 'WP_USE_THEMES' ) ) {
+	define( 'WP_USE_THEMES' , false );
+	$id = !empty( $_GET['id'] ) ? (int)$_GET['id'] : NULL;	
+} else {
+	$id = !empty( $_GET['go_pricing_preview_id'] ) ? (int)$_GET['go_pricing_preview_id'] : NULL;
+}
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <?php wp_head(); ?>
 <style>
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:700,600,400);
+@import url(//fonts.googleapis.com/css?family=Open+Sans:700,600,400);
 @import url('../assets/lib/font_awesome/css/font-awesome.min.css');
 body { 
 	background:#fff !important;
@@ -44,15 +49,15 @@ body:after { display:none; }
 </style>
 </head>
 <body>
-<?php 
+<?php
 $instance = GW_GoPricing::instance();
-if ( !is_user_logged_in() || empty( $_GET['id'] ) || empty( $_GET['nonce'] ) || ( !empty( $_GET['nonce'] ) &&  wp_verify_nonce( $_GET['nonce'], $instance['plugin_base'] . '-preview' ) === false ) ) :
+if ( !is_user_logged_in() || is_null( $id ) || empty( $_GET['nonce'] ) || ( !empty( $_GET['nonce'] ) &&  wp_verify_nonce( $_GET['nonce'], $instance['plugin_base'] . '-preview' ) === false ) ) :
 	?>
 	<div id="go-pricing-forbidden"><i class="fa fa-exclamation-triangle"></i><?php _e( 'Oops, Forbidden!', 'go_pricing_textdomain' ); ?></div>
 	<?php 
 else :
 ?>
-<div id="go-pricing-preview"><?php echo do_shortcode( '[go_pricing postid="' . (int)$_GET['id'] . '" margin_bottom="0" preview="true"]' ); ?></div>
+<div id="go-pricing-preview"><?php echo do_shortcode( '[go_pricing postid="' . $id . '" margin_bottom="0" preview="true"]' ); ?></div>
 <?php 
 endif;
 wp_footer(); 
@@ -60,8 +65,8 @@ wp_footer();
 </body>
 </html>
 <?php 
-$html = ob_get_clean(); 
-header( 'Content-Type: text/html; charset=utf-8' );
+$html = ob_get_clean();
+header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset', 'UTF-8' ) );
 echo $html;
 ob_end_flush();
 ?>

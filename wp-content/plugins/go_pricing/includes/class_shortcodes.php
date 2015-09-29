@@ -63,7 +63,7 @@ class GW_GoPricing_Shortcodes {
 		
 		/* Mixed */
 		add_shortcode( 'go_pricing_map', array( $this, 'goole_map_sc' ) );
-		add_shortcode( 'go_pricing_custom_iframe', array( $this, 'iframe_sc' ) );
+		add_shortcode( 'go_pricing_iframe', array( $this, 'iframe_sc' ) );
 		
 	}
 
@@ -168,7 +168,16 @@ class GW_GoPricing_Shortcodes {
 				break;
 			case 7: 
 				$main_classes[] = 'gw-go-7cols';
-				break;								
+				break;
+			case 8: 
+				$main_classes[] = 'gw-go-8cols';
+				break;
+			case 9: 
+				$main_classes[] = 'gw-go-9cols';
+				break;	
+			case 10: 
+				$main_classes[] = 'gw-go-10cols';
+				break;																				
 		}
 		
 		// Filter classes & styles
@@ -214,7 +223,15 @@ class GW_GoPricing_Shortcodes {
 		if ( !empty( $pricing_table['col-space'] ) ) {
 			$custom_inline_styles[] = '.gw-go { ' . sprintf( 'margin-left:-%spx;', (int)$pricing_table['col-space'] ) . ' }';
 			$custom_inline_styles[] = '.gw-go-col { ' . sprintf( 'margin-left:%spx;', (int)$pricing_table['col-space'] ) . ' }';
-		} 		
+		}
+		
+		if ( !empty( $pricing_table['col-width']['min'] ) && (int)$pricing_table['col-width']['min'] > 0 ) {
+			$custom_inline_styles[] = '.gw-go-col-wrap { ' . sprintf( 'min-width:%spx;', (int)$pricing_table['col-width']['min'] ) . ' }';
+		}
+		
+		if ( !empty( $pricing_table['col-width']['max'] ) && (int)$pricing_table['col-width']['max'] > 0 ) {
+			$custom_inline_styles[] = '.gw-go-col-wrap { ' . sprintf( 'max-width:%spx;', (int)$pricing_table['col-width']['max'] ) . ' }';
+		}		
 		
 		if ( !empty( $pricing_table['style'] ) && $pricing_table['style'] == 'clean' ) {
 		
@@ -1299,7 +1316,16 @@ class GW_GoPricing_Shortcodes {
 							isset( $col_data['title']['title']['content'] ) ? $col_data['title']['title']['content'] : '',
 							isset( $price ) ? $price : '',
 							isset( $payment ) ? '<small>' . $payment . '</small>' : '',
-							!empty( $col_data['header']['general']['custom']['img']['data'] ) ? '<img src="' . $col_data['header']['general']['custom']['img']['data'] .'"' . ( !empty( $col_data['header']['general']['custom']['img']['responsive'] ) ? ' class="gw-go-responsive-img"': '' ) . '>' : '',
+							!empty( $col_data['header']['general']['custom']['img']['data'] ) ? 
+								sprintf( 
+									'<img src="%1$s"%2$s%3$s%4$s%5$s>', 
+									$col_data['header']['general']['custom']['img']['data'], 
+									isset( $col_data['header']['general']['custom']['img']['responsive'] ) ? ' class="gw-go-responsive-img"' : '',
+									isset( $col_data['header']['general']['custom']['img']['alt'] ) ? ' alt="' . esc_attr( $col_data['header']['general']['custom']['img']['alt'] ) . '"' : '',
+									!empty( $col_data['header']['general']['custom']['img']['width'] ) ? ' width="' . (int)$col_data['header']['general']['custom']['img']['width'] . '"' : '',
+									!empty( $col_data['header']['general']['custom']['img']['height'] ) ? ' height="' . (int)$col_data['header']['general']['custom']['img']['height'] . '"' : ''
+								) 
+							: '',
 							!empty( $header_custom_styles ) ? ' style="' . esc_attr( implode( '; ', (array)$header_custom_styles )  ) .  ';"' : ''
 						);						
 						break;
@@ -1351,11 +1377,19 @@ class GW_GoPricing_Shortcodes {
 					
 						$header_custom_styles = !empty( $col_data['header']['general']['custom']['css'] ) ? explode( ';', preg_replace("/[\n\r]/","", trim( $col_data['header']['general']['custom']['css'], ' ;' ) ) ) : '';
 									
-
 						$header_custom_html = sprintf( 
 							'<h3>%1$s</h3><div class="gw-go-header-bottom">%2$s</div>%3$s%4$s', 
 							isset( $col_data['title']['title']['content'] ) ? $col_data['title']['title']['content'] : '',
-							!empty( $col_data['header']['general']['custom']['img']['data'] ) ? sprintf( '<img src="%1$s"%2$s>', $col_data['header']['general']['custom']['img']['data'], isset( $col_data['header']['general']['custom']['img']['responsive'] ) ? ' class="gw-go-responsive-img"' : '' ) : '',
+							!empty( $col_data['header']['general']['custom']['img']['data'] ) ? 
+								sprintf( 
+									'<img src="%1$s"%2$s%3$s%4$s%5$s>', 
+									$col_data['header']['general']['custom']['img']['data'], 
+									isset( $col_data['header']['general']['custom']['img']['responsive'] ) ? ' class="gw-go-responsive-img"' : '',
+									isset( $col_data['header']['general']['custom']['img']['alt'] ) ? ' alt="' . esc_attr( $col_data['header']['general']['custom']['img']['alt'] ) . '"' : '',
+									!empty( $col_data['header']['general']['custom']['img']['width'] ) ? ' width="' . (int)$col_data['header']['general']['custom']['img']['width'] . '"' : '',
+									!empty( $col_data['header']['general']['custom']['img']['height'] ) ? ' height="' . (int)$col_data['header']['general']['custom']['img']['height'] . '"' : ''
+								) 
+							: '',
 							isset( $payment ) ? '<small>' . $payment . '</small>' : '',
 							isset( $price ) ? '<h1>' . $price . '</h1>' : ''
 						);						
@@ -1369,7 +1403,16 @@ class GW_GoPricing_Shortcodes {
 							'<h3>%1$s%2$s</h3><div class="gw-go-header-bottom">%3$s</div>', 
 							isset( $col_data['title']['title']['content'] ) ? $col_data['title']['title']['content'] : '',
 							isset( $col_data['title']['subtitle']['content'] ) ? sprintf( '<small>%s</small>', $col_data['title']['subtitle']['content'] ) : '',
-							!empty( $col_data['header']['general']['custom']['img']['data'] ) ? sprintf( '<img src="%1$s"%2$s>', $col_data['header']['general']['custom']['img']['data'], isset( $col_data['header']['general']['custom']['img']['responsive'] ) ? ' class="gw-go-responsive-img"' : '' ) : ''
+							!empty( $col_data['header']['general']['custom']['img']['data'] ) ? 
+								sprintf( 
+									'<img src="%1$s"%2$s%3$s%4$s%5$s>', 
+									$col_data['header']['general']['custom']['img']['data'], 
+									isset( $col_data['header']['general']['custom']['img']['responsive'] ) ? ' class="gw-go-responsive-img"' : '',
+									isset( $col_data['header']['general']['custom']['img']['alt'] ) ? ' alt="' . esc_attr( $col_data['header']['general']['custom']['img']['alt'] ) . '"' : '',
+									!empty( $col_data['header']['general']['custom']['img']['width'] ) ? ' width="' . (int)$col_data['header']['general']['custom']['img']['width'] . '"' : '',
+									!empty( $col_data['header']['general']['custom']['img']['height'] ) ? ' height="' . (int)$col_data['header']['general']['custom']['img']['height'] . '"' : ''
+								) 
+							: ''
 						);						
 						break;
 					
@@ -2300,7 +2343,7 @@ class GW_GoPricing_Shortcodes {
 		}
 		
 		/* Import icon fonts */
-		if ( preg_match( '/<i[^<>]*class=(\"|\')(.*)?fa-(?:(<\/i>).*)?(\2)/', $html ) ) $font_css .= sprintf( '@import url(%s);', $this->plugin_url . 'assets/lib/font_awesome/css/font-awesome.min.css' );
+		if ( preg_match( '/<i[^<>]*class=(\"|\')(.*)?fa(?:(<\/i>).*)?(\2)/', $html ) ) $font_css .= sprintf( '@import url(%s);', $this->plugin_url . 'assets/lib/font_awesome/css/font-awesome.min.css' );
 		if ( preg_match( '/<i[^<>]*class=(\"|\')(.*)?linecon-(?:(<\/i>).*)?(\2)/', $html ) ) $font_css .= sprintf( '@import url(%s);', $this->plugin_url . 'assets/lib/linecon/linecon.min.css' );
 		if ( preg_match( '/<i[^<>]*class=(\"|\')(.*)?icomoon-(?:(<\/i>).*)?(\2)/', $html ) ) $font_css .= sprintf( '@import url(%s);', $this->plugin_url . 'assets/lib/icomoon/icomoon.min.css' );
 		if ( preg_match( '/<i[^<>]*class=(\"|\')(.*)?material-(?:(<\/i>).*)?(\2)/', $html ) ) $font_css .= sprintf( '@import url(%s);', $this->plugin_url . 'assets/lib/material/material.min.css' );		

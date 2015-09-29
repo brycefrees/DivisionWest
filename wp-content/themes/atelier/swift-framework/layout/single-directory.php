@@ -16,9 +16,7 @@
     $map_address = sf_get_post_meta( $post->ID, 'sf_directory_address', true );
     $map_pin = sf_get_post_meta( $post->ID, 'sf_directory_map_pin', true );
     $map_pin_button_text = sf_get_post_meta( $post->ID, 'sf_directory_pin_button_text', true );
-    $map_pin_link = sf_get_post_meta( $post->ID, 'sf_directory_pin_link', true );
-    
-    
+    $map_pin_link = sf_get_post_meta( $post->ID, 'sf_directory_pin_link', true );   
 
     if ( $sidebar_config == "" ) {
         $sidebar_config = $default_sidebar_config;
@@ -70,8 +68,6 @@
              **/
             do_action( 'sf_post_article_start' );
         ?>
- 
-
  
         <section class="page-content clearfix <?php echo esc_attr($page_content_class); ?>">
         

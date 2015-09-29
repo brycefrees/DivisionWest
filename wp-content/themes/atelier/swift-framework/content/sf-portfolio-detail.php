@@ -220,8 +220,12 @@
 		                <?php echo $item_categories; ?>
 		            </ul>
 		        <?php } ?>
-		        <div class="article-share" data-buttontext="<?php _e( "Share this", "swiftframework" ); ?>"
+		        <?php if ( sf_theme_opts_name() == "sf_atelier_options" ) { ?>
+		        	<?php echo do_shortcode('[sf_social_share]'); ?>
+		        <?php } else { ?>
+		        	<div class="article-share" data-buttontext="<?php _e( "Share this", "swiftframework" ); ?>"
 		             data-image="<?php echo esc_url($image); ?>"></div>
+		        <?php } ?>
 		    </section>
 		
 		<?php
@@ -248,7 +252,9 @@
             $hover_style = "default";
 
             // Thumb Type
-            if ( $hover_style == "default" && function_exists( 'sf_get_thumb_type' ) ) {
+            if ( function_exists( 'sf_get_thumb_type' ) && sf_theme_opts_name() == "sf_atelier_options" ) {
+                $wrap_class .= ' ' . sf_get_thumb_type();
+            } else if ( function_exists( 'sf_get_thumb_type' ) && $hover_style == "default" ) {
                 $wrap_class .= ' ' . sf_get_thumb_type();
             } else {
                 $wrap_class .= ' thumbnail-' . $hover_style;
@@ -261,7 +267,7 @@
                 ?>
                 <section class="related-projects <?php echo esc_attr($wrap_class); ?> clearfix">
 
-                    <h2 class="<?php echo esc_attr($heading_class); ?>"><?php apply_filters('sf_related_projects_heading', _e( "Related Projects", "swiftframework" )); ?></h2>
+                    <h2 class="<?php echo esc_attr($heading_class); ?>"><?php echo apply_filters('sf_related_projects_heading', __( "Related Projects", "swiftframework" )); ?></h2>
 
                     <div class="clearfix">
                         <?php while ( $related->have_posts() ): $related->the_post(); ?>

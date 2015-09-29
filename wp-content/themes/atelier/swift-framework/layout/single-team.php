@@ -44,7 +44,7 @@
             ?>
 
             <figure class="profile-image-wrap">
-                <?php $detail_image = sf_aq_resize( $member_image_url, 440, null, true, false ); ?>
+                <?php $detail_image = sf_aq_resize( $member_image_url, 700, null, true, false ); ?>
 
                 <?php if ( $detail_image ) { ?>
 

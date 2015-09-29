@@ -59,7 +59,7 @@ abstract class GW_GoPricing_AdminPage {
 		$this->screen = get_current_screen();
 		$this->action = !empty( $_POST['_action'] ) ? $_POST['_action'] : '';
 		$this->action_type = !empty( $_POST['_action_type'] ) ? $_POST['_action_type'] : '';
-		$this->referrer = !empty( $_POST['_wp_http_referer'] ) ? $_POST['_wp_http_referer'] : '';
+		$this->referrer = !empty( $_POST['_wp_http_referer'] ) ? esc_url( $_POST['_wp_http_referer'] ) : '';
 		$this->is_ajax = isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' && !empty( $_POST['action'] ) ? true : false;
 
 		// Register ajax actions

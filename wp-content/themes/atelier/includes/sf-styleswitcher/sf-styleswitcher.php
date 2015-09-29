@@ -12,8 +12,11 @@
 		function sf_styleswitcher() {
 
 			global $sf_options;
+			$enable_styleswitcher = false;
+			if ( isset($sf_options['enable_styleswitcher']) ) {
 			$enable_styleswitcher = $sf_options['enable_styleswitcher'];
-
+			}
+			
 			if ($enable_styleswitcher) {
 				$styleswitcher_path = get_template_directory_uri() . '/includes/sf-styleswitcher/';
 

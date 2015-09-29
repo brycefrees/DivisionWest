@@ -13,7 +13,44 @@
     *	sf_post_related_articles()
     *
     */
-
+	
+	/* POST DETAIL META
+	================================================== */
+	if ( ! function_exists( 'sf_post_detail_meta' ) ) {
+	    function sf_post_detail_meta() {
+	        global $post;
+	        $post_title = get_the_title();
+	        $post_date = get_the_date();
+	        $post_date_str = get_the_date('Y-m-d');
+	        
+	        $post_image = get_post_thumbnail_id();
+	       	$image_meta = array();
+	       	$post_image_url = $post_image_alt = "";
+	        
+	        if ( $post_image != "" ) {
+		        $post_image_meta = sf_get_attachment_meta( $post_image );
+		        if ( isset($post_image_meta) ) {
+		        	$post_image_alt = esc_attr( $post_image_meta['alt'] );
+		        } 
+		        $post_image_url = wp_get_attachment_url(get_post_thumbnail_id());
+	        }
+	        
+	        ?>
+	        
+	        <div class="article-meta hide">
+	        	<div itemprop="headline"><?php echo $post_title; ?></div>
+	        	<time itemprop="datePublished" datetime="<?php echo $post_date_str; ?>"><?php echo $post_date; ?></time>
+	        	<?php if ( $post_image != "" ) { ?>
+	        	<img itemprop="image" src="<?php echo $post_image_url; ?>" alt="<?php echo $post_image_alt; ?>"/>
+	        	<?php } ?>
+	        </div>
+	        
+	    <?php
+	    }
+	}
+	add_action( 'sf_post_article_start', 'sf_post_detail_meta', 0 );
+	
+	
     /* POST DETAIL HEADING
     ================================================== */
     if ( ! function_exists( 'sf_post_detail_heading' ) ) {
@@ -22,7 +59,7 @@
             ?>
             <header class="article-heading hidden-hatom">
                 <div class="container">
-                    <h1 class="entry-title" itemprop="name"><?php the_title(); ?></h1>
+                    <div class="entry-title" itemprop="name"><?php the_title(); ?></div>
                 </div>
             </header>
         <?php
@@ -63,7 +100,11 @@
             if ( $media_type == "none" ) {
             	return;
             }
-
+            
+            if ( is_singular('directory') ) {
+            	$fw_media_display = "standard";
+            }
+            
             if ( $fw_media_display == "fw-media-title" && $media_type != "none" ) {
                 remove_action( 'sf_post_article_start', 'sf_post_detail_heading', 0 );
 
@@ -98,7 +139,7 @@
             <?php
             } else if ( $fw_media_display == "fw-media" ) {
                 sf_get_template( 'detail-media' );
-            } else if ( ( $pb_active != "true" && !$fw_media_display == "standard" ) || $sf_sidebar_config == "one-sidebar") {
+            } else if ( ( $pb_active != "true" && !$fw_media_display == "standard" ) ) {
                 ?>
                 <?php sf_get_template( 'detail-media' ); ?>
             <?php } else { ?>
@@ -400,9 +441,11 @@
 		    if ( isset( $sf_options['pagination_style'] ) ) {
 		        $pagination_style = $sf_options['pagination_style'];
 		    }
+		    $enable_category_navigation = $sf_options['enable_category_navigation'];
 
-		    $prev_post = get_next_post();
-		    $next_post = get_previous_post();
+			$prev_post = get_next_post($enable_category_navigation, '', 'category');
+			$next_post = get_previous_post($enable_category_navigation, '', 'category');
+		   
 		    $has_both  = false;
 
 		    if ( sf_theme_opts_name() == "sf_joyn_options" && $pagination_style == "fs-arrow" ) {

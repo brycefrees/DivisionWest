@@ -94,7 +94,7 @@ if( !class_exists( 'ReduxFramework_extension_search' ) ) {
         wp_localize_script(
             'redux-extension-search-js', 
             'reduxsearch', 
-            __('Type here to search for options', 'swift-framework-admin')
+            __('Type here to search for options', 'swiftframework')
         );
 
       }

@@ -22,9 +22,35 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	if ($pb_active != "true") {
 	$pb_active = false;
 	}
+	
+	$product_reviews_pos = "default";
+	if ( isset( $sf_options['product_reviews_pos'] ) ) {
+	$product_reviews_pos = $sf_options['product_reviews_pos'];
+	}
+	
+	$extra_class = "";
+	
+	if ( class_exists( 'Woocommerce_German_Market' ) ) {
+		$extra_class .= "german-market-enabled ";
+	}
+	
+	// Product page builder content
+	if ( $pb_active ) {
+		
+		$product_pbcontent_pos = "above";		
+		if ( isset( $sf_options['product_pbcontent_pos'] ) ) {
+			$product_pbcontent_pos = $sf_options['product_pbcontent_pos'];
+		}
+				
+		if ( $product_pbcontent_pos == "above" ) {
+			add_action( 'sf_product_before_tabs', 'sf_woo_product_page_builder_content', 10);
+		} else {
+			add_action( 'sf_product_after_tabs', 'sf_woo_product_page_builder_content', 10);
+		}
+	}
 ?>
 
-<div itemscope itemtype="<?php echo woocommerce_get_product_schema(); ?>" id="product-<?php the_ID(); ?>" <?php post_class(); ?>>
+<div itemscope itemtype="<?php echo woocommerce_get_product_schema(); ?>" id="product-<?php the_ID(); ?>" <?php post_class($extra_class); ?>>
 
 	<div class="entry-title" itemprop="name"><?php the_title(); ?></div>
 
@@ -62,7 +88,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 			<div class="summary-top clearfix">
 
-				<?php woocommerce_breadcrumb(); ?>
+				<?php
+					$breadcrumb_args = array('wrap_before' => '<nav class="woocommerce-breadcrumb">');
+					woocommerce_breadcrumb($breadcrumb_args);
+				?>
 
 				<h1><?php the_title(); ?></h1>
 
@@ -81,8 +110,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 			<div class="product-price-wrap clearfix">
 				<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 
-					<h3 itemprop="price" class="price"><?php echo $product->get_price_html(); ?></h3>
-
+					<h3 class="price"><?php echo $product->get_price_html(); ?></h3>
+					
+					<meta itemprop="price" content="<?php echo $product->get_price(); ?>" />
 					<meta itemprop="priceCurrency" content="<?php echo get_woocommerce_currency(); ?>" />
 
 					<?php if (!$sf_catalog_mode) { ?><link itemprop="availability" href="http://schema.org/<?php echo $product->is_in_stock() ? 'InStock' : 'OutOfStock'; ?>" /><?php } ?>
@@ -113,7 +143,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 					        $average = number_format($rating / $count, 2);
 
-							$reviews_text = sprintf(_n('%d Review', '%d Reviews', $count, 'Swift Framework'), $count);
+							$reviews_text = sprintf(_n('%d Review', '%d Reviews', $count, 'swiftframework'), $count);
 
 					        echo '<div class="review-summary"><div class="star-rating" title="'.sprintf(__('Rated %s out of 5', 'swiftframework'), $average).'"><span style="width:'.($average*16).'px"><span class="rating">'.$average.'</span> '.__('out of 5', 'swiftframework').'</span></div><div class="reviews-text">'.$reviews_text.'</div></div>';
 
@@ -145,21 +175,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	</div>
 	<?php } ?>
 
-	<?php
-	/**
-	 * Product Display Area
-	 */
-	if ($pb_active) { ?>
-
-	<div id="product-display-area" class="clearfix">
-
-		<?php the_content(); ?>
-
-	</div>
-
-	<?php } ?>
-
-
+	<?php do_action( 'sf_product_before_tabs'); ?>
+	
 	<?php
 	/**
 	 * Product Tabs
@@ -181,13 +198,14 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	<?php if ($sidebar_config == "no-sidebars") { ?>
 		</div>
 	<?php } ?>
-
+	
+	<?php do_action( 'sf_product_after_tabs'); ?>
 
 	<?php
 	/**
 	 * Product Reviews
 	 */
-	if ( comments_open() ) { ?>
+	if ( comments_open() && $product_reviews_pos == "default" ) { ?>
 	<div id="product-reviews-wrap">
 		<div class="container">
 			<?php echo comments_template(); ?>

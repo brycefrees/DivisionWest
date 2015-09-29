@@ -247,7 +247,7 @@
             $filter_output .= '<ul class="post-filter-tabs filtering clearfix">' . "\n";
             $filter_output .= '<li class="all selected"><a data-filter="*" href="#"><span class="item-name">' . __( "Show all", "swiftframework" ) . '</span></a></li>' . "\n";
             foreach ( $tax_terms as $tax_term ) {
-                $term = get_term_by( 'slug', $tax_term, 'gallery-category' );
+                $term = get_term_by( 'name', $tax_term, 'gallery-category' );
                 if ( $term ) {
                     $filter_output .= '<li><a href="#" title="View all ' . $term->name . ' items" class="' . $term->slug . '" data-filter=".' . $term->slug . '"><span class="item-name">' . $term->name . '</span></a></li>' . "\n";
                 } else {

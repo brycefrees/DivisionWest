@@ -18,7 +18,7 @@
  *
  * @package    swift-framework
  * @subpackage swift-framework/admin
- * @author     Your Name <email@example.com>
+ * @author     Swift Ideas
  */
 class SwiftFramework_Admin {
 
@@ -52,6 +52,48 @@ class SwiftFramework_Admin {
 		$this->SwiftFramework = $SwiftFramework;
 		$this->version = $version;
 
+	}
+
+	public function add_swiftframework_menu() {
+		//add_menu_page( 'Swift Framework', 'Swift Framework', 'manage_options', 'swift-framework/admin/swift-framework-admin-page.php', '', plugin_dir_url(__FILE__).'/img/logo.png', 100 );
+		add_menu_page(
+		    'Swift Framework',
+		    'Swift Framework',
+		    'manage_options',
+		    'swift-framework',
+		    array($this, 'swift_framework_about_content'),
+		    plugin_dir_url(__FILE__).'/img/logo.png'
+		);
+	}
+
+	public function swift_framework_about_content() {
+	  ?>
+		<div class="sf-about-wrap">
+		<h1>Swift Framework</h1>
+
+		<h2 class="nav-tab-wrapper">
+			<a class="nav-tab nav-tab-active" href="<?php echo admin_url() ?>/index.php?page=swift-framework">About</a>
+			<a class="nav-tab" href="<?php echo admin_url() ?>/admin.php?page=swift_framework_opts_options">Options</a>
+		</h2>
+
+		<div class="about-content">
+			<h3>Latest Update (v1.63)</h3>
+			<p></p>
+			<ul>
+				<li>Updated Redux framework</li>
+			</ul>
+			<h3>Previous Update (v1.62)</h3>
+			<p></p>
+			<ul>
+				<li>Team gallery display images are now clickable on mobile</li>
+				<li>Updated minified files after previous update</li>
+				<li>Updated Redux framework</li>
+			</ul>
+			<p></p>
+		</div>
+
+		</div>
+	  <?php
 	}
 
 	/**

@@ -17,7 +17,7 @@
 
     class sf_recent_posts extends WP_Widget {
         function sf_recent_posts() {
-            parent::WP_Widget( 'sf_recent_custom_posts', $name = 'Swift Framework Recent Posts' );
+            parent::__construct( 'sf_recent_custom_posts', $name = 'Swift Framework Recent Posts' );
         }
 
         function widget( $args, $instance ) {
@@ -37,10 +37,10 @@
             }
             $category_slug = str_replace( '_', '-', $category );
 
-            echo esc_attr($before_widget);
+            echo $before_widget;
 
             if ( $title ) {
-                echo esc_attr($before_title . $title . $after_title);
+                echo $before_title . $title . $after_title;
             }
 
             $video_icon = apply_filters( 'sf_video_icon' , '<i class="ss-video"></i>' );
@@ -99,7 +99,9 @@
 
                                 <div class="comments-likes">
                                     <?php if ( comments_open() ) { ?>
-                                        <a href="<?php echo esc_url($post_permalink); ?>#comment-area"><?php echo apply_filters( 'sf_comments_icon', '<i class="ss-chat"></i>' ); ?><span><?php echo esc_attr($post_comments); ?></span></a>
+                                        <div class="comments-wrapper">
+                                            <a href="<?php echo esc_url($post_permalink); ?>#comment-area"><?php echo apply_filters( 'sf_comments_icon', '<i class="ss-chat"></i>' ); ?><span><?php echo esc_attr($post_comments); ?></span></a>
+                                        </div>
                                     <?php } ?>
                                     <?php if ( function_exists( 'lip_love_it_link' ) ) {
                                         echo lip_love_it_link( get_the_ID(), false );
@@ -115,7 +117,7 @@
 
             <?php
 
-            echo esc_attr($after_widget);
+            echo $after_widget;
         }
 
         /* Widget control update */
@@ -148,21 +150,21 @@
             ?>
             <p>
                 <label
-                    for="<?php echo esc_attr($this->get_field_id( 'title' )); ?>"><?php echo __( 'Title:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo esc_attr($this->get_field_id( 'title' )); ?>"><?php echo __( 'Title:', 'swiftframework' ); ?></label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'title' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'title' )); ?>" type="text" value="<?php echo esc_attr($title); ?>"
                        class="widefat"/>
             </p>
             <p>
                 <label
-                    for="<?php echo esc_attr($this->get_field_id( 'number' )); ?>"><?php echo __( 'Number of posts to show:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo esc_attr($this->get_field_id( 'number' )); ?>"><?php echo __( 'Number of posts to show:', 'swiftframework' ); ?></label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'number' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'number' )); ?>" type="text"
                        value="<?php echo esc_attr($number); ?>" size="3"/>
             </p>
             <p>
                 <label
-                    for="<?php echo esc_attr($this->get_field_id( 'category' )); ?>"><?php _e( 'Category', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo esc_attr($this->get_field_id( 'category' )); ?>"><?php _e( 'Category', 'swiftframework' ); ?></label>
                 <select name="<?php echo esc_attr($this->get_field_name( 'category' )); ?>"
                         id="<?php echo esc_attr($this->get_field_id( 'category' )); ?>" class="">
                     <?php

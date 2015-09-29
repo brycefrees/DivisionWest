@@ -13,7 +13,7 @@ class GW_GoPricing {
 	protected static $instance = null;
 	protected $globals;
 	
-	protected static $plugin_version = '3.0.2';
+	protected static $plugin_version = '3.1.0';
 	protected static $db_version = '2.0.0';
 	protected static $plugin_prefix = 'go_pricing';
 	protected static $plugin_slug = 'go-pricing';	
@@ -63,6 +63,7 @@ class GW_GoPricing {
 			self::$instance = new self;
 			$globals = self::$instance->set_globals();
 			self::$instance->load_includes();				
+			do_action( 'go_pricing_init' );
 		}
 
 		return $globals;
@@ -105,7 +106,7 @@ class GW_GoPricing {
 		delete_option( self::$plugin_prefix . '_version' );
 		delete_option( self::$plugin_prefix . '_notices' );
 		
-		if (isset( $_COOKIE['go_pricing'] ) ) unset( $_COOKIE['go_pricing'] );
+		if ( isset( $_COOKIE['go_pricing'] ) ) unset( $_COOKIE['go_pricing'] );
 
 	}
 

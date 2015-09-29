@@ -17,7 +17,7 @@
 
     class sf_recent_comments extends WP_Widget {
         function sf_recent_comments() {
-            parent::WP_Widget( 'sf_recent_custom_comments', $name = 'Swift Framework Recent Comments' );
+            parent::__construct( 'sf_recent_custom_comments', $name = 'Swift Framework Recent Comments' );
         }
 
         function widget( $args, $instance ) {
@@ -119,14 +119,14 @@
             ?>
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php echo __( 'Title:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php echo __( 'Title:', 'swiftframework' ); ?></label>
                 <input id="<?php echo $this->get_field_id( 'title' ); ?>"
                        name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>"
                        class="widefat"/>
             </p>
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'number' ); ?>"><?php echo __( 'Number of posts to show:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'number' ); ?>"><?php echo __( 'Number of posts to show:', 'swiftframework' ); ?></label>
                 <input id="<?php echo $this->get_field_id( 'number' ); ?>"
                        name="<?php echo $this->get_field_name( 'number' ); ?>" type="text"
                        value="<?php echo $number; ?>" size="3"/>

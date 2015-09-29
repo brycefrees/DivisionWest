@@ -59,6 +59,14 @@ $general_settings = get_option( self::$plugin_prefix . '_table_settings' );
 							<td class="gwa-abox-info"><p class="gwa-info"><i class="fa fa-info-circle"></i><?php _e( 'Set user access to the plugin.', 'go_pricing_textdomain' ); ?></p></td>									
 						</tr>				    							                                                       
 					</table>
+					<div class="gwa-table-separator"></div>						
+					<table class="gwa-table">
+						<tr>
+							<th><label><?php _e( 'Live Preview Safe Mode', 'go_pricing_textdomain' ); ?></label></th>
+							<td><p><label><span class="gwa-checkbox<?php echo !empty( $general_settings['safe-preview'] ) ? ' gwa-checked' : ''; ?>" tabindex="0"><span></span><input type="checkbox" name="safe-preview" value="1" <?php echo !empty( $general_settings['safe-preview'] ) ? ' checked="checked"' : ''; ?>></span><?php _e( 'Yes', 'go_pricing_textdomain' ); ?></label></p></td>							
+							<td class="gwa-abox-info"><p class="gwa-info"><i class="fa fa-info-circle"></i><?php _e( 'Whether to enable Safe Mode for Live Previews. Required if the direct access of PHP files in "wp-content" folder is restricted. e.g. The "Restrict wp-content access" option of Sucuri Security plugin is enabled.', 'go_pricing_textdomain' ); ?></p></td>									
+						</tr>				    							                                                       
+					</table>									
 					<div class="gwa-table-separator"></div>
 					<?php endif; ?>				
 					<table class="gwa-table">

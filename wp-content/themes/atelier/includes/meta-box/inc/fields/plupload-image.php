@@ -99,9 +99,9 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				$meta = ( array ) $meta;
 
 			// Filter to change the drag & drop box background string
-			$i18n_drop   = apply_filters( 'rwmb_plupload_image_drop_string', _x( 'Drop images here', 'image upload', 'swift-framework-admin' ), $field );
-			$i18n_or     = apply_filters( 'rwmb_plupload_image_or_string', _x( 'or', 'image upload', 'swift-framework-admin' ), $field );
-			$i18n_select = apply_filters( 'rwmb_plupload_image_select_string', _x( 'Select Files', 'image upload', 'swift-framework-admin' ), $field );
+			$i18n_drop   = apply_filters( 'rwmb_plupload_image_drop_string', _x( 'Drop images here', 'image upload', 'swiftframework' ), $field );
+			$i18n_or     = apply_filters( 'rwmb_plupload_image_or_string', _x( 'or', 'image upload', 'swiftframework' ), $field );
+			$i18n_select = apply_filters( 'rwmb_plupload_image_select_string', _x( 'Select Files', 'image upload', 'swiftframework' ), $field );
 
 			// Uploaded images
 
@@ -176,7 +176,7 @@ if ( ! class_exists( 'RWMB_Plupload_Image_Field' ) )
 				'urlstream_upload'		=> true,
 				'filters'				=> array(
 					array(
-						'title'      => _x( 'Allowed Image Files', 'image upload', 'swift-framework-admin' ),
+						'title'      => _x( 'Allowed Image Files', 'image upload', 'swiftframework' ),
 						'extensions' => 'jpg,jpeg,gif,png',
 					),
 				),

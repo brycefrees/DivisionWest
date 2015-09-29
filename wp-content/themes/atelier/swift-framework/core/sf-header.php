@@ -6,6 +6,7 @@
     *	Swift Framework
     * 	Copyright Swift Ideas 2015 - http://www.swiftideas.com
     *
+    *	sf_framework_check()
     *	sf_site_loading()
     *	sf_header_wrap()
     *	sf_header()
@@ -23,6 +24,24 @@
     *	sf_overlay_menu()
     *   sf_add_to_wishlist()
     */
+
+    /* SWIFT FRAMEWORK CHECK
+    ================================================== */
+    if ( ! function_exists( 'sf_framework_check' ) ) {
+        function sf_framework_check() {
+
+        	if ( class_exists( 'SwiftFramework' ) || !( current_user_can('editor') || current_user_can('administrator') ) ) {
+        		return;
+        	}
+
+            echo '<div class="swift-framework-notice">';
+            echo '<h3>Please install/activate the Swift Framework plugin.</h3>';
+            echo '<p>If you have not installed the plugin, please go to Appearance > Install Plugins</p>';
+            echo '</div>';
+        }
+        add_action( 'sf_before_page_container', 'sf_framework_check', 0 );
+    }
+
 
     /* SITE LOADING
     ================================================== */
@@ -54,17 +73,29 @@
 		        if ( $page_title_style == "fancy" || $fw_media_display == "fw-media-title" || $fw_media_display == "fw-media" ) {
 		            $page_header_type = $post_header_type;
 		        }
-		    }
+		    }  else if (is_singular('portfolio') && $post) {
+				$port_header_type = sf_get_post_meta($post->ID, 'sf_page_header_type', true);
+				$fw_media_display = sf_get_post_meta($post->ID, 'sf_fw_media_display', true);
+				$page_title = sf_get_post_meta($post->ID, 'sf_page_title', true);
+				$page_title_style = sf_get_post_meta($post->ID, 'sf_page_title_style', true);
+				if ($page_title_style == "fancy" || !$page_title) {
+					$page_header_type = $port_header_type;
+				}
+			}
 
 		    $fullwidth_header    = $sf_options['fullwidth_header'];
 		    $enable_tb           = $sf_options['enable_tb'];
 		    $tb_left_config      = $sf_options['tb_left_config'];
 		    $tb_right_config     = $sf_options['tb_right_config'];
-		    $tb_left_text        = __( $sf_options['tb_left_text'], 'swiftframework' );
-		    $tb_right_text       = __( $sf_options['tb_right_text'], 'swiftframework' );
+		    $tb_left_text = __($sf_options['tb_left_text'], 'swiftframework');
+			$tb_right_text = __($sf_options['tb_right_text'], 'swiftframework');
+			$enable_sticky_tb = false;
+			if ( isset( $sf_options['enable_sticky_topbar'] ) ) {
+				$enable_sticky_tb = $sf_options['enable_sticky_topbar'];	
+			}
 		    $header_left_config  = $sf_options['header_left_config'];
 		    $header_right_config = $sf_options['header_right_config'];
-
+			
 		    if ( ( $page_header_type == "naked-light" || $page_header_type == "naked-dark" ) && ( $header_layout == "header-vert" || $header_layout == "header-vert-right" ) ) {
 		        $header_layout = apply_filters( 'sf_naked_default_header', "header-1" );
 		        $enable_tb     = false;
@@ -77,6 +108,11 @@
 		        $tb_left_output .= sf_aux_links( 'tb-menu', true, 'header-1' ) . "\n";
 		    } else if ( $tb_left_config == "menu" ) {
 		        $tb_left_output .= sf_top_bar_menu() . "\n";
+		    } else if ($tb_left_config == "cart-wishlist") {
+			    $tb_left_output .= '<div class="aux-item aux-cart-wishlist"><nav class="std-menu cart-wishlist"><ul class="menu">'. "\n";
+			    $tb_left_output .= sf_get_cart();
+			    $tb_left_output .= sf_get_wishlist();
+			    $tb_left_output .= '</ul></nav></div>'. "\n";
 		    } else {
 		        $tb_left_output .= '<div class="tb-text">' . do_shortcode( $tb_left_text ) . '</div>' . "\n";
 		    }
@@ -87,30 +123,46 @@
 		        $tb_right_output .= sf_aux_links( 'tb-menu', true, 'header-1' ) . "\n";
 		    } else if ( $tb_right_config == "menu" ) {
 		        $tb_right_output .= sf_top_bar_menu() . "\n";
+		    } else if ($tb_right_config == "cart-wishlist") {
+			    $tb_right_output .= '<div class="aux-item aux-cart-wishlist"><nav class="std-menu cart-wishlist"><ul class="menu">'. "\n";
+			    $tb_right_output .= sf_get_cart();
+			    $tb_right_output .= sf_get_wishlist();
+			    $tb_right_output .= '</ul></nav></div>'. "\n";
 		    } else {
 		        $tb_right_output .= '<div class="tb-text">' . do_shortcode( $tb_right_text ) . '</div>' . "\n";
+		    }
+		    
+		    $top_bar_class = "";
+		    if ($enable_sticky_tb) {
+		    	$top_bar_class = "sticky-top-bar";
 		    }
 		?>
 		<?php if ($enable_tb) { ?>
 		<!--// TOP BAR //-->
-		<div id="top-bar">
+		<div id="top-bar" class="<?php echo $top_bar_class; ?>">
 		<?php if ($fullwidth_header) { ?>
 		<div class="container fw-header">
 		    <?php } else { ?>
 		    <div class="container">
 		        <?php } ?>
-		        <div class="col-sm-6 tb-left"><?php echo esc_html($tb_left_output); ?></div>
-		        <div class="col-sm-6 tb-right"><?php echo esc_html($tb_right_output); ?></div>
+		        <div class="col-sm-6 tb-left"><?php echo $tb_left_output; ?></div>
+		        <div class="col-sm-6 tb-right"><?php echo $tb_right_output; ?></div>
 		    </div>
 		</div>
 		<?php } ?>
 
 		<!--// HEADER //-->
 		<div class="header-wrap <?php echo esc_attr($page_classes['header-wrap']); ?> page-header-<?php echo esc_attr($page_header_type); ?>">
-
+			
+			<?php do_action('sf_before_header_section'); ?>
+			
 		    <div id="header-section" class="<?php echo esc_attr($header_layout); ?> <?php echo esc_attr($page_classes['logo']); ?>">
+		    	<?php do_action('sf_header_section_start'); ?>
 		        <?php echo sf_header( $header_layout ); ?>
+		        <?php do_action('sf_header_section_end'); ?>
 		    </div>
+		    
+		    <?php do_action('sf_after_header_section'); ?>
 
 		    <?php
 		        // Overlay Menu
@@ -139,200 +191,9 @@
     if ( ! function_exists( 'sf_header' ) ) {
         function sf_header( $header_layout ) {
 
-            // VARIABLES
-            global $sf_options;
-            $header_output       = $main_menu = '';
-            $fullwidth_header    = $sf_options['fullwidth_header'];
-            $header_left_output  = sf_header_aux( 'left' ) . "\n";
-            $header_right_output = sf_header_aux( 'right' ) . "\n";
-
-            if ( $header_layout == "header-1" ) {
-
-                $header_output .= '<header id="header" class="clearfix">' . "\n";
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= '<div class="header-left col-sm-4">' . $header_left_output . '</div>' . "\n";
-                $header_output .= sf_logo( 'col-sm-4 logo-center' );
-                $header_output .= '<div class="header-right col-sm-4">' . $header_right_output . '</div>' . "\n";
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-                $header_output .= '<div id="main-nav" class="sticky-header">' . "\n";
-                $header_output .= sf_main_menu( 'main-navigation', 'full' );
-                $header_output .= '</div>' . "\n";
-
-            } else if ( $header_layout == "header-2" ) {
-
-                $header_output .= '<header id="header" class="clearfix">' . "\n";
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= sf_logo( 'col-sm-4 logo-left' );
-                $header_output .= '<div class="header-right col-sm-8">' . $header_right_output . '</div>' . "\n";
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-                $header_output .= '<div id="main-nav" class="sticky-header">' . "\n";
-                $header_output .= sf_main_menu( 'main-navigation', 'full' );
-                $header_output .= '</div>' . "\n";
-
-            } else if ( $header_layout == "header-3" ) {
-
-                if ( $fullwidth_header ) {
-                    $header_output .= '<header id="header" class="sticky-header fw-header clearfix">' . "\n";
-                } else {
-                    $header_output .= '<header id="header" class="sticky-header clearfix">' . "\n";
-                }
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= sf_logo( 'col-sm-4 logo-left' );
-                $header_output .= sf_main_menu( 'main-navigation', 'float-2' );
-                $header_output .= '<div class="header-right col-sm-4">' . $header_right_output . '</div>' . "\n";
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-
-            } else if ( $header_layout == "header-4" ) {
-
-                if ( $fullwidth_header ) {
-                    $header_output .= '<header id="header" class="sticky-header fw-header clearfix">' . "\n";
-                } else {
-                    $header_output .= '<header id="header" class="sticky-header clearfix">' . "\n";
-                }
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= sf_logo( 'col-sm-4 logo-left' );
-                if ( sf_theme_opts_name() == "sf_atelier_options" ) {
-                $header_output .= '<div class="header-right">' . $header_right_output . '</div>' . "\n";
-                }
-                $header_output .= sf_main_menu( 'main-navigation', 'float-2' );
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-
-            } else if ( $header_layout == "header-5" ) {
-
-                $header_output .= '<header id="header" class="clearfix">' . "\n";
-                $header_output .= '<div class="container sticky-header">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= sf_logo( 'col-sm-4 logo-left' );
-                $header_output .= sf_main_menu( 'main-navigation', 'float-2' );
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-
-            } else if ( $header_layout == "header-6" ) {
-
-                $header_output .= '<header id="header" class="clearfix">' . "\n";
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= '<div class="header-left col-sm-4">' . $header_left_output . '</div>' . "\n";
-                $header_output .= sf_logo( 'col-sm-4 logo-center' );
-                $header_output .= '<div class="header-right col-sm-4">' . $header_right_output . '</div>' . "\n";
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-                $header_output .= '<div id="main-nav" class="sticky-header center-menu">' . "\n";
-                $header_output .= sf_main_menu( 'main-navigation', 'full' );
-                $header_output .= '</div>' . "\n";
-
-            } else if ( $header_layout == "header-7" ) {
-
-                if ( $fullwidth_header ) {
-                    $header_output .= '<header id="header" class="sticky-header fw-header clearfix">' . "\n";
-                } else {
-                    $header_output .= '<header id="header" class="sticky-header clearfix">' . "\n";
-                }
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= sf_logo( 'col-sm-4 logo-left' );
-                $header_output .= '<div class="header-right col-sm-8">' . $header_right_output . '</div>' . "\n";
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-
-            } else if ( $header_layout == "header-8" ) {
-
-                if ( $fullwidth_header ) {
-                    $header_output .= '<header id="header" class="sticky-header fw-header clearfix">' . "\n";
-                } else {
-                    $header_output .= '<header id="header" class="sticky-header clearfix">' . "\n";
-                }
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= '<div class="header-left col-sm-4">' . $header_left_output . '</div>' . "\n";
-                $header_output .= sf_logo( 'col-sm-4 logo-center' );
-                $header_output .= '<div class="header-right col-sm-4">' . $header_right_output . '</div>' . "\n";
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-
-            } else if ( $header_layout == "header-9" ) {
-
-                $header_output .= '<header id="header" class="clearfix">' . "\n";
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= sf_logo( 'col-sm-12 logo-center' );
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-                $header_output .= '<div id="main-nav" class="sticky-header center-menu">' . "\n";
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= sf_main_menu( 'main-navigation', 'float-2' );
-                $header_output .= '</div>' . "\n";
-                $header_output .= '</div>' . "\n";
-
-            } else if ( $header_layout == "header-vert" ) {
-
-                $header_output .= '<header id="header" class="clearfix">' . "\n";
-                $header_output .= sf_logo( 'logo-center' );
-                $header_output .= '</header>' . "\n";
-                $header_output .= '<div id="vertical-nav" class="vertical-menu">' . "\n";
-                $header_output .= sf_main_menu( 'main-navigation', 'vertical' );
-                $header_output .= '</div>' . "\n";
-
-            } else if ( $header_layout == "header-vert-right" ) {
-
-                $header_output .= '<header id="header" class="clearfix">' . "\n";
-                $header_output .= sf_logo( 'logo-center' );
-                $header_output .= '</header>' . "\n";
-                $header_output .= '<div id="vertical-nav" class="vertical-menu vertical-menu-right">' . "\n";
-                $header_output .= sf_main_menu( 'main-navigation', 'vertical' );
-                $header_output .= '</div>' . "\n";
-
-            } else if ( $header_layout == "header-split" ) {
-
-                if ( $fullwidth_header ) {
-                    $header_output .= '<header id="header" class="sticky-header fw-header clearfix">' . "\n";
-                } else {
-                    $header_output .= '<header id="header" class="sticky-header clearfix">' . "\n";
-                }
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= '<div class="header-left col-sm-4">' . $header_left_output . '</div>' . "\n";
-                $header_output .= sf_logo( 'logo-center' );
-                $header_output .= sf_main_menu( 'main-navigation', 'float-2' );
-                $header_output .= '<div class="header-right col-sm-4">' . $header_right_output . '</div>' . "\n";
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-
-            } else if ( $header_layout == "header-4-alt" ) {
-
-                $header_output .= '<header id="header" class="sticky-header fw-header clearfix">' . "\n";
-                $header_output .= '<div class="container">' . "\n";
-                $header_output .= '<div class="row">' . "\n";
-                $header_output .= '<div class="header-left">' . $header_left_output . '</div>' . "\n";
-                $header_output .= sf_logo( 'col-sm-4 logo-left' );
-                $header_output .= '<div class="header-right">' . $header_right_output . '</div>' . "\n";
-                $header_output .= sf_main_menu( 'main-navigation', 'float-2' );
-                $header_output .= '</div> <!-- CLOSE .row -->' . "\n";
-                $header_output .= '</div> <!-- CLOSE .container -->' . "\n";
-                $header_output .= '</header>' . "\n";
-
-            }
-
-            // HEADER RETURN
-            return $header_output;
+            // Get layout and return output
+            $header = sf_get_header_layout( $header_layout );
+            return $header;
 
         }
     }
@@ -420,6 +281,18 @@
             if ( $post && !is_search() ) {
                 $header_type = sf_get_post_meta( $post->ID, 'sf_page_header_type', true );
                 $page_header_alt_logo = sf_get_post_meta( $post->ID, 'sf_page_header_alt_logo', true );
+            }
+            
+            // Shop page check
+            $shop_page = false;
+            if ( ( function_exists( 'is_shop' ) && is_shop() ) || ( function_exists( 'is_product_category' ) && is_product_category() ) ) {
+                $shop_page = true;
+            }
+
+            if ( $shop_page ) {
+                if ( isset($sf_options['woo_page_header']) ) {
+                    $header_type = $sf_options['woo_page_header'];
+                }
             }
 
             // Standard Logo
@@ -808,7 +681,8 @@
         function sf_mobile_menu() {
 
             global $post, $sf_options;
-
+			
+			$header_search_pt = $sf_options['header_search_pt'];
 			$mobile_header_layout = $sf_options['mobile_header_layout'];
             $mobile_show_translation = $sf_options['mobile_show_translation'];
             $mobile_show_search      = $sf_options['mobile_show_search'];
@@ -847,7 +721,11 @@
                 $mobile_menu_output .= '<ul class="mobile-language-select">' . sf_language_flags() . '</ul>' . "\n";
             }
             if ( $mobile_show_search ) {
-                $mobile_menu_output .= '<form method="get" class="mobile-search-form" action="' . home_url() . '/"><input type="text" placeholder="' . __( "Enter text to search", "swiftframework" ) . '" name="s" autocomplete="off" /></form>' . "\n";
+                $mobile_menu_output .= '<form method="get" class="mobile-search-form" action="' . home_url() . '/"><input type="text" placeholder="' . __( "Enter text to search", "swiftframework" ) . '" name="s" autocomplete="off" />';
+                if ( $header_search_pt != "any" ) {
+                    $mobile_menu_output .= '<input type="hidden" name="post_type" value="' . $header_search_pt . '" />';
+                }
+                $mobile_menu_output .= '</form>' . "\n";
             }
             $mobile_menu_output .= '<nav id="mobile-menu" class="clearfix">' . "\n";
 
@@ -1105,19 +983,13 @@
                 if ( isset( $sf_options['show_cart_count'] ) ) {
                     $show_cart_count = $sf_options['show_cart_count'];
                 }
-
-				$cart_total = "";
-
+				
 				if ( sf_theme_opts_name() == "sf_atelier_options" ) {
 					$cart_total = '<span class="menu-item-title">' . __( "Cart" , "swiftframework" ) . '</span>';
+				} else {
+					$cart_total =  WC()->cart->get_cart_total();
 				}
-
-				if ( $woocommerce->tax_display_cart == 'excl' ) {
-               		$cart_total      	 .= wc_price($woocommerce->cart->get_total());
-                } else {
-                	$cart_total      	 .= wc_price($woocommerce->cart->cart_contents_total + $woocommerce->cart->tax_total);
-                }
-
+				
                 $cart_count          = $woocommerce->cart->cart_contents_count;
                 $cart_count_text     = sf_product_items_text( $cart_count );
                 $cart_count_text_alt = sf_product_items_text( $cart_count, true );
@@ -1143,14 +1015,14 @@
 
                     $cart_output .= '<div class="bag-contents">';
 
-                    foreach ( $woocommerce->cart->cart_contents as $cart_item_key => $cart_item ) {
+                    foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 
                         $_product     		 = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
                         $price 				 = apply_filters( 'woocommerce_cart_item_price', $woocommerce->cart->get_product_price( $_product ), $cart_item, $cart_item_key );
                         $product_title       = $_product->get_title();
                         $product_short_title = ( strlen( $product_title ) > 25 ) ? substr( $product_title, 0, 22 ) . '...' : $product_title;
-
-                        if ( $_product->exists() && $cart_item['quantity'] > 0 ) {
+						
+						if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_cart_item_visible', true, $cart_item, $cart_item_key ) ) {
                             $cart_output .= '<div class="bag-product clearfix">';
                             $cart_output .= '<figure><a class="bag-product-img" href="' . get_permalink( $cart_item['product_id'] ) . '">' . $_product->get_image() . '</a></figure>';
                             $cart_output .= '<div class="bag-product-details">';
@@ -1159,7 +1031,7 @@
 	                        ' . $price . '</div>';
                             $cart_output .= '<div class="bag-product-quantity">' . __( 'Quantity:', 'swiftframework' ) . ' ' . $cart_item['quantity'] . '</div>';
                             $cart_output .= '</div>';
- 							$cart_output .= '<a href="#" class="remove remove-product" title="' . __( 'Remove this item', 'swiftframework' ) . '">&times;</a>';
+ 							$cart_output .= '<a href="#" class="remove remove-product" data-ajaxurl="'.admin_url( 'admin-ajax.php' ).'"  data-product-id="'. $cart_item['product_id'] .'" data-product-qty="'. $cart_item['quantity'] .'" title="' . __( 'Remove this item', 'swiftframework' ) . '">&times;</a>';
 
                             $cart_output .= '</div>';
                         }
@@ -1170,8 +1042,12 @@
                     if ( sf_theme_opts_name() == "sf_atelier_options" ) {
 
 	                    $cart_output .= '<div class="bag-total">';
+	                    if ( class_exists( 'Woocommerce_German_Market' ) ) {
+	                    $cart_output .= '<span class="total-title">' . __( "Total incl. tax", "swiftframework" ) . '</span>';
+	                    } else {
 	                    $cart_output .= '<span class="total-title">' . __( "Total", "swiftframework" ) . '</span>';
-	                    $cart_output .= '<span class="total-amount">' . $cart_total . '</span>';
+	                    }
+	                    $cart_output .= '<span class="total-amount">' .  WC()->cart->get_cart_total() . '</span>';
 	                    $cart_output .= '</div>';
 
                     }
@@ -1225,16 +1101,9 @@
             if ( is_user_logged_in() ) {
                 $count = $wpdb->get_results( $wpdb->prepare( 'SELECT COUNT(*) as `cnt` FROM `' . YITH_WCWL_TABLE . '` WHERE `user_id` = %d', $user_id ), ARRAY_A );
                 $count = $count[0]['cnt'];
-            } elseif ( yith_usecookies() ) {
+            } else{
                 $count[0]['cnt'] = count( yith_getcookie( 'yith_wcwl_products' ) );
                 $count           = $count[0]['cnt'];
-            } else {
-	            if ( isset($_SESSION) ) {
-                	$count[0]['cnt'] = count( $_SESSION['yith_wcwl_products'] );
-					$count           = $count[0]['cnt'];
-                } else {
-	                $count = 0;
-                }
             }
 
             if ( is_array( $count ) ) {
@@ -1256,10 +1125,8 @@
 
             if ( is_user_logged_in() ) {
                 $wishlist = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . YITH_WCWL_TABLE . "` WHERE `user_id` = %s" . $limit_sql, $user_id ), ARRAY_A );
-            } elseif ( yith_usecookies() ) {
-                $wishlist = yith_getcookie( 'yith_wcwl_products' );
             } else {
-                $wishlist = isset( $_SESSION['yith_wcwl_products'] ) ? $_SESSION['yith_wcwl_products'] : array();
+                $wishlist = yith_getcookie( 'yith_wcwl_products' );
             }
 
             $wishlist_output .= '<div class="bag-contents">';
@@ -1277,8 +1144,13 @@
                                 $values['prod_id'] = $values['add-to-wishlist'];
                                 $values['ID']      = $values['add-to-wishlist'];
                             } else {
-                                $values['prod_id'] = $values['product_id'];
-                                $values['ID']      = $values['product_id'];
+                            	if ( isset($values['product_id'] )){
+								   $values['prod_id'] = $values['product_id'];
+                                   $values['ID']      = $values['product_id'];	
+								}else{
+									 $values['ID']      = $values['prod_id'];	
+								}
+                                
                             }
                         }
 
@@ -1385,11 +1257,11 @@
 			$account_output .= '<a href="#"><i class="sf-icon-account"></i></a>' . "\n";
 			$account_output .= '<ul class="sub-menu">' . "\n";
             if ( is_user_logged_in() ) {
-                $account_output .= '<li><a href="' . $my_account_link . '" class="admin-link">' . __( "My Account", "swiftframework" ) . '</a></li>' . "\n";
-                $account_output .= '<li><a href="' . $logout_url . '">' . __( "Sign Out", "swiftframework" ) . '</a></li>' . "\n";
+                $account_output .= '<li class="menu-item"><a href="' . $my_account_link . '" class="admin-link">' . __( "My Account", "swiftframework" ) . '</a></li>' . "\n";
+                $account_output .= '<li class="menu-item"><a href="' . $logout_url . '">' . __( "Sign Out", "swiftframework" ) . '</a></li>' . "\n";
             } else {
-                $account_output .= '<li><a href="' . $login_url . '">' . __( "Login", "swiftframework" ) . '</a></li>' . "\n";
-                $account_output .= '<li><a href="' . $register_url . '">' . __( "Sign Up", "swiftframework" ) . '</a></li>' . "\n";
+                $account_output .= '<li class="menu-item"><a href="' . $login_url . '">' . __( "Login", "swiftframework" ) . '</a></li>' . "\n";
+                $account_output .= '<li class="menu-item"><a href="' . $register_url . '">' . __( "Sign Up", "swiftframework" ) . '</a></li>' . "\n";
             }
             if ( $show_sub && $sub_code != "" ) {
                 $account_output .= '<li class="parent"><a href="#">' . __( "Subscribe", "swiftframework" ) . '</a>' . "\n";
@@ -1534,14 +1406,8 @@
                         $search_results_ouput .= '<div class="search-item-content">';
                         $search_results_ouput .= '<h5><a href="' . $post_permalink . '">' . $post_title . '</a></h5>';
                         if ( $post_type == "product" ) {
-                            $price = sf_get_post_meta( $post->ID, '_regular_price', true );
-                            $sale  = sf_get_post_meta( $post->ID, '_sale_price', true );
-                            if ( $sale != "" ) {
-                                $price = $sale;
-                            }
-                            if ( $price != "" ) {
-                                $search_results_ouput .= '<span>' . get_woocommerce_currency_symbol() . $price . '</span>';
-                            }
+                            $product = new WC_Product( $post->ID );
+                            $search_results_ouput .= $product->get_price_html();
                         } else if (!$remove_dates) {
                             $search_results_ouput .= '<time>' . $post_date . '</time>';
                         }
@@ -1562,7 +1428,13 @@
                 }
 
                 if ( $count > 1 ) {
-                	$search_link = get_home_url() . '?s='.$search_term . '&post_type='. $header_search_pt;
+                	$search_link = get_search_link( $search_term );
+                	
+                	if (strpos($search_link,'?') !== false) {
+                		$search_link .= '&post_type='. $header_search_pt;
+                	} else {
+                		$search_link .= '?post_type='. $header_search_pt;
+                	}
                     $search_results_ouput .= '<a href="' . $search_link . '" class="all-results">' . sprintf( __( "View all %d results", "swiftframework" ), $count ) . '</a>';
                 }
 

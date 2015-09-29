@@ -539,7 +539,7 @@
 		
 //		echo "++++".$schema_id;
 				
-		if ( !$schema_id) {
+		if ( !$schema_id ) {
 			$schema_id = sf_get_current_color_scheme_id();
 		}
 		
@@ -551,7 +551,7 @@
 			
 		$html = "<ul id=\"sf_atelier_options-color-list\" class=\"color-list\">";
 				
-		if ( !$schema_id || $schema_id == "0" ) {
+		if ( !$schema_id || $schema_id == "0" || !$schemas_array ) {
 				
 			// a scheme has not been selected, so we take from current values
 			$values = 0;
@@ -580,7 +580,7 @@
 		    
 		    if ( $values == 0) {
 			    
-			    $html .= '<li><strong>'.__('No saved values exist yet', 'swift-framework-admin').'</strong><br/>'.__('Go to the theme customizer to save your colour options.', 'swift-framework-admin').'</li>';
+			    $html .= '<li><strong>'.__('No saved values exist yet', 'swiftframework').'</strong><br/>'.__('Go to the theme customizer to save your colour options.', 'swiftframework').'</li>';
 			    
 		    }
 
@@ -695,7 +695,7 @@
 	        'sf_atelier_options_schema_action' => 'export_schema',
 	        'nonce' => wp_create_nonce('sf_atelier_options_schema_action')
 	    );
-	    $export_url = add_query_arg($args, $site_url);
+	    $export_url = esc_url(add_query_arg($args, $site_url));
 	    if ($echo === true)
 	        echo esc_url($export_url);
 	    elseif ($echo == 'url')

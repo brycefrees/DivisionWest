@@ -18,7 +18,7 @@
  *
  * @package    swift-framework
  * @subpackage swift-framework/public
- * @author     Your Name <email@example.com>
+ * @author     Swift Ideas
  */
 class SwiftFramework_Public {
 

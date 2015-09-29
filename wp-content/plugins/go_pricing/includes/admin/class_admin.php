@@ -58,12 +58,18 @@ class GW_GoPricing_Admin {
 
 		// Start output buffering
 		add_action( 'admin_init', array( $this, 'start_ob' ) );
+		
+		// Delete temporary files
+		add_action( 'admin_init', array( $this, 'delete_temporary_uploads' ) );		
 
 		// Enqueue admin styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		
 		// Enqueue admin scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		
+		// Localization
+		add_action( 'admin_enqueue_scripts', array( $this, 'localization' ) );		
 					
 		// Register menu pages
 		add_action( 'admin_menu', array( $this, 'register_menu_pages' ) );
@@ -205,6 +211,41 @@ class GW_GoPricing_Admin {
 		
 		ob_start();	
 	}
+
+
+	/**
+	 * Delete uploaded files
+	 *
+	 * @return void
+	 */	
+
+	public function delete_temporary_uploads() {
+		
+		$uploads = get_option( self::$plugin_prefix . '_uploads', array() );
+		if ( get_transient( self::$plugin_prefix . '_uploads' ) !== false ) return;
+
+		$new_uploads = array();
+		
+		foreach ( $uploads as $upload_key => $upload ) {
+			
+			if ( empty( $upload['expiration'] ) || empty( $upload['file'] ) ) continue;
+						
+			$expiration = strtotime( $upload['expiration'] );
+			$now = strtotime( date( 'Y-m-d H:i:s' ) );
+			
+			if ($expiration - $now > 0 && file_exists( $upload['file'] ) ) {
+				$new_uploads[] = $upload;
+			} else {
+				unlink( $upload['file'] );
+			}
+				
+		}
+		
+		if ( $uploads != $new_uploads ) update_option( self::$plugin_prefix . '_uploads', $new_uploads );
+		set_transient( self::$plugin_prefix . '_uploads', '', 30 * 60 );
+		
+	}	
+	
 		
 	/**
 	 * Enqueue admin styles
@@ -244,10 +285,8 @@ class GW_GoPricing_Admin {
 		$screen = get_current_screen();
 
 		if ( array_key_exists( $screen->id, self::$screen_hooks ) ) {
-			
-			if ( version_compare( $wp_version, 3.5, ">=" ) ) {
-				wp_enqueue_media();
-			}
+					
+			if ( version_compare( $wp_version, 3.5, ">=" ) ) wp_enqueue_media();
 
 			wp_enqueue_script( 'jquery-ui-sortable' );
 			wp_enqueue_script( 'jquery-ui-draggable' );
@@ -255,7 +294,26 @@ class GW_GoPricing_Admin {
 			wp_enqueue_script( self::$plugin_slug . '-admin-scripts', $this->plugin_url . 'assets/admin/js/go_pricing_admin_scripts.js', 'jquery', self::$plugin_version );			
 				
 		}
+			
+	}
+	
+	
+	/**
+	 * Set translatable content
+	 *
+	 * @return void
+	 */
 
+	public function localization() {
+		
+		$translate = array(
+			'ajax_error' => __( 'PHP Error in AJAX Response!', 'go_pricing_textdomain' ),
+			'warning_maxcol' => __( 'You have reached the maximum number of columns!', 'go_pricing_textdomain' ),
+			'warning_invalid_imge' => __( 'Invalid image!', 'go_pricing_textdomain' )
+		);			
+		
+		wp_localize_script( self::$plugin_slug . '-admin-scripts', 'GoPricingL10n', $translate );	
+		
 	}
 	
 

@@ -17,6 +17,8 @@ $general_settings = get_option( self::$plugin_prefix . '_table_settings' );
 // Get pricing tables data
 $pricing_tables = GW_GoPricing_Data::get_tables();
 
+if ( ( $max_upload_size = ini_get( 'post_max_size' ) ) === false ) $max_upload_size = __( 'Unknown', 'go_pricing_textdomain' );
+
 ?>
 <!-- Top Bar -->
 <div class="gwa-ptopbar">
@@ -28,7 +30,7 @@ $pricing_tables = GW_GoPricing_Data::get_tables();
 
 <!-- Page Content -->
 <div class="gwa-pcontent" data-ajax="<?php echo esc_attr( isset( $general_settings['admin']['ajax'] ) ? "true" : "false" ); ?>" data-help="<?php echo esc_attr( isset( $_COOKIE['go_pricing']['settings']['help'][$user_id] ) ? $_COOKIE['go_pricing']['settings']['help'][$user_id] : '' ); ?>">
-	<form id="go-pricing-form" name="impex-form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+	<form id="go-pricing-form" name="impex-form" method="post" enctype="multipart/form-data" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 		<input type="hidden" name="_action" value="impex">
 		<?php wp_nonce_field( $this->nonce, '_nonce' ); ?>
 		
@@ -54,10 +56,19 @@ $pricing_tables = GW_GoPricing_Data::get_tables();
 						</tr>						
 						<?php $_action_type = 'import'; ?>
 						<tr class="gwa-row-fullwidth" data-parent-id="_action_type" data-parent-value="import"<?php echo !empty( $_action_type ) && $_action_type != 'import' ? ' style="display:none;"' : '' ?>>
-							<th><label><?php _e( 'Import Data', 'go_pricing_textdomain' ); ?></label></th>
-							<td><textarea name="import-data" rows="10"></textarea></td>
-							<td class="gwa-abox-info"><p class="gwa-info"><i class="fa fa-info-circle"></i><?php _e( 'Open the file that contains demodata and copy its content to the textarea above, then click to the "Next" button.', 'go_pricing_textdomain' ); ?></p></td>
-						</tr>													
+							<th><label><?php _e( 'Upload Data', 'go_pricing_textdomain' ); ?></label></th>
+							<td>
+								<div class="gwa-dnd-upload">
+									<span class="gwa-dnd-upload-icon-front"></span>
+									<span class="gwa-dnd-upload-icon-back"></span>
+									<div class="gwa-dnd-upload-label">
+										<p><?php _e( 'Drop files here or', 'go_pricing_textdomain' ); ?></p>
+										<p><input type="file" name="import-data"><a href="#" data-action="dnd-upload" title="<?php esc_attr_e( 'Select Files', 'go_pricing_textdomain' ); ?>" class="gwa-btn-style1"><?php _e( 'Select Files', 'go_pricing_textdomain' ); ?></a></p>
+									</div>
+								</div>							
+							</td>
+							<td><p class="gwa-info"><i class="fa fa-info-circle"></i><?php _e( 'For older browsers or with AJAX disabled, please use the "Select Files" button to upload files.', 'go_pricing_textdomain' ); ?> <?php printf( __( 'Maximum upload file size: %s.', 'go_pricing_textdomain' ), $max_upload_size ); ?></p></td>
+						</tr>						
 						<tr data-parent-id="_action_type" data-parent-value="export"<?php echo !empty( $_action_type ) && $_action_type != 'export' ? ' style="display:none;"' : '' ?>>
 							<th><label><?php printf ( __( 'Select Tables%s', 'go_pricing_textdomain' ), sprintf( ' <span class="gwa-info">(%d)</span>', is_array( $pricing_tables ) ? count( $pricing_tables ) : 0 ) ); ?></label></th>
 							<td>

@@ -20,6 +20,7 @@
 	$product_display_columns = $sf_options['product_display_columns'];
 	$product_display_type = $sf_options['product_display_type'];
 	$product_multi_masonry = $sf_options['product_multi_masonry'];
+	$page_title_style      = $sf_options['woo_page_heading_style'];
 	$product_fw_mode = false;
 
 	// GET VARIABLES
@@ -51,6 +52,8 @@
 		$width = 'col-sm-6';
 	} else if ($product_display_columns == "6") {
 		$width = 'col-sm-2';
+	} else if ($product_display_columns == "1") {
+		$width = 'col-sm-12';
 	}
 
 	if ($sidebar_config == "") {
@@ -146,7 +149,7 @@
 
 		<div class="inner-page-wrap <?php echo esc_attr($page_wrap_class); ?> clearfix" data-shopcolumns="<?php echo esc_attr($product_display_columns); ?>">
 
-			<?php if ( $product_fw_mode ) { ?>
+			<?php if ( $product_fw_mode && $page_title_style == "fancy-tabbed" ) { ?>
 			<div class="container">
 			<?php } ?>
 
@@ -189,7 +192,7 @@
 					</div>
 				</div>
 
-			<?php if ( $product_fw_mode ) { ?>
+			<?php if ( $product_fw_mode && $page_title_style == "fancy-tabbed" ) { ?>
 			</div>
 			<?php } ?>
 

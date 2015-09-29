@@ -259,19 +259,20 @@ $this->delete_temp_postdata();
 				</div>
 				<div class="gwa-abox-content-wrap">			
 					<div class="gwa-abox-content">
-						<div class="go-pricing-cols-wrap">
+						<?php do_action( 'go_pricing_colum_editor_content_before_html', isset( $table_data ) ? $table_data : '' ); ?>
+						<div class="go-pricing-cols-wrap">					
 							<div class="go-pricing-cols gwa-clearfix">
-
 								<!-- Columns -->
 								<?php if ( !empty( $table_data['col-data'] ) ) $this->get_column( $table_data ); ?>
 								<!-- /Columns -->								
 								
 								<!-- Add New Column -->
-								<div class="go-pricing-col-new"><a href="#" action-type="add-col" title="<?php _e( 'Add New Column', 'go_pricing_textdomain' ); ?>"><span class="go-pricing-col-new-front"></span><span class="go-pricing-col-new-back"></span></a></div>
+								<div class="go-pricing-col-new"<?php printf( ' style="%s"', isset( $table_data['col-data'] ) && is_array( $table_data['col-data'] ) && count( $table_data['col-data'] ) > 0 ? 'margin-top:48px;' : '' ); ?>><a href="#" action-type="add-col" title="<?php _e( 'Add New Column', 'go_pricing_textdomain' ); ?>"><span class="go-pricing-col-new-front"></span><span class="go-pricing-col-new-back"></span></a></div>
 								<!-- /Add New Column -->
 								
 							</div>
 						</div>
+						<?php do_action( 'go_pricing_column_editor_content_after_html', isset( $table_data ) ? $table_data : '' ); ?>						
 					</div>
 				</div>
 			</div>

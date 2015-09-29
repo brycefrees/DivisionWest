@@ -254,7 +254,7 @@
 			    'button_enabled' => '',
 			    'width'          => '',
 			), $atts ) );
-
+			
             global $woocommerce, $woocommerce_loop, $sf_sidebar_config, $sf_carouselID, $sf_options, $sf_product_multimasonry;
 
             if ( $sf_carouselID == "" ) {
@@ -280,7 +280,7 @@
             if ( $gutters == "no" || $product_display_type == "gallery-bordered" ) {
                 $list_class .= 'no-gutters ';
             }
-			if ( $multi_masonry == "yes" ) {
+			if ( $multi_masonry == "yes" && $product_display_type != "preview-slider" ) {
 				$carousel = "no";
 				$list_class .= 'multi-masonry-items ';
 				$sf_product_multimasonry = true;
@@ -307,11 +307,17 @@
         		ob_start();
 
         		$hide_empty = 1;
-
+				$category_id = '';
+				
+				if ( $category != "" ) {	
+        			$category_term = get_term_by('name', $category, 'product_cat');
+        			$category_id = $category_term->term_id;
+        		}
+        		
         		$args = array(
         			'hide_empty' => $hide_empty,
         			'pad_counts' => true,
-        			//'child_of'   => $parent
+        			'child_of'   => $category_id
         		);
 
         		$product_categories = get_terms( 'product_cat', $args );
@@ -336,7 +342,7 @@
 
 	                    <div class="product-carousel carousel-wrap <?php echo $list_class; ?>">
 
-	                        <div class="products list-<?php echo $asset_type; ?> carousel-items" id="carousel-<?php echo $sf_carouselID; ?>" data-columns="<?php echo $columns; ?>">
+	                        <ul class="products list-<?php echo $asset_type; ?> carousel-items" id="carousel-<?php echo $sf_carouselID; ?>" data-columns="<?php echo $columns; ?>">
 
 	                            <?php
 
@@ -350,7 +356,7 @@
 
 								?>
 
-	                        </div>
+	                        </ul>
 
 	                        <?php if ( sf_theme_opts_name() != "sf_atelier_options" ) { ?>
 
@@ -363,7 +369,7 @@
 
 	                <?php } else { ?>
 
-	                    <div class="products list-<?php echo $asset_type; ?> row <?php echo $list_class; ?>">
+	                    <ul class="products list-<?php echo $asset_type; ?> row <?php echo $list_class; ?>">
 
 	                        <?php
 
@@ -377,7 +383,7 @@
 
                     		?>
 
-	                    </div>
+	                    </ul>
 
 	                <?php }
 
@@ -401,6 +407,8 @@
                     'product_cat'         => $category,
                     'ignore_sticky_posts' => 1,
                     'posts_per_page'      => $item_count,
+                    'orderby'             => $order_by,
+                    'order'				  => $order
                 );
                 $args['meta_query']   = array();
                 $args['meta_query'][] = $woocommerce->query->stock_status_meta_query();
@@ -477,6 +485,8 @@
                     'post_status'    => 'publish',
                     'post_type'      => 'product',
                     'meta_query'     => $meta_query,
+                    'orderby'        => $order_by,
+                    'order'			 => $order,
                     'post__in'       => array_merge( array( 0 ), $product_ids_on_sale )
                 );
             } else if ( $asset_type == "selected-products" ) {
@@ -533,7 +543,7 @@
 
                 <?php if ( $carousel == "yes" ) { ?>
 
-                    <div class="product-carousel carousel-wrap <?php echo $list_class; ?>">
+                    <ul class="product-carousel carousel-wrap <?php echo $list_class; ?>">
 
                         <div class="products list-<?php echo $asset_type; ?> carousel-items"
                              id="carousel-<?php echo $sf_carouselID; ?>" data-columns="<?php echo $columns; ?>">
@@ -553,11 +563,11 @@
 
 						<?php } ?>
 
-                    </div>
+                    </ul>
 
                 <?php } else { ?>
 
-                    <div class="products list-<?php echo $asset_type; ?> row <?php echo $list_class; ?>" data-columns="<?php echo $columns; ?>">
+                    <ul class="products list-<?php echo $asset_type; ?> row <?php echo $list_class; ?>" data-columns="<?php echo $columns; ?>">
 
                     	<?php if ( $multi_masonry == "yes" ) { ?>
 
@@ -571,7 +581,7 @@
 
                         <?php endwhile; // end of the loop. ?>
 
-                    </div>
+                    </ul>
 
                 <?php } ?>
 

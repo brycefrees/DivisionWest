@@ -20,7 +20,7 @@
                                   'height'  => 200,
                                   'id_base' => 'advert-grid-widget'
             ); //default width = 250
-            $this->WP_Widget( 'advert-grid-widget', 'Swift Framework Advert Grid Widget', $widget_ops, $control_ops );
+            parent::__construct( 'advert-grid-widget', 'Swift Framework Advert Grid Widget', $widget_ops, $control_ops );
         }
 
         function form( $instance ) {
@@ -47,103 +47,103 @@
             ?>
 
             <p>
-                <label><?php _e( 'Title', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Title', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'title' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'title' )); ?>" value="<?php echo esc_attr($instance['title']); ?>"
                        class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 1 URL', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 1 URL', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_1' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_1' )); ?>"
                        value="<?php echo esc_url($instance['image_1']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 1 Link', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 1 Link', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_1_url' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_1_url' )); ?>"
                        value="<?php echo esc_url($instance['image_1_url']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 2 URL', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 2 URL', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_2' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_2' )); ?>"
                        value="<?php echo esc_url($instance['image_2']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 2 Link', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 2 Link', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_2_url' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_2_url' )); ?>"
                        value="<?php echo esc_url($instance['image_2_url']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 3 URL', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 3 URL', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_3' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_3' )); ?>"
                        value="<?php echo esc_url($instance['image_3']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 3 Link', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 3 Link', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_3_url' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_3_url' )); ?>"
                        value="<?php echo esc_url($instance['image_3_url']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 4 URL', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 4 URL', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_4' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_4' )); ?>"
                        value="<?php echo esc_url($instance['image_4']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 4 Link', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 4 Link', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_4_url' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_4_url' )); ?>"
                        value="<?php echo esc_url($instance['image_4_url']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 5 URL', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 5 URL', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_5' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_5' )); ?>"
                        value="<?php echo esc_url($instance['image_5']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 5 Link', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 5 Link', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_5_url' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_5_url' )); ?>"
                        value="<?php echo esc_url($instance['image_5_url']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 6 URL', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 6 URL', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_6' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_6' )); ?>"
                        value="<?php echo esc_url($instance['image_6']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 6 Link', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 6 Link', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_6_url' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_6_url' )); ?>"
                        value="<?php echo esc_url($instance['image_6_url']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 7 URL', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 7 URL', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_7' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_7' )); ?>"
                        value="<?php echo esc_url($instance['image_7']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 7 Link', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 7 Link', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_7_url' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_7_url' )); ?>"
                        value="<?php echo esc_url($instance['image_7_url']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 8 URL', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 8 URL', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_8' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_8' )); ?>"
                        value="<?php echo esc_url($instance['image_8']); ?>" class="widefat" type="text"/>
             </p>
             <p>
-                <label><?php _e( 'Image 8 Link', 'swift-framework-admin' ); ?>:</label>
+                <label><?php _e( 'Image 8 Link', 'swiftframework' ); ?>:</label>
                 <input id="<?php echo esc_attr($this->get_field_id( 'image_8_url' )); ?>"
                        name="<?php echo esc_attr($this->get_field_name( 'image_8_url' )); ?>"
                        value="<?php echo esc_url($instance['image_8_url']); ?>" class="widefat" type="text"/>

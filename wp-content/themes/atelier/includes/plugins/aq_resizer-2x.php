@@ -12,9 +12,10 @@ function sf_aq_resize( $url, $width, $height = null, $crop = null, $single = tru
 	}
 
 	//validate inputs
-	if(!$url OR !$width ) return false;
-	if ($url == "default") {
-		$url = get_template_directory_uri()."/images/default-thumb.png";
+	if ( !$url OR !$width ) return false;
+
+	if ( $url == "default" ) {
+		$url = apply_filters( 'sf_placeholder_image_src', get_template_directory_uri()."/images/default-thumb.png" );
 		$image = array (
 			0 => $url,
 			1 => '1600',
@@ -33,10 +34,10 @@ function sf_aq_resize( $url, $width, $height = null, $crop = null, $single = tru
 
 	/* if the $url scheme differs from $upload_url scheme, make them match
 	   if the schemes differe, images don't show up. */
-	if(!strncmp($url,$https_prefix,strlen($https_prefix))){ //if url begins with https:// make $upload_url begin with https:// as well
+	if (!strncmp($url,$https_prefix,strlen($https_prefix))) { //if url begins with https:// make $upload_url begin with https:// as well
 		$upload_url = str_replace($http_prefix,$https_prefix,$upload_url);
 	}
-	elseif(!strncmp($url,$http_prefix,strlen($http_prefix))){ //if url begins with http:// make $upload_url begin with http:// as well
+	elseif (!strncmp($url,$http_prefix,strlen($http_prefix))) { //if url begins with http:// make $upload_url begin with http:// as well
 		$upload_url = str_replace($https_prefix,$http_prefix,$upload_url);
 	}
 
@@ -60,7 +61,12 @@ function sf_aq_resize( $url, $width, $height = null, $crop = null, $single = tru
 	if ( !sf_wpml_activated() ) {
 		if( !file_exists($img_path) OR !getimagesize($img_path) ) {
 			if ($debug_mode) { echo 'file does not exist'."\n"; }
-			return false;
+			$image = array (
+				0 => $url,
+				1 => $width,
+				2 => $height
+			);
+			return $image;
 		}
 	}
 
@@ -70,7 +76,7 @@ function sf_aq_resize( $url, $width, $height = null, $crop = null, $single = tru
 	list($orig_w,$orig_h) = getimagesize($img_path);
 
 	//if the image isn't big enough for 2x, put it back to 1x - philj
-	if($width > $orig_w || $height > $orig_h) {
+	if ($width > $orig_w || $height > $orig_h) {
 		$width = $width/2;
 		$height = $height/2;
 	}
@@ -86,11 +92,11 @@ function sf_aq_resize( $url, $width, $height = null, $crop = null, $single = tru
 	$destfilename = "{$upload_dir}{$dst_rel_path}-{$suffix}.{$ext}";
 
 	//if orig size is smaller
-	if($width >= $orig_w) {
+	if ($width >= $orig_w) {
 
 		if ($debug_mode) { echo 'orig size is smaller'."\n"; }
 
-		if(!$dst_h) :
+		if (!$dst_h) :
 			//can't resize, so return original url
 			if ($debug_mode) { echo 'cant resize'."\n"; }
 
@@ -106,7 +112,7 @@ function sf_aq_resize( $url, $width, $height = null, $crop = null, $single = tru
 			//else resize and return the new resized image url
 			else {
 
-				if(function_exists('wp_get_image_editor')) {
+				if (function_exists('wp_get_image_editor')) {
 
 					$editor = wp_get_image_editor($img_path);
 
@@ -139,7 +145,7 @@ function sf_aq_resize( $url, $width, $height = null, $crop = null, $single = tru
 
 	}
 	//else check if cache exists
-	elseif(file_exists($destfilename) && getimagesize($destfilename)) {
+	else if (file_exists($destfilename) && getimagesize($destfilename)) {
 
 		if ($debug_mode) { echo 'cache exists'."\n"; }
 
@@ -181,7 +187,7 @@ function sf_aq_resize( $url, $width, $height = null, $crop = null, $single = tru
 	}
 
 	//return the output
-	if($single) {
+	if ($single) {
 		//str return
 		$image = $img_url;
 	} else {

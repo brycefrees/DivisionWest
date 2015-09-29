@@ -21,7 +21,8 @@ class GW_GoPricing_AdminPage_Impex extends GW_GoPricing_AdminPage {
 	public function register_ajax_actions( $ajax_action_callback ) { 
 	
 		GW_GoPricing_Admin::register_ajax_action( 'impex', $ajax_action_callback );
-		GW_GoPricing_Admin::register_ajax_action( 'import', $ajax_action_callback );	
+		GW_GoPricing_Admin::register_ajax_action( 'import', $ajax_action_callback );
+		
 	}
 	
 	
@@ -43,7 +44,7 @@ class GW_GoPricing_AdminPage_Impex extends GW_GoPricing_AdminPage {
 			
 			switch ( $action ) {
 				
-				case 'import':
+				case 'import':				
 				
 					$tmp_postdata = $this->get_temp_postdata();
 					
@@ -58,28 +59,26 @@ class GW_GoPricing_AdminPage_Impex extends GW_GoPricing_AdminPage {
 				
 				case 'export':
 				
-					$tmp_postdata = $this->get_temp_postdata();
+					$tmp_postdata = $this->get_temp_postdata();							
 					
-					if ( empty( $tmp_postdata ) ) {
+					if ( empty( $tmp_postdata ) || !isset( $tmp_postdata[0] ) ) {
 						// Load default view
 						$this->content( $this->view() );
-						
 					} else {
-						// Load export view
-						$this->content( $this->view( 'export' ) );
-					
+						// Force download data
+						$this->export( $tmp_postdata );		
 					}
 					break;
 
 				default:
-				
+								
 					// Load default view
 					$this->content( $this->view() );	
 
 			}
 			
 		}
-		
+
 		
 		// Load views if action is not empty (handle postdata)
 		if ( !empty( $this->action ) && check_admin_referer( $this->nonce, '_nonce' ) ) {
@@ -94,22 +93,26 @@ class GW_GoPricing_AdminPage_Impex extends GW_GoPricing_AdminPage {
 						switch( $this->action_type ) {
 
 							// Import
-							case 'import':								
+							case 'import':
+							
+								add_filter( 'upload_mimes', array( $this, 'restrict_upload_mimes') );
+								add_filter( 'upload_dir', array( $this, 'set_upload_dir' ) );
 								
-								$result = $this->validate_import_data( stripslashes( $_POST['import-data'] ) );	
-																
+								$result = $this->validate_import_data( $_FILES );	
+														
 								if ( $result === false ) {
 									
 									if ( $this->is_ajax === false ) {
 										wp_redirect( $this->referrer );	
 										exit;
 									} else {
+										echo $this->view();
 										GW_GoPricing_AdminNotices::show();
 									}
 									
 								} else {
 									
-									$this->set_temp_postdata( array( 'result' => $result, 'data' => stripslashes( $_POST['import-data'] ) ) );
+									$this->set_temp_postdata( $result );
 									
 									if ( $this->is_ajax === false ) {
 										wp_redirect( add_query_arg( 'action', 'import', $this->referrer ) );	
@@ -138,13 +141,15 @@ class GW_GoPricing_AdminPage_Impex extends GW_GoPricing_AdminPage {
 									
 								} else {
 									
-									$this->set_temp_postdata( $result );
+									$this->set_temp_postdata( $_POST['export'] );
 									
 									if ( $this->is_ajax === false ) {
 										wp_redirect( add_query_arg( 'action', 'export', $this->referrer ) );	
 										exit;
 									} else {
-										echo $this->view( 'export' );
+										
+										echo '<div id="download_url">' . add_query_arg( array( 'action' => 'export' ), admin_url( 'admin.php?page=go-pricing-import-export' ) ) . '</div>';
+										
 									}
 
 								}
@@ -158,37 +163,31 @@ class GW_GoPricing_AdminPage_Impex extends GW_GoPricing_AdminPage {
 					break;
 
 				// Import page
-				case 'import':
-
-					$result = $this->validate_import_data( $_POST['import-data'] );	
-					
-					if ( $result !== false ) {
+				case 'import' :
 				
-						if ( !empty( $_POST['import'] ) ) {
-							
-							$this->import( $_POST['import-data'], ( isset( $_POST['replace'] ) ? $_POST['replace'] : false ), $_POST['import'] );
-							
-							if ( $this->is_ajax === false ) {
-								wp_redirect( $this->referrer );	
-								exit;
-							} else {
-								echo $this->view();
-								GW_GoPricing_AdminNotices::show();
-							}
-				
-						} else {
-							
-							GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'Please select tables to import!', 'go_pricing_textdomain' ) );
+					if ( !empty( $_POST['import'] ) ) {
 						
-							if ( $this->is_ajax === false ) {
-								$this->set_temp_postdata( $_POST['import-data'] );
-								wp_redirect( add_query_arg( 'action', 'import', $this->referrer ) );	
-								exit;
-							} else {
-								GW_GoPricing_AdminNotices::show();
-							}						
-							
+						$this->import( $_POST['import-data'], ( isset( $_POST['replace'] ) ? $_POST['replace'] : false ), $_POST['import'] );
+						
+						if ( $this->is_ajax === false ) {
+							wp_redirect( $this->referrer );	
+							exit;
+						} else {
+							echo $this->view();
+							GW_GoPricing_AdminNotices::show();
 						}
+			
+					} else {
+						
+						GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'Please select tables to import!', 'go_pricing_textdomain' ) );
+					
+						if ( $this->is_ajax === false ) {
+							$this->set_temp_postdata( $_POST['import-data'] );
+							wp_redirect( add_query_arg( 'action', 'import', $this->referrer ) );	
+							exit;
+						} else {
+							GW_GoPricing_AdminNotices::show();
+						}						
 						
 					}
 
@@ -264,29 +263,50 @@ class GW_GoPricing_AdminPage_Impex extends GW_GoPricing_AdminPage {
 	
 	
 	/**
-	 * Import
+	 * Export
 	 *
-	 * @return bool
+	 * @return void | bool
 	 */		
 
-	public function import( $data, $override, $ids ) { 
-	
-		if ( empty( $data ) ) {
-			GW_GoPricing_AdminNotices::add( 'main', 'error', __( 'Import data is missing!', 'go_pricing_textdomain' ) );
-			return;
-		}
+	public function export( $export_data ) { 
 		
-		$ids = isset( $ids[0] ) && $ids[0] == 'all' ? array() : $ids;
-		$data = GW_GoPricing_Helper::clean_input( $data );
-		$result = GW_GoPricing_Data::import( $data, (bool)$override, $ids );
-		
-		if ( $result === false ) { 
-			GW_GoPricing_AdminNotices::add( 'main', 'error', __( 'Oops, something went wrong!', 'go_pricing_textdomain' ) );
-		} else {
-			GW_GoPricing_AdminNotices::add( 'main', 'success', sprintf( __( '%1$s pricing table(s) has been successfully imported.', 'go_pricing_textdomain' ), $result ) );
-		}
+		if ( empty( $export_data ) ) {
 
-	}	
+			GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'There is nothing to export!', 'go_pricing_textdomain' ) );
+			return false;
+			
+		} else {
+			
+			$export_data = $export_data[0] == 'all' ? array() : $export_data;
+			$result = GW_GoPricing_Data::export( $export_data );
+			
+			if ( $result === false ) { 
+			
+				GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'Oops, something went wrong!', 'go_pricing_textdomain' ) );	
+				return false;
+
+			}
+			
+			$this->delete_temp_postdata();
+			
+			if ($result === false) return;
+			
+			ob_end_clean();
+			header( 'Pragma: public' );
+			header( 'Expires: 0' );
+			header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-Transfer-Encoding: Binary' );						
+			header( 'Content-type: text/plain' );
+			header( 'Content-Disposition: attachment; filename="export_' . date( 'd_m_Y_H_i_s' ) . '.txt"' );
+			header( 'Connection: close' );
+			echo $result;
+			ob_end_flush();
+			exit;			
+			
+		}		
+		
+	}
 	
 	
 	/**
@@ -296,34 +316,156 @@ class GW_GoPricing_AdminPage_Impex extends GW_GoPricing_AdminPage {
 	 */		
 	
 	public function validate_import_data( $import_data ) {
-		
-		if ( empty( $import_data ) ) {
+						
+		if ( empty( $import_data ) || empty( $import_data['import-data'] ) || empty( $import_data['import-data']['name'] ) || empty( $import_data['import-data']['tmp_name'] ) || empty( $import_data['import-data']['size'] ) ) {
 		
 			GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'There is nothing to import!', 'go_pricing_textdomain' ) );	
 			return false;
 			
 		}
 		
-		$result = @unserialize( base64_decode( $import_data ) );
+		if ( !empty( $import_data['import-data']['error'] ) || ( $file_content = @file_get_contents( $_FILES['import-data']['tmp_name'] ) ) === false ) {
+		
+			GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'Oops, something went wrong', 'go_pricing_textdomain' ) );	
+			return false;
+			
+		}
+		
+		$file = wp_upload_bits( $_FILES['import-data']['name'], '', $file_content );
+		
+		if ( empty( $file ) || empty( $file['file'] ) || !empty( $file['error'] ) ) {
+		
+			GW_GoPricing_AdminNotices::add( 'impex', 'error', !empty( $file['error'] ) ? $file['error'] : __( 'Oops, something went wrong!', 'go_pricing_textdomain' ) );	
+			return false;
+			
+		}
+		
+		$data = @unserialize( base64_decode( $file_content) );
+		
+		if ( $data === false ) { 
+
+			GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'Invalid import data!', 'go_pricing_textdomain' ) );
+			unlink( $file['file'] );
+			return false;
+			
+		}
+
+		if ( empty( $data['_info']['db_version'] ) || version_compare( $data['_info']['db_version'], self::$db_version, "<" ) ) {
+
+			GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'Import data is not compatible with the current version!', 'go_pricing_textdomain' ) );
+			unlink( $file['file'] );			
+			return false;
+
+		}
+		
+		unset( $data['_info'] );
+
+		foreach( $data as $data_key => $data_val ) {
+			$result['data'][$data_key ] = $data_val['name'];
+		}
+		
+		$result['file'] = $file['file'];
+		
+		// save uploaded file data into db
+		$uploads = get_option( self::$plugin_prefix . '_uploads', array() );
+		$uploads[] = array(
+			'file' => $result['file'],
+			'expiration' => gmdate( 'Y-m-d H:i:s', time() + 30 * 60 )
+		);
+		
+		update_option( self::$plugin_prefix . '_uploads', $uploads );
+		
+		return $result;
+		
+	}
 	
-		if ( $result === false ) { 
+	
+	/**
+	 * Import
+	 *
+	 * @return bool
+	 */		
+
+	public function import( $file, $override, $ids ) { 
+	
+		$file_content = @file_get_contents( $file );
+
+		if ( $file_content === false ) { 
 
 			GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'Invalid import data!', 'go_pricing_textdomain' ) );
 			return false;
 			
 		}
+		
+		$data = @unserialize( base64_decode( $file_content) );
+		
+		if ( $data === false ) { 
 
-		if ( empty( $result['_info']['db_version'] ) || version_compare( $result['_info']['db_version'], self::$db_version, "<" ) ) {
+			GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'Invalid import data!', 'go_pricing_textdomain' ) );
+			unlink( $file['file'] );
+			return false;
+			
+		}
+
+		if ( empty( $data['_info']['db_version'] ) || version_compare( $data['_info']['db_version'], self::$db_version, "<" ) ) {
 
 			GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'Import data is not compatible with the current version!', 'go_pricing_textdomain' ) );
-		//	return false;
+			unlink( $file['file'] );
+			return false;
 
 		}
+
+		$data = $file_content;
+				
+		$ids = isset( $ids[0] ) && $ids[0] == 'all' ? array() : $ids;
+		$data = GW_GoPricing_Helper::clean_input( $data );
+		$result = GW_GoPricing_Data::import( $data, (bool)$override, $ids );
 		
-		unset( $result['_info'] );
-		return $result;
+		if ( $result === false ) { 
+
+			GW_GoPricing_AdminNotices::add( 'main', 'error', __( 'Oops, something went wrong!', 'go_pricing_textdomain' ) );
+			unlink( $file['file'] );
+			return false;
+
+		} else {
+			GW_GoPricing_AdminNotices::add( 'main', 'success', sprintf( __( '%1$s pricing table(s) has been successfully imported.', 'go_pricing_textdomain' ), $result ) );
+		}
+		
+		delete_transient( self::$plugin_prefix . '_uploads' );
+		return true;
+
+	}
+	
+	
+	/**
+	 * Restrict allowed mimes
+	 *
+	 * @return array
+	 */		
+	
+	public function restrict_upload_mimes( $mimes ) {
+		
+		$allowed_mimes = array( 'txt' => 'text/plain' );
+		
+		return $allowed_mimes;
 		
 	}
+	
+	
+	/**
+	 * Set custom upload path
+	 *
+	 * @return array
+	 */		
+	
+	public function set_upload_dir( $param ) {
+		
+		$param['subdir'] = '/go_pricing_data';
+		$param['path'] = $param['basedir'] . $param['subdir'];
+				
+		return $param;
+		
+	}		
 	
 }
  

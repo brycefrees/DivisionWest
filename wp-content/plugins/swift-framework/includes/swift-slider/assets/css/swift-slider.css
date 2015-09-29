@@ -146,19 +146,42 @@
 .swiper-slide {
     position: relative;
     background-repeat: no-repeat;
-    -moz-background-size: cover!important;
-    -webkit-background-size: cover!important;
-    -o-background-size: cover!important;
-    background-size: cover!important;
-    background-position: center center;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center;
 }
 
-.swiper-slide[data-bg-align="top"] {
-    background-position: center top;
+.swiper-slide[data-bg-size="auto"] {
+    -moz-background-size: auto;
+    -webkit-background-size: auto;
+    -o-background-size: auto;
+    background-size: auto;
 }
 
-.swiper-slide[data-bg-align="bottom"] {
-    background-position: center bottom;
+.swiper-slide[data-bg-align="top"][data-bg-horiz-align="left"] {
+    background-position: left top;
+}
+
+.swiper-slide[data-bg-align="top"][data-bg-horiz-align="right"] {
+    background-position: right top;
+}
+
+.swiper-slide[data-bg-align="center"][data-bg-horiz-align="left"] {
+    background-position: left center;
+}
+
+.swiper-slide[data-bg-align="center"][data-bg-horiz-align="right"] {
+    background-position: right center;
+}
+
+.swiper-slide[data-bg-align="bottom"][data-bg-horiz-align="left"] {
+    background-position: left bottom;
+}
+
+.swiper-slide[data-bg-align="bottom"][data-bg-horiz-align="right"] {
+    background-position: right bottom;
 }
 
 .swiper-slide.video-slide {

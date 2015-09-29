@@ -22,8 +22,9 @@
     ================================================== */
     function sf_return_slider( $revslider_shortcode ) {
         ob_start();
-        putRevSlider( $revslider_shortcode );
-
+        if ( function_exists('putRevSlider') ) {
+        	putRevSlider( $revslider_shortcode );
+        }
         return ob_get_clean();
     }
 
@@ -72,7 +73,7 @@
     if ( ! function_exists( 'sf_video_youtube' ) ) {
         function sf_video_youtube( $url, $width = 640, $height = 480 ) {
             preg_match( '/[\\?\\&]v=([^\\?\\&]+)/', $url, $video_id );
-            $youtube_params = apply_filters( 'sf_youtube_embed_params', '?showinfo=0&controls=0&modestbranding=1' );
+            $youtube_params = apply_filters( 'sf_youtube_embed_params', '?showinfo=0&controls=1&modestbranding=1' );
 
             $video_padding = ( intval( $height, 10 ) / intval( $width, 10 ) ) * 100;
             $inline_style  = 'padding-bottom: ' . $video_padding . '%;';
@@ -155,19 +156,21 @@
 
 	/* GET ATTACHMENT META
     ================================================== */
-    function sf_get_attachment_meta( $attachment_id ) {
-
-		$attachment = get_post( $attachment_id );
-
-		if ( isset( $attachment ) ) {
-			return array(
-				'alt' => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
-				'caption' => $attachment->post_excerpt,
-				'description' => $attachment->post_content,
-				'href' => get_permalink( $attachment->ID ),
-				'src' => $attachment->guid,
-				'title' => $attachment->post_title
-			);
+    if ( ! function_exists( 'sf_get_attachment_meta' ) ) {
+	    function sf_get_attachment_meta( $attachment_id ) {
+	
+			$attachment = get_post( $attachment_id );
+	
+			if ( isset( $attachment ) ) {
+				return array(
+					'alt' => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
+					'caption' => $attachment->post_excerpt,
+					'description' => $attachment->post_content,
+					'href' => get_permalink( $attachment->ID ),
+					'src' => $attachment->guid,
+					'title' => $attachment->post_title
+				);
+			}
 		}
 	}
 

@@ -28,6 +28,7 @@ class GW_GoPricing_AdminPage_Main extends GW_GoPricing_AdminPage {
 		GW_GoPricing_Admin::register_ajax_action( 'popup', $ajax_action_callback );
 		GW_GoPricing_Admin::register_ajax_action( 'editor_popup', $ajax_action_callback );
 		GW_GoPricing_Admin::register_ajax_action( 'editor_columns', $ajax_action_callback );
+		GW_GoPricing_Admin::register_ajax_action( 'export', $ajax_action_callback );		
 		
 	}
 	
@@ -70,7 +71,7 @@ class GW_GoPricing_AdminPage_Main extends GW_GoPricing_AdminPage {
 					break;
 
 				default:
-				
+
 					// Load table manager view	
 					$this->content( $this->view() );	
 
@@ -201,7 +202,40 @@ class GW_GoPricing_AdminPage_Main extends GW_GoPricing_AdminPage {
 									GW_GoPricing_AdminNotices::show();
 								}								
 								
-								break;																								
+								break;
+								
+							// Export (action type)
+							case 'export':
+
+								if ( empty( $_POST['postid'] ) ) return;
+								
+								$table_ids = explode( ',', $_POST['postid'] );
+								
+								$result = $this->validate_export_data( $table_ids );
+								
+								if ( $result === false ) {
+
+									if ( $this->is_ajax === false ) {
+										wp_redirect( $this->referrer );	
+										exit;
+									} else {
+										GW_GoPricing_AdminNotices::show();
+									}
+									
+								} else {
+									
+									$this->set_temp_postdata( $table_ids );
+									
+									if ( $this->is_ajax === false ) {
+										wp_redirect(  add_query_arg( array( 'action' => 'export' ), admin_url( 'admin.php?page=go-pricing-import-export' ) ) );	
+										exit;
+									} else {
+										echo '<div id="download_url">' . add_query_arg( array( 'action' => 'export' ), admin_url( 'admin.php?page=go-pricing-import-export' ) ) . '</div>';
+									}
+
+								}
+															
+								break;																																
 							
 						}
 						
@@ -239,7 +273,9 @@ class GW_GoPricing_AdminPage_Main extends GW_GoPricing_AdminPage {
 										
 				// Add new column (ajax action type)
 				case 'table_column':
-					echo $this->get_column();
+					$body_row_count = isset( $_POST['body_row_count'] ) ? (int)$_POST['body_row_count'] : 0;
+					$footer_row_count = isset( $_POST['footer_row_count'] ) ? (int)$_POST['footer_row_count'] : 0;					
+					echo $this->get_column( null, $body_row_count, $footer_row_count );
 					break;
 					
 				// Add new body row (ajax action type)
@@ -465,6 +501,41 @@ class GW_GoPricing_AdminPage_Main extends GW_GoPricing_AdminPage {
 		wp_defer_comment_counting( false );
 
 	}	
+	
+	
+	/**
+	 * Validate & export data
+	 *
+	 * @return string | bool
+	 */		
+
+	public function validate_export_data( $export_data ) { 
+		
+		if ( empty( $export_data ) ) {
+
+			GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'There is nothing to export!', 'go_pricing_textdomain' ) );
+			return false;
+			
+		} else {
+			
+			$export_data = $export_data[0] == 'all' ? array() : $export_data;
+			$result = GW_GoPricing_Data::export( $export_data );
+			
+			if ( $result === false ) { 
+			
+				GW_GoPricing_AdminNotices::add( 'impex', 'error', __( 'Oops, something went wrong!', 'go_pricing_textdomain' ) );	
+				return false;
+
+			}
+			
+		}
+		
+		if ( empty( $export_data ) ) $export_data  = 'all';
+		
+		return $export_data;
+
+	}
+		
 	
 	/**
 	 * Do import
@@ -705,11 +776,6 @@ class GW_GoPricing_AdminPage_Main extends GW_GoPricing_AdminPage {
 				case 'image-preview' :
 					include_once( 'views/popup/image_preview.php' );	
 					break;
-					
-				case 'export' :
-					include_once( 'views/popup/export.php' );	
-					break;	
-					
 				
 				/* sc popups */
 				

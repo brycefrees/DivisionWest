@@ -25,10 +25,10 @@ if (!function_exists('sf_get_share_links')) {
 	    $html .= '<ul class="social-icons">';
 	
 	    if( get_option( 'yith_wcwl_share_fb' ) )
-	    { $html .= '<li class="facebook" style="list-style-type: none; display: inline-block;"><a target="_blank" class="facebook" href="https://www.facebook.com/sharer.php?s=100&amp;p[title]=' . $title . '&amp;p[url]=' . $url . '&amp;p[summary]=' . $summary . '&amp;p[images][0]=' . $imageurl . '" title="' . __( 'Facebook', 'swift-framework-admin' ) . '"><i class="fa-facebook"></i><i class="fa-facebook"></i></a></li>'; }
+	    { $html .= '<li class="facebook" style="list-style-type: none; display: inline-block;"><a target="_blank" class="facebook" href="https://www.facebook.com/sharer.php?s=100&amp;p[title]=' . $title . '&amp;p[url]=' . $url . '&amp;p[summary]=' . $summary . '&amp;p[images][0]=' . $imageurl . '" title="' . __( 'Facebook', 'swiftframework' ) . '"><i class="fa-facebook"></i><i class="fa-facebook"></i></a></li>'; }
 	
 	    if( get_option( 'yith_wcwl_share_twitter' ) )
-	    { $html .= '<li class="twitter" style="list-style-type: none; display: inline-block;"><a target="_blank" class="twitter" href="https://twitter.com/share?url=' . $url . '&amp;text=' . $twitter_summary . '" title="' . __( 'Twitter', 'swift-framework-admin' ) . '"><i class="fa-twitter"></i><i class="fa-twitter"></i></a></li>'; }
+	    { $html .= '<li class="twitter" style="list-style-type: none; display: inline-block;"><a target="_blank" class="twitter" href="https://twitter.com/share?url=' . $url . '&amp;text=' . $twitter_summary . '" title="' . __( 'Twitter', 'swiftframework' ) . '"><i class="fa-twitter"></i><i class="fa-twitter"></i></a></li>'; }
 	
 	    if( get_option( 'yith_wcwl_share_pinterest' ) )
 	    { $html .= '<li class="pinterest" style="list-style-type: none; display: inline-block;"><a target="_blank" class="pinterest" href="http://pinterest.com/pin/create/button/?url=' . $url . '&amp;description=' . $summary . '&media=' . $imageurl . '" onclick="window.open(this.href); return false;"><i class="fa-pinterest"></i><i class="fa-pinterest"></i></a></li>'; }

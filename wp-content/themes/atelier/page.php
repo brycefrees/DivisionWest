@@ -7,7 +7,7 @@
 	}
 	$pb_fw_mode = true;
 	$pb_active = sf_get_post_meta($post->ID, '_spb_js_status', true);
-	if ($sidebar_config != "no-sidebars" || $pb_active != "true") {
+	if ($sidebar_config != "no-sidebars" || $pb_active != "true" || post_password_required() ) {
 		$pb_fw_mode = false;
 	}
 		

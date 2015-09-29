@@ -77,7 +77,7 @@ if( !class_exists( 'ReduxFramework_upload_scheme' ) ) {
             // HTML output goes here
 			
 			$class = (isset($this->field['class'])) ? $this->field['class'] : 'regular-text';        
-			echo ' <a data-update="Select File" data-choose="Choose a File" href="javascript:void(0);"class="redux-opts-upload-scheme button-secondary" rel-id="' . $this->field['id'] . '">' . __('Import', 'swift-framework-admin') . '</a>';
+			echo ' <a data-update="Select File" data-choose="Choose a File" href="javascript:void(0);"class="redux-opts-upload-scheme button-secondary" rel-id="' . $this->field['id'] . '">' . __('Import', 'swiftframework') . '</a>';
 			echo ' <span class="import-schema-message" style="display:none;">Import Successful</span> ';
 			echo (isset($this->field['desc']) && !empty($this->field['desc'])) ? '<br/><span class="description">' . $this->field['desc'] . '</span>' : '';
 			

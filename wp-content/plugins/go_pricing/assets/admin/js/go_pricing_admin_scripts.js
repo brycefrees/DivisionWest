@@ -46,7 +46,12 @@ function supportsTransitions() {
 }
 var supportsTransitions = supportsTransitions();
 
-	  
+
+function supportsAjaxUpload() {
+    var xhr = new XMLHttpRequest();
+    return !! (xhr && ('upload' in xhr) && ('onprogress' in xhr.upload ));
+};
+
 
 jQuery(document).ready(function($, undefined) {	
 	
@@ -351,6 +356,134 @@ jQuery(document).ready(function($, undefined) {
 			hideAjaxMsg();
 		});		
 		
+		/* Handle file uploads */
+		var dragtimeout = false,
+			formdata = null;
+	
+		function handleFileSelect($elem, file) {
+			
+			var $form = $elem.closest('form'),
+				ajaxEnabled = $elem.closest('.gwa-pcontent').data('ajax') !== 'undefined' && $elem.closest('.gwa-pcontent').data('ajax') === true ? true : false;
+			
+			$elem.closest('.gwa-dnd-upload').find('.gwa-dnd-upload-label p:first').text(function() {return file.name ? file.name +' ('+file.size+' bytes)' : file});
+			
+			if ( !supportsAjaxUpload() ) return;
+			
+			formdata = new FormData();
+			
+			$form.find(':input').each(function(index, element) {
+				
+				formdata.append('action' , 'go_pricing_ajax_action');	
+				switch(element.type) {
+					
+					case 'file' : 
+					
+						formdata.append(element.name , file);
+						break;
+						
+					default : 
+
+						formdata.append(element.name , $(element).val());
+
+				}
+				
+			});
+			
+			if ( !ajaxEnabled ) return;	
+
+			$.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+				
+				if ($goPricingAdmin.find('form')[0].name != "impex-form" || ( $goPricingAdmin.find('form')[0].name == "impex-form"  && $goPricingAdmin.find('[name="_action_type"]').val() != 'import' ) ) {
+					options = originalOptions;
+					return;
+				}
+				options.global = false;	
+				options.processData = false;
+				options.contentType = false;
+				options.data = formdata;
+				options.xhr = function () {
+
+				var xhr = new window.XMLHttpRequest();
+				xhr.upload.addEventListener('progress', function(e){
+					if (e.lengthComputable) {
+						var percentComplete = Math.round( e.loaded / e.total * 100),						
+							$label = $elem.closest('.gwa-dnd-upload').find('.gwa-dnd-upload-label p:first');
+						
+						if (!$label.find('span').length) {
+							$('<span />', { 'html' : ' - ' + percentComplete + '%' }).appendTo($label);
+						} else {
+							$label.find('span').html(' - ' + percentComplete + '%' );
+						}
+					
+						$elem.closest('.gwa-dnd-upload').find('.gwa-dnd-upload-label p:first');
+					}
+				}, false);
+				return xhr;																	
+				}
+			});
+
+			$form.submit();
+			
+		};
+		
+		$goPricingAdmin.on('dragover dragleave drop', '.gwa-dnd-upload', function(e) {
+			
+			var $this = $(this), 
+				$input = $this.find('input[type="file"]'),
+				ajaxEnabled = $this.closest('.gwa-pcontent').data('ajax') !== 'undefined' && $this.closest('.gwa-pcontent').data('ajax') === true ? true : false;
+				
+			e.preventDefault();
+			e.stopPropagation();			
+			
+			if ( !supportsAjaxUpload() || !ajaxEnabled ) return;	
+			
+			switch (e.type) {
+				
+				case 'dragover' : 
+
+					clearTimeout(dragtimeout);				
+					if (!$this.hasClass('gwa-current')) $this.addClass('gwa-current');
+					break;
+					
+				case 'dragleave' :
+
+					dragtimeout = setTimeout(function(){
+						$this.removeClass('gwa-current');
+					},50);								 	
+					break;
+					
+				case 'drop' : 
+				
+					clearTimeout(dragtimeout);
+					$this.removeClass('gwa-current');
+					var file = (e.originalEvent.target.files || e.originalEvent.dataTransfer.files)[0];
+					handleFileSelect($this, file);					
+					break;
+
+			}
+						
+		});
+	
+			
+		$goPricingAdmin.on('change', '.gwa-dnd-upload input[type="file"]', function(e) {
+
+			var $this = $(this),
+				file = this.files ? this.files[0] : this.value.replace('C:\\fakepath\\', ''),
+				$form = $this.closest('form');
+
+			handleFileSelect($this, file);
+
+		});
+
+		
+		$goPricingAdmin.on('click', '[data-action="dnd-upload"]', function(e) {
+			
+			var $this = $(this);
+			e.preventDefault();
+			$this.closest('.gwa-dnd-upload').find('input[type="file"]').trigger('click');
+			
+		});
+
 
 		/* Table Manager */
 
@@ -475,15 +608,14 @@ jQuery(document).ready(function($, undefined) {
 		$(window).on('scroll',function() { 
 		
 			if ($goPricingAdmin.find('#go-pricing-table-manager').length) {
-				if ($(document).scrollTop()-$('#go-pricing-table-manager').offset().top>=0 &&  $(document).scrollTop()- $('.gwa-thumbs').height()<0) {
-					$('.gwa-thumbs-assets').css({'top': $(document).scrollTop()-$('#go-pricing-table-manager').offset().top});
-				} else if ( $(document).scrollTop()-$('.gwa-thumbs').height()>=0) {
-					$('.gwa-thumbs-assets').css({'top': $('.gwa-thumbs').height()-$('.gwa-thumbs-assets').outerHeight()-20});
-				} else { 
+				if ($(document).scrollTop()-$('.gwa-thumbs').offset().top+$('.gwa-ptopbar').outerHeight()+$('#wpadminbar').outerHeight()>=0 && $(document).scrollTop()-$('.gwa-thumbs').offset().top+$('.gwa-ptopbar').outerHeight()+$('#wpadminbar').outerHeight()+$('.gwa-thumbs-assets').outerHeight()+20<$('.gwa-thumbs').outerHeight()-20) {
+					$('.gwa-thumbs-assets').css({'top': $(document).scrollTop()-$('.gwa-thumbs').offset().top+$('.gwa-ptopbar').outerHeight()+$('#wpadminbar').outerHeight()});
+				} else if ($(document).scrollTop()-$('.gwa-thumbs').offset().top+$('.gwa-ptopbar').outerHeight()+$('#wpadminbar').outerHeight()+$('.gwa-thumbs-assets').outerHeight()+20>=$('.gwa-thumbs').outerHeight()-20){
+					$('.gwa-thumbs-assets').css({'top': $('.gwa-thumbs').outerHeight()-$('.gwa-thumbs-assets').outerHeight()-40});
+				} else {
 					$('.gwa-thumbs-assets').css({'top': 0});
-				}
-			}
-				
+				}				
+			}				
 
 		});
 		
@@ -667,12 +799,17 @@ jQuery(document).ready(function($, undefined) {
 		});
 				
 		/* Show & hide thumb assets */
-		$goPricingAdmin.on('mouseenter mouseleave', '.gwa-assets-nav a', function(e) {
-			var $this = $(this);	
+		$goPricingAdmin.on('mouseenter mouseleave', '.gwa-assets-nav a, .gwa-col-assets-nav-main a', function(e) {
+			var $this = $(this),
+				isSpan = $this.find('span').length ? true : false, 
+				$elem = isSpan ? $this.find('span') : $this.find('i'),
+				$siblings = isSpan ? $elem.closest('a').siblings().find('span') : $elem.closest('a').siblings().find('i');
+				
 			if (e.type=='mouseenter') {
-				$this.find('span').css('opacity',1).end().siblings().find('span').css('opacity',0.35)
+				$elem.css('opacity',1);
+				$siblings.css('opacity',0.35);
 			} else if (e.type=='mouseleave') {
-				$this.siblings().find('span').css('opacity',1)
+				$siblings.css('opacity',1);
 			};
 		});
 		
@@ -687,10 +824,7 @@ jQuery(document).ready(function($, undefined) {
 				$form = $this.closest('.gwa-wrap').find('form'), 
 				$actionType = $form.find('#action-type');
 			
-			
-				
-			if ($goPricingAdmin.find('#go-pricing-table-manager').length) {
-			
+			if ($goPricingAdmin.find('#go-pricing-table-manager').length) {			
 				
 				if (typeof $this.data('action') !== 'undefined') {		
 					if ($this.data('action')=='create') { 
@@ -719,7 +853,11 @@ jQuery(document).ready(function($, undefined) {
 							$actionType.val('order');			
 							$form.submit();
 						}
-					}					
+					}
+					if ($this.data('action')=='export') {
+						$actionType.val('export');
+						$form.submit();
+					}										
 					if ($this.data('action')=="select") { selectThumbs(); }		
 	
 				}
@@ -737,11 +875,9 @@ jQuery(document).ready(function($, undefined) {
 		$goPricingAdmin.on('submit', '#go-pricing-form', function(e) {
 									
 			var $this=$(this), $box = $this.closest('.gwa-pcontent');
-				/*$this.find('*:focus').trigger('blur');*/
 				formName = typeof $this.attr('name') !== 'undefined' ? $this.attr('name') : null, 
 				ajaxEnabled = typeof $box.data('ajax') !== 'undefined' && $box.data('ajax') === true ? true : false;
 				
-			
 			if (ajaxEnabled === true ) showLoader(true);
 
 			if (!formName || !ajaxEnabled) return;
@@ -751,7 +887,7 @@ jQuery(document).ready(function($, undefined) {
 			/* Table manager page */
 			if (formName == "tm-form") {
 				var $action_type=$this.find('[name="_action_type"]');
-				if ( $action_type.length && ( $action_type.val() != "copy" && $action_type.val() != "delete" && $action_type.val() != "order" ) ) return;
+				if ( $action_type.length && ( $action_type.val() != "copy" && $action_type.val() != "delete" && $action_type.val() != "order"  && $action_type.val() != "export" ) ) return;
 			}			
 			
 			/* Table editor page */
@@ -759,7 +895,13 @@ jQuery(document).ready(function($, undefined) {
 				$goPricingAdmin.find('.go-pricing-col').each(function(index, element) {
 				});
 			}
-		
+			
+			/* Import export page */
+			if (formName == "impex-form" && !supportsAjaxUpload()) {
+				hideLoader();
+				return;
+			}
+						
 			ajaxRq = $.ajax({  
 				type: 'post',
 				url: ajaxurl, 
@@ -769,14 +911,15 @@ jQuery(document).ready(function($, undefined) {
 				hideLoader();
 				$goPricingAdmin.find('#result').remove();
 			}).fail(function(jqXHR, textStatus) {
-				showAjaxMsg('<p><strong>'+$goPricingAdmin.data('ajaxerror')+'</strong></p>', 'error');					
-			}).done(function(data) {
+				showAjaxMsg('<p><strong>'+$goPricingAdmin.data('ajaxerror')+'</strong></p>', 'error');
+				
+			}).done(function(data, textStatus, jqXHR) {
+								
+				if (data == 0) showAjaxMsg('<p><strong>'+GoPricingL10n.ajax_error+'</strong></p>', 'error');
 
 				var $ajaxResponse=$('<div />', { 'class':'ajax-response', 'html' : data });
-				
-				if ( $ajaxResponse.find('#result').length && typeof $ajaxResponse.find('#result')[0].className !== "undefined" ) {
-					showAjaxMsg($ajaxResponse.find('#result').html(), $ajaxResponse.find('#result')[0].className)				
-				};
+			
+				if ($ajaxResponse.find('#download_url').length) window.location.href = $ajaxResponse.find('#download_url').text();
 				
 				/* Page specific codes */
 				
@@ -790,8 +933,8 @@ jQuery(document).ready(function($, undefined) {
 						$goPricingAdmin.find('#go-pricing-table-manager .gwa-abox-title .gwa-info').html( $ajaxResponse.find('#go-pricing-table-manager .gwa-abox-title .gwa-info').html());
 						getThumbIndex();
 						loadThumbInview();
-					};					
-					return;
+					};
+					
 				}
 				
 				if (formName == "te-form") {
@@ -800,8 +943,7 @@ jQuery(document).ready(function($, undefined) {
 						$this.prepend('<input type="hidden" name="postid" value="'+$ajaxResponse.find('#postid').text()+'">');
 						$goPricingAdmin.find('[data-popup="live-preview-edit"]').data('id', $ajaxResponse.find('#postid').text());
 						$goPricingAdmin.find('[data-popup="live-preview-edit"]').data('popup-subtitle', $goPricingAdmin.find('[name="name"]').val());
-						$('[data-popup="live-preview-edit"]').removeAttr('data-alert');
-						
+						$goPricingAdmin.find('[data-popup="live-preview-edit"]').data('alert', '');
 									
 						if (window.history.replaceState) {
 							history.replaceState({
@@ -812,24 +954,29 @@ jQuery(document).ready(function($, undefined) {
 		
 						};
 					};
-
-
-					return;
-					
-
 					
 				};
 	
 				if (formName == "import-form" || formName == "impex-form") {
+					
+					formdata = false;
+					
 					if ( $ajaxResponse.find('.gwa-pcontent').length ) {
 						$('.gwa-wrap').find('.gwa-pcontent').html( $ajaxResponse.find('.gwa-pcontent').html() )
 					}
-					if ( $ajaxResponse.find('.gwa-ptopbar').length ) {
+
+					if ( $ajaxResponse.find('.gwa-ptopbar').length && $ajaxResponse.find('.gwa-ptopbar').html() != $ajaxResponse.find('.gwa-ptopbar').html() ) {
 						$('.gwa-wrap').find('.gwa-ptopbar').html( $ajaxResponse.find('.gwa-ptopbar').html() )
-					}					
+					}										
 					$goPricingAdmin.find('select').trigger('change');
 				};
-			
+				
+				if ( $ajaxResponse.find('#result').length && typeof $ajaxResponse.find('#result')[0].className !== "undefined" ) {
+					setTimeout(function() { 
+						showAjaxMsg($ajaxResponse.find('#result').html(), $ajaxResponse.find('#result')[0].className);
+					}, 5);	
+				};				
+							
 			});
 					
 			return false;
@@ -858,6 +1005,12 @@ jQuery(document).ready(function($, undefined) {
 			var $editor = $goPricingAdmin.find('#go-pricing-column-editor'),
 				$cols = $editor.find('.go-pricing-col'),
 			    colWidth = 0;
+				
+			if ($cols.length) {
+				$editor.find('.go-pricing-col-new').css('margin-top', 48);
+			} else {
+				$editor.find('.go-pricing-col-new').css('margin-top', 10);
+			};
 			
 			for (var x=0; x < $cols.length; x++) {
 				var $elem = $cols.eq(x);
@@ -901,8 +1054,7 @@ jQuery(document).ready(function($, undefined) {
 					start: function( event, ui ) { 
 						ui.item.closest('.go-pricing-cols').css('height', ui.item.outerHeight(true))
 						ui.item.siblings('.go-pricing-col').css('opacity',0.5)
-						ui.item.next().css('height',ui.item.height()-10); 
-						
+						ui.placeholder.css('height', ui.item.outerHeight(true)-59)						
 					},
 					stop: function( event, ui ) { ui.item.siblings().css('opacity',1) },
 					update: function( event, ui ) { 
@@ -914,7 +1066,7 @@ jQuery(document).ready(function($, undefined) {
 			};			
 		};
 		
-		function setSytle($elem) {
+		$.setSytle = function($elem) {
 			
 			var mainparent = $goPricingAdmin.find('.go-pricing-cols');
 			var html2=[];
@@ -965,7 +1117,7 @@ jQuery(document).ready(function($, undefined) {
 
 		$goPricingAdmin.on('change', 'select[name*="[col-style-type]"]', function(e, force) {
 			var $this = $(this), $parentCol = $this.closest('.go-pricing-col'), family = $parentCol.find('select[name="col-style-family"]').val();
-			if (($this).is(':visible') || force === true) setSytle($this);
+			if (($this).is(':visible') || force === true) $.setSytle($this);
 		});
 		
 		
@@ -975,7 +1127,7 @@ jQuery(document).ready(function($, undefined) {
 			} 
 		});
 
-		setSytle();
+		$.setSytle();
 		
 
 
@@ -994,6 +1146,7 @@ jQuery(document).ready(function($, undefined) {
 					$newCol.find('select, textarea').each(function(index, element) {
 						$(element).val($parentCol.find('select, textarea').eq(index).val())
 					});
+					$newCol.find('.gwa-col-assets *').trigger('mouseleave');
 					setColIndex();
 				};					
 			} else if ($this.data('action')=="expand-col") {
@@ -1030,11 +1183,14 @@ jQuery(document).ready(function($, undefined) {
 					hideLoader();
 				}).fail(function(jqXHR, textStatus) {
 					
-				}).done(function(data) {
+				}).done(function(data, textStatus, jqXHR) {
+								
+					if (data == 0) showAjaxMsg('<p><strong>'+GoPricingL10n.ajax_error+'</strong></p>', 'error');
+
 					$goPricingAdmin.find('.go-pricing-col').remove();
 					$(data).insertBefore($goPricingAdmin.find('.go-pricing-col-new'));
 					setColIndex();
-					setSytle();
+					$.setSytle();
 				});			
 			
 		}
@@ -1049,7 +1205,7 @@ jQuery(document).ready(function($, undefined) {
 				$this.removeClass('gwa-current');
 			} else {
 				if ($cols.length==10) {
-					alert( 'You have reached the maximum number of columns');
+					alert( GoPricingL10n.warning_maxcol );
 					return;
 				}
 				$this.data('param', editorParams);
@@ -1058,7 +1214,12 @@ jQuery(document).ready(function($, undefined) {
 				$.ajax({  
 					type: 'post',
 					url: ajaxurl, 
-					data: $.param({ action: 'go_pricing_ajax_action', _action :'table_column', _nonce : $this.closest('form').find("#_nonce").val(), param : $this.data('param') }),
+					data: $.param({ 
+						action: 'go_pricing_ajax_action', 
+						_action :'table_column', 
+						_nonce : $this.closest('form').find("#_nonce").val(), 
+						param : $this.data('param')
+					}),
 					beforeSend: function () {
 						showLoader(true);
 					}
@@ -1066,11 +1227,14 @@ jQuery(document).ready(function($, undefined) {
 					hideLoader();
 				}).fail(function(jqXHR, textStatus) {
 					
-				}).done(function(data) {
+				}).done(function(data, textStatus, jqXHR) {
+								
+					if (data == 0) showAjaxMsg('<p><strong>'+GoPricingL10n.ajax_error+'</strong></p>', 'error');
+
 					$(data).insertBefore($this);
 					setColIndex();
 					setSortableCols();
-					setSytle();
+					$.setSytle();
 				});			
 				e.preventDefault();	
 			};
@@ -1205,7 +1369,10 @@ jQuery(document).ready(function($, undefined) {
 					hideLoader();
 				}).fail(function(jqXHR, textStatus) {
 					
-				}).done(function(data) {
+				}).done(function(data, textStatus, jqXHR) {
+								
+					if (data == 0) showAjaxMsg('<p><strong>'+GoPricingL10n.ajax_error+'</strong></p>', 'error');
+
 					var $response = $('<div />', { 'html' : data });
 					$response.find('.gwa-col-box').css('background', '#e4f5ff').appendTo($parentBoxWrap);
 					setTimeout(function() { 
@@ -1246,9 +1413,16 @@ jQuery(document).ready(function($, undefined) {
 		$goPricingAdmin.on('click', '.gwa-img-upload-media-remove', function(e) {
 			var $this = $(this), 
 				$parent = $this.closest('.gwa-img-upload'),
-				$input = $parent.find('input[type="text"]');
-				$input.val($this.val());			
-			
+				$input = $parent.find('input[type="text"]'),
+				$input_alt = $parent.find('input[data-attr="alt"]'),
+				$input_height = $parent.find('input[data-attr="height"]'),
+				$input_width = $parent.find('input[data-attr="width"]');				
+
+			$input.val($this.val());
+			$input_alt.val($this.val());
+			$input_height.val($this.val());
+			$input_width.val($this.val());				
+
 			if ($this.closest('.gwa-img-upload-media').find('span').length) $this.closest('.gwa-img-upload-media').find('.gwa-img-upload-media-popup').unwrap().remove();
 			$this.closest('.gwa-img-upload-media').find('select').remove();
 			$this.closest('.gwa-img-upload-media').css('display','none');
@@ -1263,11 +1437,11 @@ jQuery(document).ready(function($, undefined) {
 				code = e.keyCode || e.which,
 				result = 0;
 				
-				$media.find('select option').each(function(index, element) {
-					if (element.value == $this.val()) result = 1;
-				});
-				
-				if (result==0) $media.find('select').remove();
+			$media.find('select option').each(function(index, element) {
+				if (element.value == $this.val()) result = 1;
+			});
+			
+			if (result==0) $media.find('select').remove();
 					
 			if ((e.type == 'keydown' && code == 13) || e.type == 'change') {
 				if ($this.val() != '') {
@@ -1291,7 +1465,7 @@ jQuery(document).ready(function($, undefined) {
 						$parent.find('.gwa-input-btn').hide();
 						
 					}
-					newImg.onerror=function(){ alert('Invalid image!'); $media.find('a').trigger('click'); $this.val(''); }
+					newImg.onerror=function(){ alert(GoPricingL10n.warning_invalid_imge); $media.find('a').trigger('click'); $this.val(''); }
 					newImg.src=$(this).val();
 				} else {
 					$parent.find('.gwa-input-btn').show();
@@ -1306,22 +1480,33 @@ jQuery(document).ready(function($, undefined) {
 		$goPricingAdmin.on('change', '.gwa-img-upload select', function(e) {
 			var $this = $(this), 
 				$parent = $this.closest('.gwa-img-upload'),
-				$input = $parent.find('input[type="text"]');
-				$input.val($this.val()).trigger('change');
+				$input = $parent.find('input[type="text"]'),
+				$input_alt = $parent.find('input[data-attr="alt"]'),
+				$input_height = $parent.find('input[data-attr="height"]'),
+				$input_width = $parent.find('input[data-attr="width"]');				
+				
+			$input.val($this.val()).trigger('change');
+			$input_width.val($this.find('option:selected').data('width') !== undefined ? $this.find('option:selected').data('width') : '');
+			$input_height.val($this.find('option:selected').data('height') !== undefined ? $this.find('option:selected').data('height') : '');
+			
 		});
 		
 		$goPricingAdmin.on('click', '[data-action="img-upload"], [data-action="file-upload"]', function(e) {
 			var $this = $(this),
 				$parent = $this.closest('.gwa-input-btn');
 				type = $this.data('file-type') !== undefined ? $this.data('file-type') : 'image';
-				
+			
 			if ($this.data('action') == "img-upload") {
 				$parent = $this.closest('.gwa-img-upload'),
 				$media = $parent.find('.gwa-img-upload-media'),
 				$media.find('.gwa-img-upload-media-remove').trigger('click');
-			} 
+			}
+			
 			$input = $parent.find('input[type="text"]');
-				
+			$input_alt = $parent.find('input[data-attr="alt"]');
+			$input_height = $parent.find('input[data-attr="height"]');
+			$input_width = $parent.find('input[data-attr="width"]');
+							
 			if ( typeof wp.media != 'undefined' ) {
 				var file_frame = wp.media({
 					title: 'Select an Image',
@@ -1346,17 +1531,24 @@ jQuery(document).ready(function($, undefined) {
 							break;
 														
 						case 'image' :
-						
+
+							if (typeof file_frame.state().get('selection').first().toJSON().alt !== 'undefined' && typeof file_frame.state().get('selection').first().toJSON().title !== 'undefined' && $input_alt.length) {
+								var alt = file_frame.state().get('selection').first().toJSON().alt != '' ? file_frame.state().get('selection').first().toJSON().alt : file_frame.state().get('selection').first().toJSON().title;
+								$input_alt.val(alt);
+							}
+							
 							var sizes = typeof file_frame.state().get('selection').first().toJSON().sizes !== 'undefined' ? file_frame.state().get('selection').first().toJSON().sizes : null,
 								optsHtml='';
 							
 							for (var x in sizes) {
-								optsHtml += '<option value="'+sizes[x].url+'"'+ ( x == 'full' ? ' selected="selected"' : '' ) +'>'+x+' ('+sizes[x].width+'x'+sizes[x].height+')</option>';
+								optsHtml += '<option data-width="'+sizes[x].width+'" data-height="'+sizes[x].height+'" value="'+sizes[x].url+'"'+ ( x == 'full' ? ' selected="selected"' : '' ) +'>'+x+' ('+sizes[x].width+'x'+sizes[x].height+')</option>';
 							};
 								
 							if (optsHtml != '') $('<select>', { html : optsHtml, style : 'margin-bottom:0;' }).appendTo($media);
 		
 							$input.val(file_frame.state().get('selection').first().toJSON().url).trigger('change');
+							$input_height.val(file_frame.state().get('selection').first().toJSON().height);
+							$input_width.val(file_frame.state().get('selection').first().toJSON().width);
 							break;
 						
 					}
@@ -1370,7 +1562,6 @@ jQuery(document).ready(function($, undefined) {
 		});			
 		
 		/* Img selector */
-		
 		$goPricingAdmin.on('change', '.gwa-img-selector', function(e) {
 			var $this = $(this), 
 				$media = $this.closest('td').find('.gwa-img-selector-media'),
@@ -1384,7 +1575,7 @@ jQuery(document).ready(function($, undefined) {
 						if (!$media.length)	$('<div>', { 'class' : 'gwa-img-selector-media' }).appendTo($this.closest('td'));
 						$('<img>', { src : newImg.src }).prependTo($this.closest('td').find('.gwa-img-selector-media'));
 					}
-					newImg.onerror=function(){ alert('Invalid image!'); }
+					newImg.onerror=function(){ alert(GoPricingL10n.warning_invalid_imge); }
 					newImg.src=imgData;				
 			} else {
 				$this.closest('td').find('.gwa-img-selector-media img').remove();
@@ -1447,11 +1638,15 @@ jQuery(document).ready(function($, undefined) {
 				$td = $this.closest('td'), 
 				$tr = $this.closest('tr'), 
 				$aboxContent = $this.closest('.gwa-abox-content'),
+				$popupContent = $this.closest('.gwa-popup-content'),
 				$tooltip = $td.find('.gwa-table-tooltip'),
-				$help = $this.closest('tr').find('.gwa-abox-info');
+				$help = $this.closest('tr').find('.gwa-abox-info'),
+				contentH = $aboxContent.height() > $popupContent.height() ? $aboxContent.height() : $popupContent.height();
 			
 
 			if (e.type == 'focusin' && $help.length) {
+
+			
 
 				if (!$tooltip.length) {
 					
@@ -1465,18 +1660,20 @@ jQuery(document).ready(function($, undefined) {
 
 					setTimeout(function() { 
 						$tooltip.addClass('gwa-visible');
-					}, 10);					
-				} else {
-					$tooltip.addClass('gwa-visible');
-				}
-				
-				if ($aboxContent.height()-$tr.position().top == 50 && $aboxContent.closest('#gwa-editor-popup-wrap').length) {
-					$tooltip.addClass('gwa-tooltip-last');
-				}
+					}, 10);
+				} 
 				
 				if ($this.closest('.gwa-popup').length && $tr.outerWidth(true)-$td.outerWidth(true)-$td.position().left-20 < 300) {
 					$tooltip.css('max-width', $tr.outerWidth(true)-$td.outerWidth(true)-$td.position().left-10)
+				}				
+				
+				if (contentH-$tr.position().top-$tooltip.height()<25 && $aboxContent.closest('#gwa-editor-popup-wrap').length) {
+					$tooltip.addClass('gwa-tooltip-last');
+				} else {
+					$tooltip.removeClass('gwa-tooltip-last');
 				}
+				
+				$tooltip.addClass('gwa-visible');
 				
 			} else if ($help.length) {
 				$tooltip.removeClass('gwa-visible');
@@ -1553,15 +1750,16 @@ jQuery(document).ready(function($, undefined) {
 		
 		/* Search icon */
 		function seachIcon($elem) {
-			if (!$elem) return; 
-			var $parent = $elem.closest('.gwa-search-input'), 
-				$input = $parent.find('input[type="text"]'),
-				$label = $parent.find('span'),
+			if (!$elem) return;
+			
+			var $parent = $elem.closest('.gwa-icon-picker-search'), 
+				$input = $parent.find('[data-action="ip-search"] input[type="text"]'),
+				$inputParent = $parent.find('.gwa-search-input'),
+				$filter = $parent.find('[data-action="ip-filter"]'),
+				$label = $parent.find('.gwa-search-input span'),
 				$iconContainer = $elem.closest('.gwa-icon-picker').find('.gwa-icon-picker-content');
 				resultCnt=0,
 				$icons = $iconContainer.find('.gwa-icon-picker-icon[data-action="ip-select"]');
-
-			if ($input[0].value == '' && !$parent.hasClass('gwa-visible')) return;
 			
 			for (var x = 0; x < $icons.length; x++) {
 
@@ -1569,6 +1767,11 @@ jQuery(document).ready(function($, undefined) {
 					$iconEl = $icon.find('i');
 
 				if (!$iconEl.length) continue;
+
+				if ($filter.length && $filter.val() !== '' && $iconEl.data('filter') != $filter.val()) {
+					$icon.css('display', 'none');
+					continue;
+				}
 				
 				if ($iconEl[0].getAttribute('class').split('-')[1].toLowerCase().indexOf($input[0].value.toLowerCase()) == -1) {
 					$icon.css('display', 'none');
@@ -1579,10 +1782,10 @@ jQuery(document).ready(function($, undefined) {
 
 			}
 			
-			if ($input[0].value !='') { 
-				$parent.addClass('gwa-visible');
+			if (resultCnt != $icons.length) { 
+				$inputParent.addClass('gwa-visible');
 			} else {
-				$parent.removeClass('gwa-visible');
+				$inputParent.removeClass('gwa-visible');
 			}
 			$label[0].innerHTML = '('+resultCnt+')';
 			
@@ -1618,7 +1821,15 @@ jQuery(document).ready(function($, undefined) {
 			this.setAttribute('title', title);
 			e.preventDefault();
 
-		});			
+		});	
+		
+		/* Filter select event */		
+		$goPricingAdmin.on('change','[data-action="ip-filter"]', function(e) {
+
+			seachIcon($(this));
+			e.preventDefault();
+
+		});					
 	
 
 	/* ---------------------------------------------------------------------- /
@@ -1751,7 +1962,7 @@ jQuery(document).ready(function($, undefined) {
 			
 			var cookies = document.cookie.replace(/\s/g, '').split(';'), colors = [];
 			
-			for (var x in cookies) {
+			for (var x = 0;  x < cookies.length; x++) {				
 				var cookie = {
 					key : cookies[x].split('=')[0],
 					value : cookies[x].split('=')[1]
@@ -1762,7 +1973,7 @@ jQuery(document).ready(function($, undefined) {
 				};
 				
 			}
-			
+
 			return colors;
 			
 		}
@@ -1912,7 +2123,18 @@ jQuery(document).ready(function($, undefined) {
 			var $popup = $('#gwa-popup-wrap');
 			if ($popup.length) return;
 			
-			$('body').css('overflow-y', 'hidden');
+			var wrapBeforeWidth = $goPricingAdmin.outerWidth(true),
+				$body = $('body'),
+				$editorPopup = $('#gwa-editor-popup-wrap');
+			
+			$body.css('overflow-y', 'hidden');
+			var	widthDiff = $goPricingAdmin.outerWidth(true)-wrapBeforeWidth;
+			
+			if (widthDiff > 0) {
+				$body.css('padding-right', widthDiff);
+				if ($editorPopup.length) $editorPopup.css('margin-right', widthDiff);
+			}
+
 			$goPricingAdmin.prepend('<div id="gwa-popup-wrap"></div><div id="gwa-popup-overlay"></div>');
 
 			setTimeout(function() { 
@@ -1959,7 +2181,9 @@ jQuery(document).ready(function($, undefined) {
 		function removePopup() {
 			
 			var $popup = $('#gwa-popup-wrap');
-			if (!$popup.length) return;			
+			if (!$popup.length) return;	
+			
+			var $editorPopup = $('#gwa-editor-popup-wrap');		
 			
 			if (!$popup.find('.gwa-popup.gwa-visible').length) {
 				if ($popup.find('.gwa-popup').length) {
@@ -1973,10 +2197,14 @@ jQuery(document).ready(function($, undefined) {
 				
 				if (supportsTransitions) {
 					$('#gwa-popup-overlay').on('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(){ 
-						$('#gwa-popup-overlay').remove(); $('body').css('overflow-y', 'auto');
+						$('#gwa-popup-overlay').remove(); 
+						$('body').css({'overflow-y' : 'auto', 'padding-right' : 0});
+						if ($editorPopup.length) $editorPopup.css('margin-right', 0);
 					});
 				} else {
-					$('#gwa-popup-overlay').remove(); $('body').css('overflow-y', 'auto'); 
+					$('#gwa-popup-overlay').remove(); 
+					$('body').css({'overflow-y' : 'auto', 'padding-right' : 0});
+					if ($editorPopup.length) $editorPopup.css('margin-right', 0);
 				}
 				
 				hideLoader();
@@ -2103,7 +2331,10 @@ jQuery(document).ready(function($, undefined) {
 					popupXHR = null;
 				}).fail(function(jqXHR, textStatus) {
 					if (textStatus != 'abort') showAjaxMsg('<p><strong>'+$goPricingAdmin.data('ajaxerror')+'</strong></p>', 'error');
-				}).done(function(data) {
+				}).done(function(data, textStatus, jqXHR) {
+								
+					if (data == 0) showAjaxMsg('<p><strong>'+GoPricingL10n.ajax_error+'</strong></p>', 'error');
+
 					var $ajaxResponse = $('<div />', { 'class':'ajax-response', 'html' : data });
 					
 					/* load image dinamically */
@@ -2211,33 +2442,17 @@ jQuery(document).ready(function($, undefined) {
 		/* Popup export button event */
 		$goPricingAdmin.on('click', '[data-action="popup-export"]', function(e) {
 			
-			var $this = $(this), 
-				$popup = $('#gwa-popup-wrap'), 
-				$footer = $popup.find('.gwa-popup-footer');
-				
-			$footer.find('.gwa-popup-views').css('display', 'none');
-			$footer.find('.gwa-popup-assets').css('display', 'none');
+			var $this = $(this);
+			$('#go-pricing-tm-select').val($this.data('id'));
+			
+			if ($goPricingAdmin.find('[name="_action_type"]').length) {
+				$goPricingAdmin.find('[name="_action_type"]').val('export').end().find('form').submit();
+			} else {
+				$('<input />', { 'type' : 'hidden', 'id' : 'action-type', 'name' : '_action_type', 'value' : 'export' }).prependTo($goPricingAdmin.find('form'));
+				$goPricingAdmin.find('[name="_action"]').val('table_manager').end().find('form').submit();
+			}
 
-			$('#go-pricing-export-popup').css('display', 'block').closest('.gwa-popup-content').css('overflow', 'auto');
-			$popup.find('iframe.gwa-popup-iframe').css('display', 'none');
-
-		});	
-		
-		/* Popup export close button event */
-		$goPricingAdmin.on('click', 'a.gwa-export-close', function(e) {
-			
-			var $this = $(this), 
-				$popup = $('#gwa-popup-wrap'), 
-				$footer = $popup.find('.gwa-popup-footer');
-			
-			$footer.find('.gwa-popup-views').css('display', 'inline-block');
-			$footer.find('.gwa-popup-assets').css('display', 'block');			
-			
-			$('#go-pricing-export-popup').css('display', 'none').closest('.gwa-popup-content').css('overflow', 'hidden');			
-			$popup.find('iframe.gwa-popup-iframe').css('display', 'block');
-			
-		});						
-		
+		});
 		
 	/* ---------------------------------------------------------------------- /
 		[4.X] POPUP SHROTCODE EDITOR
@@ -2271,8 +2486,6 @@ jQuery(document).ready(function($, undefined) {
 					'separator' : $scFieldEls[x].getAttribute('data-attr-separator') ? $scFieldEls[x].getAttribute('data-attr-separator') : ' '
 				};
 				
-
-
 				switch(dataType) {
 				
 					case 'int' :
@@ -2385,8 +2598,10 @@ jQuery(document).ready(function($, undefined) {
 					}
 				}).fail(function(jqXHR, textStatus) {
 					if (textStatus != 'abort') showAjaxMsg('<p><strong>'+$goPricingAdmin.data('ajaxerror')+'</strong></p>', 'error');
-				}).done(function(data) {
-					
+				}).done(function(data, textStatus, jqXHR) {
+								
+					if (data == 0) showAjaxMsg('<p><strong>'+GoPricingL10n.ajax_error+'</strong></p>', 'error');
+
 					$popup.removeClass('gwa-loading');
 					var $ajaxResponse = $('<div />', { 'class':'ajax-response', 'html' : data });
 					showEditorPopup($ajaxResponse.html());

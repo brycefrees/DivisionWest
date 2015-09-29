@@ -9,10 +9,20 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-global $woocommerce, $product;
+global $woocommerce, $product, $sf_options;
 
 $loading_text = __( 'Adding...', 'swiftframework' );
 $added_text = __( 'Item added', 'swiftframework' );
+$button_class = "add_to_cart_button";
+$ajax_enabled = true;
+
+if ( isset($sf_options['product_addtocart_ajax']) ) {
+	$ajax_enabled = $sf_options['product_addtocart_ajax'];
+}
+
+if ( !$ajax_enabled ) {
+	$button_class = "single_add_to_cart_button";
+}
 
 if ( ! $product->is_purchasable() ) return;
 ?>
@@ -42,19 +52,16 @@ if ( ! $product->is_purchasable() ) return;
 
 	 	<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->id ); ?>" />
 
-	 	<button type="submit" data-product_id="<?php echo esc_attr($product->id); ?>" data-quantity="1" data-default_text="<?php echo esc_attr($product->single_add_to_cart_text()); ?>" data-default_icon="sf-icon-add-to-cart" data-loading_text="<?php echo esc_attr($loading_text); ?>" data-added_text="<?php echo esc_attr($added_text); ?>" class="add_to_cart_button product_type_simple button alt"><?php echo apply_filters('sf_add_to_cart_icon', '<i class="sf-icon-add-to-cart"></i>'); ?><span><?php echo esc_attr($product->single_add_to_cart_text()); ?></span></button>
-		
+	 	<button type="submit" data-product_id="<?php echo esc_attr($product->id); ?>" data-quantity="1" data-default_text="<?php echo esc_attr($product->single_add_to_cart_text()); ?>" data-default_icon="sf-icon-add-to-cart" data-loading_text="<?php echo esc_attr($loading_text); ?>" data-added_text="<?php echo esc_attr($added_text); ?>" class="<?php echo $button_class; ?> product_type_simple button alt"><?php echo apply_filters('sf_add_to_cart_icon', '<i class="sf-icon-add-to-cart"></i>'); ?><span><?php echo esc_attr($product->single_add_to_cart_text()); ?></span></button>
+		<?php echo sf_wishlist_button(); ?>
 
 		<?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
 	</form>
 
 	<?php do_action( 'woocommerce_after_add_to_cart_form' ); ?>
-	
-	
 
 <?php else : ?>
 
-<?php echo sf_wishlist_button(); ?>
 <?php echo sf_wishlist_button('oos'); ?>
 
 <?php endif; ?>

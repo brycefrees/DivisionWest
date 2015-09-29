@@ -50,6 +50,9 @@ $user_id = get_current_user_id();
 												<a href="#" title="<?php esc_attr_e( 'Remove', 'go_pricing_textdomain' ); ?>" class="gwa-img-upload-media-remove"></a>
 												<p><label><span class="gwa-checkbox gwa-checked" tabindex="0"><span></span><input type="checkbox" name="img-responsive" data-attr="class" tabindex="-1" value="gw-go-responsive-img" checked="checked"></span><?php _e( 'Responsive image?', 'go_pricing_textdomain' ); ?></label></p>
 											</div>
+											<input type="hidden" name="img-alt" data-attr="alt" value="">
+											<input type="hidden" name="img-width" data-attr="width" value="">
+											<input type="hidden" name="img-height" data-attr="height" value="">																					
 											<div class="gwa-input-btn"><input type="text" name="img-src" data-attr="src" value=""><a href="#" title="<?php esc_attr_e( 'Add', 'go_pricing_textdomain' ); ?>" data-action="img-upload"><i class="fa fa-plus-circle"></i></a></div>
 										</div>															
 									</td>

@@ -30,7 +30,10 @@
 	/* Add Shipping Calculator to after cart action */
 	add_action( 'woocommerce_after_cart_table', 'woocommerce_shipping_calculator', 10 );
 
-
+	/* Remove totals from cart collaterals */
+	remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cart_totals', 10 );
+	
+	
 	/* REMOVE UNESSECARY WOOCOMMERCE SCRIPTS
     ================================================== */
 	if ( ! function_exists( 'sf_remove_woo_scripts' ) ) {
@@ -41,11 +44,20 @@
 			if ( !sf_theme_supports('swift-smartscript') || is_admin() ) {
 		        return;
 	        }
-
+			
 			// Page Content Meta
 			$page_has_products = false;
 			if ( $post ) {
 				$page_has_products = sf_get_post_meta( $post->ID, 'sf_page_has_products', true );
+			}
+			if ( is_active_widget( false, false, 'woocommerce_top_rated_products', true ) ||
+				 is_active_widget( false, false, 'woocommerce_recently_viewed_products', true ) ||
+				 is_active_widget( false, false, 'woocommerce_recent_reviews', true ) ||
+				 is_active_widget( false, false, 'woocommerce_products', true ) ||
+				 is_active_widget( false, false, 'woocommerce_product_categories', true ) ||
+				 is_active_widget( false, false, 'woocommerce_widget_cart', true )
+			) {
+				$page_has_products = true;
 			}
 
 
@@ -132,6 +144,15 @@
 			if ( $post ) {
 				$page_has_products = sf_get_post_meta( $post->ID, 'sf_page_has_products', true );
 			}
+			if ( is_active_widget( false, false, 'woocommerce_top_rated_products', true ) ||
+				 is_active_widget( false, false, 'woocommerce_recently_viewed_products', true ) ||
+				 is_active_widget( false, false, 'woocommerce_recent_reviews', true ) ||
+				 is_active_widget( false, false, 'woocommerce_products', true ) ||
+				 is_active_widget( false, false, 'woocommerce_product_categories', true ) ||
+				 is_active_widget( false, false, 'woocommerce_widget_cart', true )
+			) {
+				$page_has_products = true;
+			}
 
 			// Check page for WoooCommerce content
 			$body_class = get_body_class();
@@ -200,7 +221,7 @@
     ================================================== */
     if ( ! function_exists( 'sf_woo_product_badge' ) ) {
 	    function sf_woo_product_badge() {
-	    	global $product, $sf_options;
+	    	global $product, $post, $sf_options;
 	    	$postdate 		= get_the_time( 'Y-m-d' );			// Post date
 	    	$postdatestamp 	= strtotime( $postdate );			// Timestamped post date
 	    	$newness 		= $sf_options['new_badge']; 	// Newness in days
@@ -221,8 +242,7 @@
 			    		// If the product was published within the newness time frame display the new badge
 			    		echo '<span class="wc-new-badge">' . __( 'New', 'swiftframework' ) . '</span>';
 
-			    	} else if (!$product->get_price()) {
-
+			    	} else if ( $product->get_price() != "" && $product->get_price() == 0 ) {
 			    		echo '<span class="free-badge">' . __( 'Free', 'swiftframework' ) . '</span>';
 
 			    	}
@@ -238,13 +258,13 @@
     	// this will add the custom meta field to the add new term page
     	?>
     	<div class="form-field">
-			<label><?php _e( 'Hero Image', 'swift-framework-admin' ); ?></label>
+			<label><?php _e( 'Hero Image', 'swiftframework' ); ?></label>
 			<div id="product_cat_hero" style="float:left;margin-right:10px;"><img style="height: auto!important;margin: 10px 0;" src="<?php echo wc_placeholder_img_src(); ?>" width="300px" height="300px" /></div>
 			<div style="line-height:40px;">
 				<input type="hidden" id="product_cat_hero_id" name="product_cat_hero_id" />
-				<button type="button" class="upload_hero_button button"><?php _e( 'Upload/Add image', 'woocommerce' ); ?></button>
-				<button type="button" class="remove_hero_button button"><?php _e( 'Remove image', 'woocommerce' ); ?></button>
-				<p><?php _e( 'This image is used for the hero image on product category pages.', 'swift-framework-admin' ); ?></p>
+				<button type="button" class="upload_hero_button button"><?php _e( 'Upload/Add image', 'swiftframework' ); ?></button>
+				<button type="button" class="remove_hero_button button"><?php _e( 'Remove image', 'swiftframework' ); ?></button>
+				<p><?php _e( 'This image is used for the hero image on product category pages.', 'swiftframework' ); ?></p>
 			</div>
 			<script type="text/javascript">
 
@@ -267,9 +287,9 @@
 
 					// Create the media frame.
 					file_frame = wp.media.frames.downloadable_file = wp.media({
-						title: '<?php _e( 'Choose an image', 'woocommerce' ); ?>',
+						title: '<?php _e( 'Choose an image', 'swiftframework' ); ?>',
 						button: {
-							text: '<?php _e( 'Use image', 'woocommerce' ); ?>',
+							text: '<?php _e( 'Use image', 'swiftframework' ); ?>',
 						},
 						multiple: false
 					});
@@ -312,14 +332,14 @@
 
     	?>
     	<tr class="form-field">
-			<th scope="row" valign="top"><label><?php _e( 'Hero Image', 'woocommerce' ); ?></label></th>
+			<th scope="row" valign="top"><label><?php _e( 'Hero Image', 'swiftframework' ); ?></label></th>
 			<td>
 				<div id="product_cat_hero" style="float:left;margin-right:10px;"><img style="height: auto!important;" src="<?php echo esc_url($image); ?>" width="300px" height="300px" /></div>
 				<div style="line-height:40px;">
 					<input type="hidden" id="product_cat_hero_id" name="product_cat_hero_id" value="<?php echo $hero_id; ?>" />
-					<button type="submit" class="upload_hero_button button"><?php _e( 'Upload/Add image', 'woocommerce' ); ?></button>
-					<button type="submit" class="remove_hero_button button"><?php _e( 'Remove image', 'woocommerce' ); ?></button>
-					<p><?php _e( 'This image is used for the hero image on product category pages.', 'swift-framework-admin' ); ?></p>
+					<button type="submit" class="upload_hero_button button"><?php _e( 'Upload/Add image', 'swiftframework' ); ?></button>
+					<button type="submit" class="remove_hero_button button"><?php _e( 'Remove image', 'swiftframework' ); ?></button>
+					<p><?php _e( 'This image is used for the hero image on product category pages.', 'swiftframework' ); ?></p>
 				</div>
 				<script type="text/javascript">
 
@@ -338,9 +358,9 @@
 
 						// Create the media frame.
 						file_frame_hero = wp.media.frames.downloadable_file = wp.media({
-							title: '<?php _e( 'Choose an image', 'woocommerce' ); ?>',
+							title: '<?php _e( 'Choose an image', 'swiftframework' ); ?>',
 							button: {
-								text: '<?php _e( 'Use image', 'woocommerce' ); ?>',
+								text: '<?php _e( 'Use image', 'swiftframework' ); ?>',
 							},
 							multiple: false
 						});
@@ -427,7 +447,7 @@
 
 		echo '<p class="comment-form-title">'.
 		'<label for="title">' . __( 'Title', 'swiftframework' ) . '</label>'.
-		'<input id="title" name="title" placeholder="' . __( 'Title', 'swiftframework' ) . '" type="text" size="30"  tabindex="5" /></p>';
+		'<input id="title" name="title" placeholder="' . __( 'Title', 'swiftframework' ) . '" type="text" size="30" /></p>';
 
 	}
     add_action( 'comment_form_logged_in_after', 'sf_comments_additional_field' );
@@ -445,7 +465,7 @@
 	add_action( 'comment_post', 'save_comment_meta_data' );
 
 	function sf_extend_comment_add_meta_box() {
-		add_meta_box( 'title', __( 'Comment Metadata', 'swift-framework-admin' ), 'sf_extend_comment_meta_box', 'comment', 'normal', 'high' );
+		add_meta_box( 'title', __( 'Comment Metadata', 'swiftframework' ), 'sf_extend_comment_meta_box', 'comment', 'normal', 'high' );
 	}
 	add_action( 'add_meta_boxes_comment', 'sf_extend_comment_add_meta_box' );
 
@@ -554,16 +574,10 @@
                 $show_cart_count = $sf_options['show_cart_count'];
             }
 
-			$cart_total = "";
-
 			if ( sf_theme_opts_name() == "sf_atelier_options" ) {
 				$cart_total = '<span class="menu-item-title">' . __( "Cart" , "swiftframework" ) . '</span>';
-			}
-
-			if ( $woocommerce->tax_display_cart == 'excl' ) {
-				$cart_total      .= wc_price($woocommerce->cart->get_total());
 			} else {
-				$cart_total      .= wc_price($woocommerce->cart->cart_contents_total + $woocommerce->cart->tax_total);
+				$cart_total = WC()->cart->get_cart_total();
 			}
             $cart_count          = $woocommerce->cart->cart_contents_count;
             $cart_count_text     = sf_product_items_text( $cart_count );
@@ -571,9 +585,15 @@
             $view_cart_icon 	 = apply_filters( 'sf_view_cart_icon', '<i class="ss-view"></i>' );
             $checkout_icon 	 	 = apply_filters( 'sf_checkout_icon', '<i class="ss-creditcard"></i>' );
             $go_to_shop_icon  	 = apply_filters( 'sf_go_to_shop_icon', '<i class="ss-cart"></i>' );
+            $extra_class		 = "";
+            
+            if ( $cart_count != "0" ) {
+            	$extra_class .= "cart-not-empty ";
+            }
+            
             ?>
 
-            <li class="parent shopping-bag-item">
+            <li class="parent shopping-bag-item <?php echo $extra_class; ?>">
 
                 <?php if ( $show_cart_count ) { ?>
 
@@ -602,7 +622,7 @@
 
                                 <div class="bag-contents">
 
-                                    <?php foreach ( $woocommerce->cart->cart_contents as $cart_item_key => $cart_item ) { ?>
+                                    <?php foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) { ?>
 
                                         <?php
                                         $_product     		 = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
@@ -610,9 +630,16 @@
                                         $price 				 = apply_filters( 'woocommerce_cart_item_price', $woocommerce->cart->get_product_price( $_product ), $cart_item, $cart_item_key );
                                         ?>
 
-                                        <?php if ( $_product->exists() && $cart_item['quantity'] > 0 ) { ?>
+                                        <?php  
+										
+										$variation_id_class = '';
+										
+                                        if ( $cart_item['variation_id'] > 0 )
+                                             $variation_id_class = ' product-var-id-' .  $cart_item['variation_id']; 
+										 
+                                        if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_cart_item_visible', true, $cart_item, $cart_item_key ) ) { ?>
 
-                                            	<div class="bag-product clearfix  product-id-<?php echo $cart_item['product_id']; ?>">
+                                            	<div class="bag-product clearfix  product-id-<?php echo $cart_item['product_id']; ?><?php echo $variation_id_class; ?>">
 
                                                 <figure><a class="bag-product-img"
                                                            href="<?php echo get_permalink( $cart_item['product_id'] ); ?>"><?php echo $_product->get_image(); ?></a>
@@ -629,8 +656,8 @@
                                                         class="bag-product-quantity"><?php _e( 'Quantity:', 'swiftframework' ); ?> <?php echo $cart_item['quantity']; ?></div>
                                                 </div>
 
-												<a href="#" class="remove-product remove" data-ajaxurl="<?php echo admin_url( 'admin-ajax.php' ); ?>" data-product-id="<?php echo $cart_item['product_id'];?>" data-product-qty="<?php echo $cart_item['quantity'];?>" title="<?php echo __( 'Remove this item', 'swiftframework' ); ?>">&times;</a>
-
+												<a href="#" class="remove-product remove" data-ajaxurl="<?php echo admin_url( 'admin-ajax.php' ); ?>" data-product-id="<?php echo $cart_item['product_id'];?>"   data-variation-id="<?php echo $cart_item['variation_id'];?>"     data-product-qty="<?php echo $cart_item['quantity'];?>" title="<?php echo __( 'Remove this item', 'swiftframework' ); ?>">&times;</a>
+ 
                                             </div>
 
                                         <?php } ?>
@@ -642,8 +669,12 @@
                                 <?php if ( sf_theme_opts_name() == "sf_atelier_options" ) { ?>
 
 				                    <div class="bag-total">
+				                    	<?php if ( class_exists( 'Woocommerce_German_Market' ) ) { ?>
+					                    <span class="total-title"><?php _e( "Total incl. tax", "swiftframework" ); ?></span>
+					                    <?php } else { ?>
 					                    <span class="total-title"><?php _e( "Total", "swiftframework" ); ?></span>
-										<span class="total-amount"><?php echo $cart_total; ?></span>
+					                    <?php } ?>
+										<span class="total-amount"><?php echo WC()->cart->get_cart_total(); ?></span>
 				                    </div>
 
 			                    <?php } ?>
@@ -761,7 +792,12 @@
     } else {
         add_filter( 'loop_shop_per_page', create_function( '$cols', 'return  ' . $products_per_page . ';' ) );
     }
-
+   
+    
+    /* CROSS SELLS COLUMNS
+    ================================================== */
+    add_filter( 'woocommerce_cross_sells_columns', create_function( '$cross_sells_cols', 'return 4;' ) );
+   
 
     /* SHOP LAYOUT OPTIONS
     ================================================== */
@@ -844,7 +880,7 @@
 		    }
 			echo '<a href="#" class="sf-mobile-shop-filters-link">' . __( "Filters" , "swiftframework" ) . '</a>';
 		}
-		add_action( 'woocommerce_before_shop_loop', 'sf_mobile_filters_link', 25 );
+		add_action( 'woocommerce_before_shop_loop', 'sf_mobile_filters_link', 0 );
 	}
     if ( ! function_exists( 'sf_mobile_shop_filters' ) ) {
 	    function sf_mobile_shop_filters() {
@@ -855,7 +891,7 @@
 
 			?>
 
-			<div class="sf-mobile-shop-filters">
+			<div class="sf-mobile-shop-filters row">
 				<?php if ( function_exists( 'dynamic_sidebar' ) ) { ?>
                     <?php dynamic_sidebar( 'mobile-woocommerce-filters' ); ?>
                 <?php } ?>
@@ -923,7 +959,17 @@
 
         add_action( 'woocommerce_single_product_summary', 'sf_product_share', 45 );
     }
-
+    
+    
+    /* WOO PRODUCT PAGE BUILDER CONTENT
+    ================================================== */
+    function sf_woo_product_page_builder_content() {
+	?>
+		<div id="product-display-area" class="clearfix">
+			<?php the_content(); ?>		
+		</div>
+	<?php }
+	
 
     /* WOO PRODUCT META
     ================================================== */
@@ -1091,21 +1137,33 @@
 
     		global $wpdb, $woocommerce;
 
-			$id = 0;
+			$id = 0; 
+			$variation_id = 0;
+			
 
             if ( ! empty( $_REQUEST['product_id'] ) ) {
                 $id = $_REQUEST['product_id'];
             }
-
-    		$cart = $woocommerce->cart;
-			$cart_id = $cart->generate_cart_id($id);
-			$cart_item_id = $cart->find_product_in_cart($cart_id);
-
-			if ($cart_item_id) {
-   				$cart->set_quantity($cart_item_id,0);
-   			}
-
-   			$totalamount =  $woocommerce->cart->get_cart_total();
+            
+            if ( ! empty( $_REQUEST['variation_id'] ) ) {
+                $variation_id = $_REQUEST['variation_id'];
+            }
+                                                
+            $cart = $woocommerce->cart;
+            
+            foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+            	
+            	    if ( ($cart_item['product_id'] == $id && $variation_id <= 0) || ($cart_item['variation_id'] == $variation_id && $variation_id > 0 ) ){
+            	   		$cart->set_quantity($cart_item_key,0);	
+					}           
+		
+            }
+            if ( $woocommerce->tax_display_cart == 'excl' ) {
+				$totalamount  = wc_price($woocommerce->cart->get_total());
+			} else {
+				$totalamount  = wc_price($woocommerce->cart->cart_contents_total + $woocommerce->cart->tax_total);
+			} 	
+   			
    			echo $totalamount;
 
 			die();
@@ -1114,6 +1172,7 @@
     	add_action( 'wp_ajax_sf_cart_product_remove', 'sf_cart_product_remove' );
 		add_action( 'wp_ajax_nopriv_sf_cart_product_remove', 'sf_cart_product_remove' );
 	}
+
 
 	/* WOO SHIPPING CALC BEFORE
 	================================================== */
@@ -1125,6 +1184,7 @@
 		add_action( 'woocommerce_before_shipping_calculator', 'sf_cart_shipping_calc_before' );
 	}
 
+
 	/* WOO SHIPPING CALC AFTER
 	================================================== */
 	if ( ! function_exists('sf_cart_shipping_calc_after')){
@@ -1133,5 +1193,26 @@
 		}
 		add_action( 'woocommerce_after_shipping_calculator', 'sf_cart_shipping_calc_after' );
 	}
+	
+	
+	/* WOO VARIATION ADD TO CART BUTTON
+	================================================== */
+	remove_action( 'woocommerce_single_variation', 'woocommerce_single_variation_add_to_cart_button', 20 );
+	function sf_single_variation_add_to_cart_button() {
+		global $product;
+		$loading_text = __( 'Adding...', 'swiftframework' );
+		$added_text = __( 'Item added', 'swiftframework' );
+		?>
+		<div class="variations_button">
+			<?php woocommerce_quantity_input( array( 'input_value' => isset( $_POST['quantity'] ) ? wc_stock_amount( $_POST['quantity'] ) : 1 ) ); ?>
+			<button type="submit" data-product_id="<?php echo esc_attr($product->id); ?>" data-quantity="1" data-default_text="<?php echo esc_attr($product->single_add_to_cart_text()); ?>" data-default_icon="sf-icon-add-to-cart" data-loading_text="<?php echo esc_attr($loading_text); ?>" data-added_text="<?php echo esc_attr($added_text); ?>" class="single_add_to_cart_button button alt"><?php echo apply_filters('sf_add_to_cart_icon', '<i class="sf-icon-add-to-cart"></i>'); ?><span><?php echo esc_attr($product->single_add_to_cart_text()); ?></span></button>
+			<input type="hidden" name="add-to-cart" value="<?php echo absint( $product->id ); ?>" />
+			<input type="hidden" name="product_id" value="<?php echo absint( $product->id ); ?>" />
+			<input type="hidden" name="variation_id" class="variation_id" value="" />
+			<?php echo sf_wishlist_button(); ?>
+		</div>
+		<?php
+	}
+	add_action( 'woocommerce_single_variation', 'sf_single_variation_add_to_cart_button', 20 );
 
 ?>

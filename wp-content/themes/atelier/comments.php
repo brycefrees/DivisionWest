@@ -33,7 +33,7 @@
 			$ping_count = $comment_count = 0;
 			foreach ( $comments as $comment )
 		    get_comment_type() == "comment" ? ++$comment_count : ++$ping_count;
-			if ( ! empty($comments_by_type['comment']) ) : ?>
+			if ( ! empty($comments_by_type['comment']) ) { ?>
 					<?php $total_pages = get_comment_pages_count(); if ( $total_pages > 1 ) : ?>
 						<div id="comments-nav-above" class="comments-navigation">
 							<div class="paginated-comments-links clearfix"><?php paginate_comments_links(array('type'=>'list','prev_text'=> __('<i class="sf-icon-chevron-prev"></i> Previous', 'swiftframework'),
@@ -49,7 +49,14 @@
 								'next_text'    => __('Next <i class="sf-icon-chevron-next"></i>', 'swiftframework'))); ?></div>
 						</div><!-- #comments-nav-below -->
 					<?php endif; ?>
-			<?php endif; /* if ( $comment_count ) */ ?>
+			<?php } if (!empty($comments_by_type['pingback'])) { ?>
+			
+				<h3 class="spb-heading"><span><?php _e("Pingbacks", "swiftframework"); ?></span></h3>
+				<ol id="pingback-list">
+					<?php wp_list_comments('type=pingback&callback=sf_custom_comments'); ?>
+				</ol>
+			
+			<?php } ?>
 
 		<?php endif /* if ( $comments ) */ ?>
 
@@ -69,9 +76,9 @@
 				$req = get_option( 'require_name_email' );
 				$aria_req = ( $req ? " aria-required='true'" : '' );
 				$fields =  array(
-					'author' => '<div class="row"><p class="comment-form-author col-sm-4"><label for="author">' . __( 'Name', 'swiftframework' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . $aria_req . ' /></p>',
-					'email' => '<p class="comment-form-email col-sm-4"><label for="email">' . __( 'Email', 'swiftframework' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '<input id="email" name="email" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) . '" size="30"' . $aria_req . ' /></p>',
-					'url' => '<p class="comment-form-url col-sm-4"><label for="url">' . __( 'Website', 'swiftframework' ) . '</label><input id="url" name="url" type="text" value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" /></p></div>'
+					'author' => '<div class="row"><p class="comment-form-author col-sm-4"><label for="author">' . __( 'Name', 'swiftframework' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . $aria_req . ' placeholder="'.__( 'Author', 'swiftframework' ).'" /></p>',
+					'email' => '<p class="comment-form-email col-sm-4"><label for="email">' . __( 'Email', 'swiftframework' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '<input id="email" name="email" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) . '" size="30"' . $aria_req . ' placeholder="'.__( 'Email', 'swiftframework' ).'" /></p>',
+					'url' => '<p class="comment-form-url col-sm-4"><label for="url">' . __( 'Website', 'swiftframework' ) . '</label><input id="url" name="url" type="text" value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" placeholder="'.__( 'Website', 'swiftframework' ).'" /></p></div>'
 				);
 				$comments_args = array(
 				    'fields'               => apply_filters( 'comment_form_default_fields', $fields ),

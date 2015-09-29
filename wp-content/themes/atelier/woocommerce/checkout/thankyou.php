@@ -55,7 +55,7 @@ if ( $order ) : ?>
 			</li>
 			<li class="total">
 				<?php _e( 'Total:', 'swiftframework' ); ?>
-				<?php echo esc_attr($order->get_formatted_order_total()); ?>
+				<?php echo $order->get_formatted_order_total(); ?>
 			</li>
 			<?php if ( $order->payment_method_title ) : ?>
 			<li class="method">

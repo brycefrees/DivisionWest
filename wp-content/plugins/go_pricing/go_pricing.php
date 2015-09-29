@@ -3,7 +3,7 @@
  * Plugin Name: Go - Responsive Pricing & Compare Tables
  * Plugin URI:  http://granthweb.com/go-pricing
  * Description: The New Generation Pricing Tables. If you like traditional Pricing Tables, but you would like get much more out of it, then this rodded product is a useful tool for you.
- * Version:     3.0.2
+ * Version:     3.1.0
  * Author:      Granth
  * Author URI:  http://granthweb.com/
  * Text Domain: go_pricing_textdomain

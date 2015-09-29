@@ -17,9 +17,8 @@ $general_settings = get_option( self::$plugin_prefix . '_table_settings' );
 // Get temporary postdata
 $data = $this->get_temp_postdata();
 $this->delete_temp_postdata();
-if ( $data === false || empty( $data['result'] ) || empty( $data['data'] ) ) return;
 
-$pricing_table = $data['result'];
+if ( $data === false || empty( $data['data'] ) || empty( $data['file'] ) ) return;
 
 ?>
 <!-- Top Bar -->
@@ -34,7 +33,7 @@ $pricing_table = $data['result'];
 <div class="gwa-pcontent" data-ajax="<?php echo esc_attr( isset( $general_settings['admin']['ajax'] ) ? "true" : "false" ); ?>" data-help="<?php echo esc_attr( isset( $_COOKIE['go_pricing']['settings']['help'][$user_id] ) ? $_COOKIE['go_pricing']['settings']['help'][$user_id] : '' ); ?>">
 	<form id="go-pricing-form" name="import-form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 		<input type="hidden" name="_action" value="import">
-		<input type="hidden" name="import-data" value="<?php echo esc_attr( $data['data'] ); ?>">
+		<input type="hidden" name="import-data" value="<?php echo esc_attr( $data['file'] ); ?>">
 		<?php wp_nonce_field( $this->nonce, '_nonce' ); ?>
 		
 		<!-- Admin Box -->
@@ -48,14 +47,14 @@ $pricing_table = $data['result'];
 				<div class="gwa-abox-content">
 					<table class="gwa-table">							
 						<tr class="go-pricing-group" data-parent="import-export" data-children="export">
-							<th><label><?php _e( 'Select Tables', 'go_pricing_textdomain' ); ?></label></th>
+							<th><label><?php printf ( __( 'Select Tables%s', 'go_pricing_textdomain' ), sprintf( ' <span class="gwa-info">(%d)</span>', is_array( $data['data'] ) ? count( $data['data'] ) : 0 ) ); ?></label></th>
 							<td>
-							<?php if ( !empty( $pricing_table ) ) : ?>
+							<?php if ( !empty( $data['data'] ) ) : ?>
 							<ul class="gwa-checkbox-list">
 								<li><label><span class="gwa-checkbox gwa-checked" tabindex="0"><span></span><input type="checkbox" name="import[]" value="all" checked="checked" class="gwa-checkbox-parent"></span><?php _e( 'All tables', 'go_pricing_textdomain' ); ?></label><span class="gwa-checkbox-list-toggle"></span>
 									<ul class="gwa-checkbox-list">
-										<?php foreach( $pricing_table as $pricing_table_key => $pricing_table ) : ?>
-										<li><label><span class="gwa-checkbox" tabindex="0"><span></span><input type="checkbox" name="import[<?php echo esc_attr( $pricing_table_key ); ?>]" value="<?php echo esc_attr( $pricing_table_key ); ?>"></span><?php echo $pricing_table['name']; ?></label>
+										<?php foreach( $data['data'] as $pricing_table_key => $pricing_table ) : ?>
+										<li><label><span class="gwa-checkbox" tabindex="0"><span></span><input type="checkbox" name="import[<?php echo esc_attr( $pricing_table_key ); ?>]" value="<?php echo esc_attr( $pricing_table_key ); ?>"></span><?php echo $pricing_table; ?></label>
 										<?php endforeach; ?>
 									</ul>
 								</li>	

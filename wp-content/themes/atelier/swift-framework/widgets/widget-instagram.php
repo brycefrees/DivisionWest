@@ -16,7 +16,7 @@
                 'classname'   => 'instagram-widget',
                 'description' => 'Show off your favorite Instagram photos'
             );
-            $this->WP_Widget( 'instagram-widget', 'Swift Framework Instagram Widget', $widget_ops );
+            parent::__construct( 'instagram-widget', 'Swift Framework Instagram Widget', $widget_ops );
         }
 
         function form( $instance ) {
@@ -34,7 +34,7 @@
             ?>
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'swift-framework-admin' ); ?>
+                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'swiftframework' ); ?>
                     :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>"
                        name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
@@ -43,7 +43,7 @@
 
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'instagram_id' ); ?>"><?php _e( 'Instagram ID', 'swift-framework-admin' ); ?>
+                    for="<?php echo $this->get_field_id( 'instagram_id' ); ?>"><?php _e( 'Instagram ID', 'swiftframework' ); ?>
                     :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'instagram_id' ); ?>"
                        name="<?php echo $this->get_field_name( 'instagram_id' ); ?>" type="text"
@@ -53,7 +53,7 @@
 
 			<p>
 			    <label
-			        for="<?php echo $this->get_field_id( 'instagram_token' ); ?>"><?php _e( 'Instagram Token', 'swift-framework-admin' ); ?>
+			        for="<?php echo $this->get_field_id( 'instagram_token' ); ?>"><?php _e( 'Instagram Token', 'swiftframework' ); ?>
 			        :</label>
 			    <input class="widefat" id="<?php echo $this->get_field_id( 'instagram_token' ); ?>"
 			           name="<?php echo $this->get_field_name( 'instagram_token' ); ?>" type="text"
@@ -63,7 +63,7 @@
 			
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number of Photos', 'swift-framework-admin' ); ?>
+                    for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number of Photos', 'swiftframework' ); ?>
                     :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'number' ); ?>"
                        name="<?php echo $this->get_field_name( 'number' ); ?>" type="text"

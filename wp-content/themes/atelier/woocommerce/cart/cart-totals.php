@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<table cellspacing="0">
 
 		<tr class="cart-subtotal">
-			<th><?php _e( 'Cart Subtotal', 'swiftframework' ); ?></th>
+			<th><?php _e( 'Subtotal', 'swiftframework' ); ?></th>
 			<td><?php wc_cart_totals_subtotal_html(); ?></td>
 		</tr>
 

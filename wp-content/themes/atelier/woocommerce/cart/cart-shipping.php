@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		if ( $show_package_details ) {
 			printf( __( 'Shipping #%d', 'swiftframework' ), $index + 1 );
 		} else {
-			_e( 'Shipping and Handling', 'swiftframework' );
+			_e( 'Shipping', 'swiftframework' );
 		}
 	?></th>
 	<td>

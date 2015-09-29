@@ -5,6 +5,10 @@
 
 	<!--// OPEN HEAD //-->
 	<head>
+		
+		<!-- Manually set render engine for Internet Explorer, prevent any plugin overrides -->
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10">
+		
 		<?php
 	        $page_class = "";
 

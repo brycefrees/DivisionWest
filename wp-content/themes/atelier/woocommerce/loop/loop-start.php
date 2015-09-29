@@ -11,6 +11,15 @@
 	$product_multi_masonry = $sf_options['product_multi_masonry'];
 	$product_display_type = $sf_options['product_display_type'];
 	$product_display_gutters = $sf_options['product_display_gutters'];
+	
+	// GET VARIABLES
+	if ( isset($_GET['product_display']) ) {
+		$product_display_type = $_GET['product_display'];
+	}
+	if ( isset($_GET['product_gutters']) ) {
+		$product_display_gutters = $_GET['product_gutters'];
+	}
+	
 	$list_class = "";
 	
 	if ( $product_multi_masonry ) {
@@ -23,7 +32,7 @@
 
 ?>
 <?php if (!$product_display_gutters && ($product_display_type == "gallery" || $product_display_type == "gallery-bordered")) { ?>
-	<div id="products" class="products <?php echo esc_attr($list_class); ?> no-gutters clearfix">
+	<ul id="products" class="products <?php echo esc_attr($list_class); ?> no-gutters clearfix">
 <?php } else { ?>
-	<div id="products" class="products <?php echo esc_attr($list_class); ?> gutters row clearfix">
+	<ul id="products" class="products <?php echo esc_attr($list_class); ?> gutters row clearfix">
 <?php } ?>

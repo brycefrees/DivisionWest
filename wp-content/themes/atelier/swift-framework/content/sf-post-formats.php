@@ -88,8 +88,15 @@
             }
 
             $detail_image = sf_aq_resize( $media_image_url, $media_width, $media_height, true, false );
-            $image_alt    = sf_get_post_meta( $image_id, '_wp_attachment_image_alt', true );
-
+                        
+            $image_meta 		= sf_get_attachment_meta( $image_id );
+            $image_caption = $image_alt = $image_title = $caption_html = "";
+            if ( isset($image_meta) ) {
+            	$image_caption 		= esc_attr( $image_meta['caption'] );
+            	$image_title 		= esc_attr( $image_meta['title'] );
+            	$image_alt 			= esc_attr( $image_meta['alt'] );
+            }
+            
             if ( $detail_image ) {
                 $image = '<img itemprop="image" src="' . $detail_image[0] . '" width="' . $detail_image[1] . '" height="' . $detail_image[2] . '" alt="' . $image_alt . '" />';
             }
@@ -293,6 +300,10 @@
 
             $single_author = $sf_options['single_author'];
             $remove_dates  = $sf_options['remove_dates'];
+            $post_links_match_thumb = false;
+            if ( isset( $sf_options['post_links_match_thumb'] ) ) {
+            	$post_links_match_thumb = $sf_options['post_links_match_thumb'];	
+            }
 
             $post_format = get_post_format( $postID );
             if ( $post_format == "" ) {
@@ -343,6 +354,11 @@
                 $content      = apply_filters( 'the_content', $content );
                 $post_excerpt = $content;
             }
+            $post_permalink_config = 'href="' . $post_permalink . '" class="link-to-post"';
+            if ( $post_links_match_thumb ) {
+            	$link_config = sf_post_item_link();
+            	$post_permalink_config = $link_config['config'];
+            }
             $thumb_type         = sf_get_post_meta( $postID, 'sf_thumbnail_type', true );
             $download_button    = sf_get_post_meta( $postID, 'sf_download_button', true );
             $download_file      = sf_get_post_meta( $postID, 'sf_download_file', true );
@@ -384,11 +400,11 @@
                 $post_item .= '<div class="bold-item-wrap">';
 
                 if ( $show_title == "yes" && $post_format != "quote" && $post_format != "link" ) {
-                    $post_item .= '<h1 itemprop="name headline"><a href="' . $post_permalink . '">' . $post_title . '</a></h1>';
+                    $post_item .= '<h1 itemprop="name headline"><a ' . $post_permalink_config . '>' . $post_title . '</a></h1>';
                 } else if ( $post_format == "quote" ) {
-                    $post_item .= '<div class="quote-excerpt" itemprop="name headline"><a href="' . $post_permalink . '">' . $post_excerpt . '</a></div>';
+                    $post_item .= '<div class="quote-excerpt" itemprop="name headline"><a ' . $post_permalink_config . '>' . $post_excerpt . '</a></div>';
                 } else if ( $post_format == "link" ) {
-                    $post_item .= '<h3 itemprop="name headline"><a href="' . $post_permalink . '">' . $post_title . '</a></h3>';
+                    $post_item .= '<h3 itemprop="name headline"><a ' . $post_permalink_config . '>' . $post_title . '</a></h3>';
                 }
 
                 if ( $show_excerpt == "yes" && $post_format != "quote" ) {
@@ -414,7 +430,7 @@
                 }
 
                 $post_item .= '<div class="details-wrap">';
-                $post_item .= '<a href="' . $post_permalink . '" class="grid-link"></a>';
+                $post_item .= '<a ' . $post_permalink_config . '></a>';
 
                 if ( $post_type == "post" ) {
                     if ( $post_format == "standard" ) {
@@ -426,11 +442,11 @@
                     $post_item .= '<h6>' . $post_type . '</h6>';
                 }
                 if ( $show_title == "yes" && $post_format != "quote" && $post_format != "link" ) {
-                    $post_item .= '<h2 itemprop="name headline"><a href="' . $post_permalink . '">' . $post_title . '</a></h2>';
+                    $post_item .= '<h2 itemprop="name headline">' . $post_title . '</h2>';
                 } else if ( $post_format == "quote" ) {
-                    $post_item .= '<div class="quote-excerpt" itemprop="name headline"><a href="' . $post_permalink . '">' . $post_excerpt . '</a></div>';
+                    $post_item .= '<div class="quote-excerpt" itemprop="name headline">' . $post_excerpt . '</div>';
                 } else if ( $post_format == "link" ) {
-                    $post_item .= '<h3 itemprop="name headline"><a href="' . $post_permalink . '">' . $post_title . '</a></h3>';
+                    $post_item .= '<h3 itemprop="name headline">' . $post_title . '</h3>';
                 }
 
                 if ( sf_theme_opts_name() == "sf_atelier_options" ) {
@@ -451,7 +467,7 @@
 					            $post_item .= '<a href="' . wp_get_attachment_url( $download_file ) . '" class="download-button read-more-button">' . $download_text . '</a>';
 					        }
 					    }
-					    $post_item .= '<a class="read-more-button" href="' . $post_permalink . '">' . __( "Read more", "swiftframework" ) . '</a>';
+					    $post_item .= '<a class="read-more-button" href="' . get_permalink() . '">' . __( "Read more", "swiftframework" ) . '</a>';
 					}
 
 	                if ( $show_details == "yes" ) {
@@ -513,7 +529,7 @@
                 $post_item .= '<div class="blog-details-wrap clearfix">';
 
                 if ( $show_title == "yes" && $post_format != "quote" && $post_format != "link" ) {
-                    $post_item .= '<h3 itemprop="name headline"><a href="' . $post_permalink . '">' . $post_title . '</a></h3>';
+                    $post_item .= '<h3 itemprop="name headline"><a ' . $post_permalink_config . '>' . $post_title . '</a></h3>';
                 }
 
                 if ( $show_details == "yes" && $post_format != "quote" && $post_format != "link" ) {
@@ -546,7 +562,7 @@
                             $post_item .= '<a href="' . wp_get_attachment_url( $download_file ) . '" class="download-button read-more-button">' . $download_text . '</a>';
                         }
                     }
-                    $post_item .= '<a class="read-more-button" href="' . $post_permalink . '">' . __( "Read more", "swiftframework" ) . '</a>';
+                    $post_item .= '<a class="read-more-button" href="' . get_permalink() . '">' . __( "Read more", "swiftframework" ) . '</a>';
                 }
 
                 if ( $show_details == "yes" ) {
@@ -623,7 +639,7 @@
                 }
 
                 if ( $show_title == "yes" && $post_format != "link" && $post_format != "quote" ) {
-                    $post_item .= '<h1 itemprop="name headline"><a href="' . $post_permalink . '">' . $post_title . '</a></h1>';
+                    $post_item .= '<h1 itemprop="name headline"><a ' . $post_permalink_config . '>' . $post_title . '</a></h1>';
                 }
 
                 if ($show_details == "yes" && $post_format != "quote" && $post_format != "link" ) {
@@ -659,7 +675,7 @@
                 }
 
                 if ( $show_read_more == "yes" && $post_format != "quote" && $post_format != "link" ) {
-                    $post_item .= '<a class="read-more-button" href="' . $post_permalink . '">' . __( "Read more", "swiftframework" ) . '</a>';
+                    $post_item .= '<a class="read-more-button" href="' . get_permalink() . '">' . __( "Read more", "swiftframework" ) . '</a>';
                 }
 
                 if ( $show_details == "yes" ) {
@@ -686,6 +702,9 @@
 				if ( sf_theme_opts_name() == "sf_atelier_options" && $show_details == "yes" && $blog_type != "timeline" ) {
 					$post_item .= '</div>'; // close post-content-wrap
 				}
+				
+//				$post_item = sf_get_content_view( 'post', 'standard', true );
+//				return $post_item;
             }
 
             return $post_item;
@@ -863,14 +882,20 @@
                 $link_config = 'href="' . $thumb_link_url . '" class="link-to-url" target="_blank"';
                 $item_icon   = apply_filters( 'sf_post_link_icon', "ss-link" );
             } else if ( $thumb_link_type == "lightbox_thumb" ) {
-                $link_config = 'href="' . $thumb_img_url . '" class="lightbox" data-rel="ilightbox[posts]"';
+            	$lightbox_id = rand();
+                if ( $thumb_img_url != "" ) {
+                    $link_config = 'href="' . $thumb_img_url . '" class="lightbox" data-rel="ilightbox['.$lightbox_id.']"';
+                }
                 $item_icon   = apply_filters( 'sf_post_lightbox_icon', "ss-view" );
             } else if ( $thumb_link_type == "lightbox_image" ) {
                 $lightbox_image_url = '';
                 foreach ( $thumb_lightbox_image as $image ) {
                     $lightbox_image_url = $image['full_url'];
                 }
-                $link_config = 'href="' . $lightbox_image_url . '" class="lightbox" data-rel="ilightbox[posts]"';
+                $lightbox_id = rand();
+                if ( $lightbox_image_url != "" ) {
+                    $link_config = 'href="' . $lightbox_image_url . '" class="lightbox" data-rel="ilightbox['.$lightbox_id.']"';
+                }
                 $item_icon   = apply_filters( 'sf_post_lightbox_icon', "ss-view" );
             } else if ( $thumb_link_type == "lightbox_video" ) {
                 $link_config = 'data-video="' . $thumb_lightbox_video_url . '" href="#" class="fw-video-link"';
@@ -915,6 +940,10 @@
             global $sf_options;
             $single_author = $sf_options['single_author'];
             $remove_dates  = $sf_options['remove_dates'];
+            $post_links_match_thumb = false;
+            if ( isset( $sf_options['post_links_match_thumb'] ) ) {
+            	$post_links_match_thumb = $sf_options['post_links_match_thumb'];	
+            }
 
             $post_author    = get_the_author_link();
             $post_date      = get_the_date();
@@ -929,10 +958,20 @@
             } else {
                 $post_excerpt = sf_excerpt( $excerpt_length );
             }
+            $post_permalink_config = 'href="' . $post_permalink . '" class="link-to-post"';
+            if ( $post_links_match_thumb ) {
+            	$link_config = sf_post_item_link();
+            	$post_permalink_config = $link_config['config'];
+            }
 
-            $thumb_width = 360;
-            $thumb_height = 270;
-
+            $thumb_width = apply_filters('sf_recent_post_item_thumb_width', 360);
+            $thumb_height = apply_filters('sf_recent_post_item_thumb_height', 270);
+			
+			if ( $display_type == "standard-row" ) {
+				$thumb_width = apply_filters('sf_recent_post_item_thumb_width', 400);
+				$thumb_height = apply_filters('sf_recent_post_item_thumb_height', 300);
+			}
+			
             // MEDIA CONFIG
             $thumb_link_type          = sf_get_post_meta( $post->ID, 'sf_thumbnail_link_type', true );
             $thumb_link_url           = sf_get_post_meta( $post->ID, 'sf_thumbnail_link_url', true );
@@ -951,14 +990,20 @@
                 $link_config = 'href="' . $thumb_link_url . '" class="link-to-url" target="_blank"';
                 $item_icon   = apply_filters( 'sf_post_link_icon', "ss-link" );
             } else if ( $thumb_link_type == "lightbox_thumb" ) {
-                $link_config = 'href="' . $thumb_img_url . '" class="lightbox" data-rel="ilightbox[posts]"';
+            	$lightbox_id = rand();
+                if ( $thumb_img_url != "" ) {
+                    $link_config = 'href="' . $thumb_img_url . '" class="lightbox" data-rel="ilightbox['.$lightbox_id.']"';
+                }
                 $item_icon   = apply_filters( 'sf_post_lightbox_icon', "ss-view" );
             } else if ( $thumb_link_type == "lightbox_image" ) {
                 $lightbox_image_url = '';
                 foreach ( $thumb_lightbox_image as $image ) {
                     $lightbox_image_url = $image['full_url'];
                 }
-                $link_config = 'href="' . $lightbox_image_url . '" class="lightbox" data-rel="ilightbox[posts]"';
+                $lightbox_id = rand();
+                if ( $lightbox_image_url != "" ) {
+                    $link_config = 'href="' . $lightbox_image_url . '" class="lightbox" data-rel="ilightbox['.$lightbox_id.']"';
+                }
                 $item_icon   = apply_filters( 'sf_post_lightbox_icon', "ss-view" );
             } else if ( $thumb_link_type == "lightbox_video" ) {
                 $link_config = 'data-video="' . $thumb_lightbox_video_url . '" href="#" class="fw-video-link"';
@@ -1027,9 +1072,9 @@
                 $recent_post .= $recent_post_figure;
                 $recent_post .= '<div class="details-wrap">';
                 if ( $thumb_type == "none" ) {
-                    $recent_post .= '<h2><a href="' . $post_permalink . '">' . $item_title . '</a></h2>';
+                    $recent_post .= '<h2><a ' . $post_permalink_config . '>' . $item_title . '</a></h2>';
                 } else {
-                    $recent_post .= '<h3><a href="' . $post_permalink . '">' . $item_title . '</a></h3>';
+                    $recent_post .= '<h3><a ' . $post_permalink_config . '>' . $item_title . '</a></h3>';
                 }
                 $recent_post .= sf_get_post_details($post->ID, true);
                 $recent_post .= '</div>';
@@ -1059,7 +1104,7 @@
                 $recent_post .= '<div class="details-wrap">';
                 $recent_post .= '<div class="author-avatar">' . get_avatar( get_the_author_meta( 'ID' ), '140' ) . '</div>';
                 $recent_post .= '<h6 class="post-item-author"><span class="author">' . sprintf( '<a href="%2$s" rel="author" itemprop="author">%1$s</a>', $post_author, get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '</span></h6>';
-                $recent_post .= '<h2><a href="' . $post_permalink . '">' . $item_title . '</a></h2>';
+                $recent_post .= '<h2><a ' . $post_permalink_config . '>' . $item_title . '</a></h2>';
                 $recent_post .= '<div class="post-item-details">';
                 $recent_post .= '<span class="post-date">' . $post_date . '</span>';
                 $recent_post .= '</div>';
@@ -1070,9 +1115,9 @@
                 $recent_post .= $recent_post_figure;
                 $recent_post .= '<div class="details-wrap">';
                 if ( $thumb_type == "none" ) {
-                    $recent_post .= '<h2><a href="' . $post_permalink . '">' . $item_title . '</a></h2>';
+                    $recent_post .= '<h2><a ' . $post_permalink_config . '>' . $item_title . '</a></h2>';
                 } else {
-                    $recent_post .= '<h3><a href="' . $post_permalink . '">' . $item_title . '</a></h3>';
+                    $recent_post .= '<h3><a ' . $post_permalink_config . '>' . $item_title . '</a></h3>';
                 }
                 $recent_post = sf_get_post_details($post->ID, true);
                 $recent_post .= '</div>';
@@ -1081,14 +1126,14 @@
 
                 $recent_post .= $recent_post_figure;
                 $recent_post .= '<div class="details-wrap">';
-                $recent_post .= '<h5><a href="' . $post_permalink . '">' . $item_title . '</a></h5>';
+                $recent_post .= '<h5><a ' . $post_permalink_config . '>' . $item_title . '</a></h5>';
                 $recent_post .= sf_get_post_details($post->ID, true);
                 if ( $excerpt_length != "0" && $excerpt_length != "" ) {
                     $recent_post .= '<div class="excerpt">' . $post_excerpt . '</div>';
                 }
 
                 if ( sf_theme_opts_name() == "sf_atelier_options" && $display_type == "standard-row" ) {
-                	$recent_post .= '<a class="read-more-button" href="' . $post_permalink . '">' . __( "Read more", "swiftframework" ) . '</a>';
+                	$recent_post .= '<a class="read-more-button" href="' . get_permalink() . '">' . __( "Read more", "swiftframework" ) . '</a>';
                 }
 
                 $recent_post .= '</div>';

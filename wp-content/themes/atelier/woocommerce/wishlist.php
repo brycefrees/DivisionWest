@@ -25,7 +25,7 @@ $shop_page_url = "";
 if ( version_compare( WOOCOMMERCE_VERSION, "2.1.0" ) >= 0 ) {
 	$shop_page_url = get_permalink( wc_get_page_id( 'shop' ) );
 } else {
-	$shop_page_url = get_permalink( woocommerce_get_page_id( 'shop' ) );
+	$shop_page_url = get_permalink( wc_get_page_id( 'shop' ) );
 }
 
 $user_id = "";
@@ -42,14 +42,12 @@ $limit_sql = '';
 if( $pagination == 'yes' ) {
     $count = array();
 
-    if( is_user_logged_in() ) {
+    if ( is_user_logged_in() ) {
         $count = $wpdb->get_results( $wpdb->prepare( 'SELECT COUNT(*) as `cnt` FROM `' . YITH_WCWL_TABLE . '` WHERE `user_id` = %d', $user_id  ), ARRAY_A );
         $count = $count[0]['cnt'];
-    } elseif( yith_usecookies() ) {
-        $count[0]['cnt'] = count( yith_getcookie( 'yith_wcwl_products' ) );
     } else {
-        $count[0]['cnt'] = count( $_SESSION['yith_wcwl_products'] );
-    }
+        $count[0]['cnt'] = count( yith_getcookie( 'yith_wcwl_products' ) );
+    } 
 
     $total_pages = $count/$per_page;
     if( $total_pages > 1 ) {
@@ -68,19 +66,18 @@ if( $pagination == 'yes' ) {
 }
 
 if ($user_id != "") {
-$wishlist = $wpdb->get_results(
+	$wishlist = $wpdb->get_results(
 				$wpdb->prepare( "SELECT * FROM `" . YITH_WCWL_TABLE . "` WHERE `user_id` = %s" . $limit_sql, $user_id ),
 			ARRAY_A );
-} elseif( yith_usecookies() ) {
-	$wishlist = yith_getcookie( 'yith_wcwl_products' );
 } else {
-	$wishlist = isset( $_SESSION['yith_wcwl_products'] ) ? $_SESSION['yith_wcwl_products'] : array(); }
+	$wishlist = yith_getcookie( 'yith_wcwl_products' );
+} 
 
 // Start wishlist page printing
 if ( version_compare( WOOCOMMERCE_VERSION, "2.1.0" ) >= 0 ) {
-wc_print_notices();
+	wc_print_notices();
 } else {
-$woocommerce->show_messages();
+	$woocommerce->show_messages();
 }
  ?>
 	<div id="yith-wcwl-messages"></div>
@@ -106,7 +103,7 @@ $woocommerce->show_messages();
 		<?php if ( !function_exists( 'YITH_WCWL' ) ) { ?>
 
 			
-		<form id="yith-wcwl-form" action="<?php echo esc_url( $yith_wcwl->get_wishlist_url() ) ?>" method="post">
+		<form id="yith-wcwl-form" action="<?php echo esc_url( YITH_WCWL()->get_wishlist_url( 'view' . ( $wishlist_meta['is_default'] != 1 ? '/' . $wishlist_meta['wishlist_token'] : '' ) ) ) ?>" method="post">
 		    <?php
 		    do_action( 'yith_wcwl_before_wishlist_title' );
 		    
@@ -188,26 +185,21 @@ $woocommerce->show_messages();
 		                            ?>
 		                        </td>
 		                        <?php } ?>
-		                        <?php if (!$catalog_mode && get_option( 'yith_wcwl_add_to_cart_show' ) == 'yes') { ?>
-		                        <td class="product-add-to-cart">
-		                          <?php 
-		                          
-		                              if ( version_compare( get_option('yith_wcwl_version'), "2.0" ) >= 0 ) {   
-		                        	      if ( isset( $stock_status ) && $stock_status != 'Out' ){
-								
-                                    		if ( function_exists( 'wc_get_template' ) ) {
-                                        		wc_get_template( 'loop/add-to-cart.php' );
-                                    		}
-                                    		else{
-                                        		woocommerce_get_template( 'loop/add-to-cart.php' );
-                                    		}
-                                    	}
-									 }else{
-									 	 echo YITH_WCWL_UI::add_to_cart_button( $values['prod_id'], $availability['class'] );
-									 } ?>
-		                        </td>
-		                        <?php } ?>
-		                        
+		                        <?php if (!$catalog_mode && $show_add_to_cart ) : ?>
+                                   <td class="product-add-to-cart">
+                                       <?php if( isset( $stock_status ) && $stock_status != 'Out' ): ?>
+                                           <?php
+                                           if( function_exists( 'wc_get_template' ) ) {
+                                               wc_get_template( 'loop/add-to-cart.php' );
+                                           }
+                                           else{
+                                               woocommerce_get_template( 'loop/add-to-cart.php' );
+                                           }
+                                           ?>
+                                       <?php endif ?>
+                                   </td>
+                               <?php endif ?>
+        
 		                        <?php if ( version_compare( get_option('yith_wcwl_version'), "2.0" ) >= 0 ) {    ?>
 		                        			<td class="product-remove"><div> <a href="<?php echo esc_url( add_query_arg( 'remove_from_wishlist', $values['prod_id']) ) ?>" class="remove remove_from_wishlist" title="<?php _e( 'Remove this product', 'yit' ) ?>"><i class="fa-times"></i></a></div></td>
 		                        <?php } else { ?>	
@@ -272,11 +264,20 @@ $woocommerce->show_messages();
 			        <?php endif; ?>
 			    <?php
 			    endif;
-
-			     do_action( 'yith_wcwl_before_wishlist' ); ?>
+			    
+			    do_action( 'yith_wcwl_before_wishlist' ); ?>
 
 			    <!-- WISHLIST TABLE -->
-			    <table class="shop_table cart wishlist_table" cellspacing="0" data-pagination="<?php echo esc_attr( $pagination )?>" data-per-page="<?php echo esc_attr( $per_page )?>" data-page="<?php echo esc_attr( $current_page )?>" data-id="<?php echo esc_attr( $wishlist_meta['ID'] )?>">
+			     <table
+	    			class="shop_table cart wishlist_table"
+	    			cellspacing="0"
+	    			data-pagination="<?php echo esc_attr( $pagination )?>"
+	    			data-per-page="<?php echo esc_attr( $per_page )?>"
+	    			data-page="<?php echo esc_attr( $current_page )?>"
+	    			data-id="<?php echo ( is_user_logged_in() ) ? esc_attr( $wishlist_meta['ID'] ) : '' ?>"
+	    			data-token="<?php echo ( ! empty( $wishlist_meta['wishlist_token'] ) && is_user_logged_in() ) ? esc_attr( $wishlist_meta['wishlist_token'] ) : '' ?>"  >
+	    
+			    
 			        <thead>
 			        <tr>
 
@@ -379,7 +380,7 @@ $woocommerce->show_messages();
 			                            <td class="product-add-to-cart">
 			                                <?php if( isset( $stock_status ) && $stock_status != 'Out' ): ?>
 			                                    <?php
-			                                    if( function_exists( 'wc_get_template' ) ) {
+			                                    if ( function_exists( 'wc_get_template' ) ) {
 			                                        wc_get_template( 'loop/add-to-cart.php' );
 			                                    }
 			                                    else{
@@ -393,7 +394,7 @@ $woocommerce->show_messages();
 			                        <?php if( $is_user_owner ): ?>
 			                        <td class="product-remove">
 			                            <div>
-			                                <a href="<?php echo esc_url( add_query_arg( 'remove_from_wishlist', $item['prod_id'] ) ) ?>" class="remove remove_from_wishlist" title="<?php _e( 'Remove this product', 'swiftframework' ) ?>">&times;</a>
+			                                <a href="<?php echo esc_url( add_query_arg( 'remove_from_wishlist', $item['prod_id'] ) ); ?>" class="remove remove_from_wishlist"  data-product-id="<?php echo $item['prod_id']; ?>" title="<?php _e( 'Remove this product', 'swiftframework' ) ?>">&times;</a>
 			                            </div>
 			                        </td>
 			                        <?php endif; ?>

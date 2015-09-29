@@ -40,6 +40,7 @@
 
                 register_sidebar( array(
                     'name'          => 'Sidebar One',
+                    'id'			=> 'sidebar-1',
                     'description'   => 'This widget area can be selected in the page/post/product meta options, and also in the theme options panel - so that you can display it on pages of your choice.',
                     'before_widget' => '<section id="%1$s" class="widget %2$s clearfix">',
                     'after_widget'  => '</section>',
@@ -48,6 +49,7 @@
                 ) );
                 register_sidebar( array(
                     'name'          => 'Sidebar Two',
+                    'id'			=> 'sidebar-2',
                     'description'   => 'This widget area can be selected in the page/post/product meta options, and also in the theme options panel - so that you can display it on pages of your choice.',
                     'before_widget' => '<section id="%1$s" class="widget %2$s clearfix">',
                     'after_widget'  => '</section>',
@@ -56,6 +58,7 @@
                 ) );
                 register_sidebar( array(
                     'name'          => 'Sidebar Three',
+                    'id'			=> 'sidebar-3',
                     'description'   => 'This widget area can be selected in the page/post/product meta options, and also in the theme options panel - so that you can display it on pages of your choice.',
                     'before_widget' => '<section id="%1$s" class="widget %2$s clearfix">',
                     'after_widget'  => '</section>',
@@ -64,6 +67,7 @@
                 ) );
                 register_sidebar( array(
                     'name'          => 'Sidebar Four',
+                    'id'			=> 'sidebar-4',
                     'description'   => 'This widget area can be selected in the page/post/product meta options, and also in the theme options panel - so that you can display it on pages of your choice.',
                     'before_widget' => '<section id="%1$s" class="widget %2$s clearfix">',
                     'after_widget'  => '</section>',
@@ -72,6 +76,7 @@
                 ) );
                 register_sidebar( array(
                     'name'          => 'Sidebar Five',
+                    'id'			=> 'sidebar-5',
                     'description'   => 'This widget area can be selected in the page/post/product meta options, and also in the theme options panel - so that you can display it on pages of your choice.',
                     'before_widget' => '<section id="%1$s" class="widget %2$s clearfix">',
                     'after_widget'  => '</section>',
@@ -80,6 +85,7 @@
                 ) );
                 register_sidebar( array(
                     'name'          => 'Sidebar Six',
+                    'id'			=> 'sidebar-6',
                     'description'   => 'This widget area can be selected in the page/post/product meta options, and also in the theme options panel - so that you can display it on pages of your choice.',
                     'before_widget' => '<section id="%1$s" class="widget %2$s clearfix">',
                     'after_widget'  => '</section>',
@@ -88,6 +94,7 @@
                 ) );
                 register_sidebar( array(
                     'name'          => 'Sidebar Seven',
+                    'id'			=> 'sidebar-7',
                     'description'   => 'This widget area can be selected in the page/post/product meta options, and also in the theme options panel - so that you can display it on pages of your choice.',
                     'before_widget' => '<section id="%1$s" class="widget %2$s clearfix">',
                     'after_widget'  => '</section>',
@@ -96,6 +103,7 @@
                 ) );
                 register_sidebar( array(
                     'name'          => 'Sidebar Eight',
+                    'id'			=> 'sidebar-8',
                     'description'   => 'This widget area can be selected in the page/post/product meta options, and also in the theme options panel - so that you can display it on pages of your choice.',
                     'before_widget' => '<section id="%1$s" class="widget %2$s clearfix">',
                     'after_widget'  => '</section>',
@@ -156,12 +164,14 @@
 	                ) );
 
 	                if ( sf_theme_supports( 'mobile-shop-filters' ) ) {
+	                	
+	                	$woocommerce_filters_column_class = apply_filters( 'sf_woocommerce_mobile_filters_column_class' , 'col-sm-3' );
 
 		                register_sidebar( array(
 		                    'id'            => 'mobile-woocommerce-filters',
 		                    'name'          => 'Mobile WooCommerce Filters',
 		                    'description'   => 'This widget area is for you to use to display widgets in the Filters area of the mobile shop display.',
-		                    'before_widget' => '<section id="%1$s" class="widget %2$s clearfix">',
+		                    'before_widget' => '<section id="%1$s" class="widget %2$s '.$woocommerce_filters_column_class.' clearfix">',
 		                    'after_widget'  => '</section>',
 		                    'before_title'  => $sidebar_before_title,
 		                    'after_title'   => $sidebar_after_title,

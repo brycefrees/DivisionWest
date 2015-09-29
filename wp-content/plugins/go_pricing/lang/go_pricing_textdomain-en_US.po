@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Go - Responsive Pricing & Compare Tables v3.0.2\n"
+"Project-Id-Version: Go - Responsive Pricing & Compare Tables v3.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-06-22 12:07:48+0000\n"
+"PO-Revision-Date: 2015-09-21 19:34:37+0000\n"
 "Last-Translator: Granth <granthweb@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,44 +20,43 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: includes/admin/class_admin.php:135
-#: includes/admin/class_admin.php:136
-#: includes/admin/class_admin.php:365
+#: includes/admin/class_admin.php:141
+#: includes/admin/class_admin.php:142
+#: includes/admin/class_admin.php:423
 #: includes/admin/views/page/db_update.php:39
 #@ go_pricing_textdomain
 msgid "Database Update"
 msgstr ""
 
-#: includes/admin/class_admin.php:287
-#: includes/admin/class_admin.php:288
-#: includes/admin/class_admin.php:336
-#: includes/admin/views/editor_popup/header_general.php:85
-#: includes/admin/views/popup/header_general.php:85
+#: includes/admin/class_admin.php:345
+#: includes/admin/class_admin.php:346
+#: includes/admin/class_admin.php:394
+#: includes/admin/views/editor_popup/header_general.php:88
 #@ go_pricing_textdomain
 msgid "General Settings"
 msgstr ""
 
-#: includes/admin/class_admin.php:296
-#: includes/admin/class_admin.php:297
-#: includes/admin/class_admin.php:351
-#: includes/admin/views/page/impex.php:39
+#: includes/admin/class_admin.php:354
+#: includes/admin/class_admin.php:355
+#: includes/admin/class_admin.php:409
+#: includes/admin/views/page/impex.php:41
 #: includes/admin/views/page/table_manager.php:31
 #: includes/admin/views/page/table_manager.php:174
 #@ go_pricing_textdomain
 msgid "Import & Export"
 msgstr ""
 
-#: includes/admin/class_admin.php:477
+#: includes/admin/class_admin.php:535
 #@ go_pricing_textdomain
 msgid "No AJAX action has been found!"
 msgstr ""
 
-#: includes/admin/class_admin.php:487
+#: includes/admin/class_admin.php:545
 #@ go_pricing_textdomain
 msgid "Invalid AJAX callback has been detected! Please, refresh the page!"
 msgstr ""
 
-#: includes/admin/class_admin.php:499
+#: includes/admin/class_admin.php:557
 #@ go_pricing_textdomain
 msgid "No AJAX callback has been registered for this action! Please, refresh the page!"
 msgstr ""
@@ -65,12 +64,15 @@ msgstr ""
 #: includes/admin/class_admin_page_db_update.php:53
 #: includes/admin/class_admin_page_general_settings.php:100
 #: includes/admin/class_admin_page_general_settings.php:110
-#: includes/admin/class_admin_page_impex.php:252
-#: includes/admin/class_admin_page_impex.php:284
-#: includes/admin/class_admin_page_main.php:395
-#: includes/admin/class_admin_page_main.php:400
-#: includes/admin/class_admin_page_main.php:452
-#: includes/admin/class_admin_page_main.php:514
+#: includes/admin/class_admin_page_impex.php:251
+#: includes/admin/class_admin_page_impex.php:285
+#: includes/admin/class_admin_page_impex.php:338
+#: includes/admin/class_admin_page_impex.php:426
+#: includes/admin/class_admin_page_main.php:431
+#: includes/admin/class_admin_page_main.php:436
+#: includes/admin/class_admin_page_main.php:488
+#: includes/admin/class_admin_page_main.php:526
+#: includes/admin/class_admin_page_main.php:585
 #@ go_pricing_textdomain
 msgid "Oops, something went wrong!"
 msgstr ""
@@ -87,80 +89,79 @@ msgstr ""
 msgid "General Settings has been successfully updated!"
 msgstr ""
 
-#: includes/admin/class_admin_page_impex.php:181
+#: includes/admin/class_admin_page_impex.php:182
 #@ go_pricing_textdomain
 msgid "Please select tables to import!"
 msgstr ""
 
-#: includes/admin/class_admin_page_impex.php:242
+#: includes/admin/class_admin_page_impex.php:241
+#: includes/admin/class_admin_page_impex.php:275
+#: includes/admin/class_admin_page_main.php:516
 #@ go_pricing_textdomain
 msgid "There is nothing to export!"
 msgstr ""
 
-#: includes/admin/class_admin_page_impex.php:275
-#@ go_pricing_textdomain
-msgid "Import data is missing!"
-msgstr ""
-
-#: includes/admin/class_admin_page_impex.php:286
+#: includes/admin/class_admin_page_impex.php:431
 #, php-format
 #@ go_pricing_textdomain
 msgid "%1$s pricing table(s) has been successfully imported."
 msgstr ""
 
-#: includes/admin/class_admin_page_impex.php:302
+#: includes/admin/class_admin_page_impex.php:322
 #@ go_pricing_textdomain
 msgid "There is nothing to import!"
 msgstr ""
 
-#: includes/admin/class_admin_page_impex.php:311
+#: includes/admin/class_admin_page_impex.php:347
+#: includes/admin/class_admin_page_impex.php:395
+#: includes/admin/class_admin_page_impex.php:404
 #@ go_pricing_textdomain
 msgid "Invalid import data!"
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:335
-#: includes/admin/class_admin_page_main.php:364
-#: includes/admin/class_admin_page_main.php:429
+#: includes/admin/class_admin_page_main.php:371
+#: includes/admin/class_admin_page_main.php:400
+#: includes/admin/class_admin_page_main.php:465
 #@ go_pricing_textdomain
 msgid "Please select a table!"
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:343
+#: includes/admin/class_admin_page_main.php:379
 #@ go_pricing_textdomain
 msgid "Table doesn't exist!"
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:388
+#: includes/admin/class_admin_page_main.php:424
 #: includes/class_data.php:417
 #@ go_pricing_textdomain
 msgid "copy"
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:408
+#: includes/admin/class_admin_page_main.php:444
 #, php-format
 #@ go_pricing_textdomain
 msgid "%1$s pricing table(s) has been successfully cloned."
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:459
+#: includes/admin/class_admin_page_main.php:495
 #, php-format
 #@ go_pricing_textdomain
 msgid "%1$s pricing table(s) has been successfully deleted."
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:490
+#: includes/admin/class_admin_page_main.php:561
 #, php-format
 #@ go_pricing_textdomain
 msgid "Pricing table with an ID of \"%s\" already exists! It must be uniqe."
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:508
+#: includes/admin/class_admin_page_main.php:579
 #, php-format
 #@ go_pricing_textdomain
 msgid "Pricing table has been successfully created!<br>Shortcode: </strong>[go_pricing id=\"%s\"]<strong>"
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:510
+#: includes/admin/class_admin_page_main.php:581
 #, php-format
 #@ go_pricing_textdomain
 msgid "Pricing table has been successfully updated!<br>Shortcode: </strong>[go_pricing id=\"%s\"]<strong>"
@@ -170,11 +171,9 @@ msgstr ""
 #: includes/admin/views/column/footer.php:29
 #: includes/admin/views/editor_popup/body_row.php:19
 #: includes/admin/views/editor_popup/footer_row.php:20
-#: includes/admin/views/editor_popup/header_general.php:54
-#: includes/admin/views/editor_popup/header_general.php:115
+#: includes/admin/views/editor_popup/header_general.php:57
+#: includes/admin/views/editor_popup/header_general.php:118
 #: includes/admin/views/editor_popup/header_price.php:21
-#: includes/admin/views/popup/header_general.php:54
-#: includes/admin/views/popup/header_general.php:115
 #@ go_pricing_textdomain
 msgid "HTML Content"
 msgstr ""
@@ -204,17 +203,17 @@ msgstr ""
 #: includes/admin/views/column/header.php:83
 #: includes/admin/views/column/header.php:124
 #: includes/admin/views/page/table_manager.php:152
-#: includes/admin/views/popup/live_preview.php:36
+#: includes/admin/views/popup/live_preview.php:24
 #@ go_pricing_textdomain
 msgid "Edit"
 msgstr ""
 
 #: includes/admin/views/column/body.php:40
-#: includes/admin/views/column/column.php:85
+#: includes/admin/views/column/column.php:21
 #: includes/admin/views/column/footer.php:40
 #: includes/admin/views/page/table_manager.php:103
 #: includes/admin/views/page/table_manager.php:152
-#: includes/admin/views/view_editor_popup.php:40
+#: includes/admin/views/view_editor_popup.php:42
 #@ go_pricing_textdomain
 msgid "Clone"
 msgstr ""
@@ -226,11 +225,11 @@ msgid "Are you sure you want to delete the selected row?"
 msgstr ""
 
 #: includes/admin/views/column/body.php:40
-#: includes/admin/views/column/column.php:85
+#: includes/admin/views/column/column.php:20
 #: includes/admin/views/column/footer.php:40
 #: includes/admin/views/page/table_manager.php:103
 #: includes/admin/views/page/table_manager.php:152
-#: includes/admin/views/view_editor_popup.php:40
+#: includes/admin/views/view_editor_popup.php:42
 #@ go_pricing_textdomain
 msgid "Delete"
 msgstr ""
@@ -264,57 +263,57 @@ msgstr ""
 
 #: includes/admin/views/column/body.php:74
 #: includes/admin/views/column/footer.php:71
-#: includes/admin/views/view_editor_popup.php:40
+#: includes/admin/views/view_editor_popup.php:42
 #@ go_pricing_textdomain
 msgid "Add Row"
 msgstr ""
 
-#: includes/admin/views/column/column.php:21
+#: includes/admin/views/column/column.php:31
 #@ go_pricing_textdomain
 msgid "General Options"
 msgstr ""
 
-#: includes/admin/views/column/column.php:21
+#: includes/admin/views/column/column.php:31
 #@ go_pricing_textdomain
 msgid "Global Column Settings"
 msgstr ""
 
-#: includes/admin/views/column/column.php:37
+#: includes/admin/views/column/column.php:47
 #@ go_pricing_textdomain
 msgid "Header Options"
 msgstr ""
 
-#: includes/admin/views/column/column.php:37
+#: includes/admin/views/column/column.php:47
 #@ go_pricing_textdomain
 msgid "Header Content & Style"
 msgstr ""
 
-#: includes/admin/views/column/column.php:53
+#: includes/admin/views/column/column.php:63
 #@ go_pricing_textdomain
 msgid "Body Options"
 msgstr ""
 
-#: includes/admin/views/column/column.php:53
+#: includes/admin/views/column/column.php:63
 #@ go_pricing_textdomain
 msgid "Body Content & Style"
 msgstr ""
 
-#: includes/admin/views/column/column.php:69
+#: includes/admin/views/column/column.php:79
 #@ go_pricing_textdomain
 msgid "Footer Options"
 msgstr ""
 
-#: includes/admin/views/column/column.php:69
+#: includes/admin/views/column/column.php:79
 #@ go_pricing_textdomain
 msgid "Footer Content & Style"
 msgstr ""
 
-#: includes/admin/views/column/column.php:85
+#: includes/admin/views/column/column.php:20
 #@ go_pricing_textdomain
 msgid "Are you sure you want to delete the column?"
 msgstr ""
 
-#: includes/admin/views/column/column.php:85
+#: includes/admin/views/column/column.php:21
 #@ go_pricing_textdomain
 msgid "Are you sure you wanto clone the column?"
 msgstr ""
@@ -346,7 +345,7 @@ msgstr ""
 #: includes/admin/views/popup/parts/part_icomoon.php:7
 #: includes/admin/views/popup/parts/part_linecon.php:7
 #: includes/admin/views/popup/parts/part_material.php:7
-#: includes/admin/views/popup/sc_media.php:89
+#: includes/admin/views/popup/sc_media.php:92
 #@ go_pricing_textdomain
 msgid "Add To Favourites"
 msgstr ""
@@ -366,12 +365,13 @@ msgstr ""
 #: includes/admin/views/column/general.php:98
 #: includes/admin/views/editor_popup/general_decoration.php:154
 #: includes/admin/views/editor_popup/general_decoration.php:159
-#: includes/admin/views/editor_popup/header_general.php:107
+#: includes/admin/views/editor_popup/header_general.php:110
 #: includes/admin/views/editor_popup/part/button.php:77
 #: includes/admin/views/editor_popup/part/button.php:82
 #: includes/admin/views/page/general_settings.php:42
-#: includes/admin/views/page/general_settings.php:67
-#: includes/admin/views/page/import.php:71
+#: includes/admin/views/page/general_settings.php:66
+#: includes/admin/views/page/general_settings.php:75
+#: includes/admin/views/page/import.php:70
 #: includes/admin/views/page/table_editor.php:132
 #: includes/admin/views/page/table_editor.php:142
 #: includes/admin/views/page/table_editor.php:147
@@ -381,18 +381,17 @@ msgstr ""
 #: includes/admin/views/page/table_editor.php:206
 #: includes/admin/views/page/table_editor.php:211
 #: includes/admin/views/page/table_editor.php:221
-#: includes/admin/views/popup/header_general.php:107
-#: includes/admin/views/popup/sc_media.php:72
-#: includes/admin/views/popup/sc_media.php:94
-#: includes/admin/views/popup/sc_media.php:125
-#: includes/admin/views/popup/sc_media.php:145
-#: includes/admin/views/popup/sc_media.php:182
-#: includes/admin/views/popup/sc_media.php:187
-#: includes/admin/views/popup/sc_media.php:207
-#: includes/admin/views/popup/sc_media.php:242
-#: includes/admin/views/popup/sc_media.php:359
-#: includes/admin/views/popup/sc_media.php:384
-#: includes/admin/views/popup/sc_media.php:389
+#: includes/admin/views/popup/sc_media.php:75
+#: includes/admin/views/popup/sc_media.php:97
+#: includes/admin/views/popup/sc_media.php:128
+#: includes/admin/views/popup/sc_media.php:148
+#: includes/admin/views/popup/sc_media.php:185
+#: includes/admin/views/popup/sc_media.php:190
+#: includes/admin/views/popup/sc_media.php:210
+#: includes/admin/views/popup/sc_media.php:245
+#: includes/admin/views/popup/sc_media.php:362
+#: includes/admin/views/popup/sc_media.php:387
+#: includes/admin/views/popup/sc_media.php:392
 #@ go_pricing_textdomain
 msgid "Yes"
 msgstr ""
@@ -538,10 +537,9 @@ msgstr ""
 
 #: includes/admin/views/editor_popup/body_row.php:32
 #: includes/admin/views/page/db_update.php:25
-#: includes/admin/views/page/export.php:31
 #: includes/admin/views/page/general_settings.php:20
-#: includes/admin/views/page/impex.php:25
-#: includes/admin/views/page/import.php:29
+#: includes/admin/views/page/impex.php:27
+#: includes/admin/views/page/import.php:28
 #: includes/admin/views/page/table_editor.php:35
 #@ go_pricing_textdomain
 msgid "Tooltip"
@@ -575,15 +573,13 @@ msgstr ""
 
 #: includes/admin/views/editor_popup/body_row.php:40
 #: includes/admin/views/editor_popup/footer_row.php:38
-#: includes/admin/views/editor_popup/header_general.php:55
-#: includes/admin/views/editor_popup/header_general.php:116
+#: includes/admin/views/editor_popup/header_general.php:58
+#: includes/admin/views/editor_popup/header_general.php:119
 #: includes/admin/views/editor_popup/header_price.php:58
 #: includes/admin/views/editor_popup/header_price.php:63
 #: includes/admin/views/editor_popup/header_title.php:17
-#: includes/admin/views/editor_popup/header_title.php:57
+#: includes/admin/views/editor_popup/header_title.php:58
 #: includes/admin/views/editor_popup/part/button.php:67
-#: includes/admin/views/popup/header_general.php:55
-#: includes/admin/views/popup/header_general.php:116
 #@ go_pricing_textdomain
 msgid "Add Shortcode"
 msgstr ""
@@ -599,7 +595,7 @@ msgstr ""
 #: includes/admin/views/editor_popup/header_price.php:72
 #: includes/admin/views/editor_popup/header_price.php:106
 #: includes/admin/views/editor_popup/header_title.php:21
-#: includes/admin/views/editor_popup/header_title.php:61
+#: includes/admin/views/editor_popup/header_title.php:62
 #: includes/admin/views/editor_popup/part/button.php:36
 #@ go_pricing_textdomain
 msgid "Font Family"
@@ -616,8 +612,8 @@ msgstr ""
 #: includes/admin/views/editor_popup/footer_row.php:67
 #: includes/admin/views/editor_popup/header_price.php:97
 #: includes/admin/views/editor_popup/header_price.php:131
-#: includes/admin/views/editor_popup/header_title.php:46
-#: includes/admin/views/editor_popup/header_title.php:86
+#: includes/admin/views/editor_popup/header_title.php:47
+#: includes/admin/views/editor_popup/header_title.php:87
 #: includes/admin/views/editor_popup/part/button.php:61
 #@ go_pricing_textdomain
 msgid "Font Size / Line H."
@@ -628,8 +624,8 @@ msgstr ""
 #: includes/admin/views/editor_popup/footer_row.php:68
 #: includes/admin/views/editor_popup/header_price.php:98
 #: includes/admin/views/editor_popup/header_price.php:132
-#: includes/admin/views/editor_popup/header_title.php:47
-#: includes/admin/views/editor_popup/header_title.php:87
+#: includes/admin/views/editor_popup/header_title.php:48
+#: includes/admin/views/editor_popup/header_title.php:88
 #: includes/admin/views/editor_popup/part/button.php:62
 #@ go_pricing_textdomain
 msgid "Bold"
@@ -640,8 +636,8 @@ msgstr ""
 #: includes/admin/views/editor_popup/footer_row.php:68
 #: includes/admin/views/editor_popup/header_price.php:98
 #: includes/admin/views/editor_popup/header_price.php:132
-#: includes/admin/views/editor_popup/header_title.php:47
-#: includes/admin/views/editor_popup/header_title.php:87
+#: includes/admin/views/editor_popup/header_title.php:48
+#: includes/admin/views/editor_popup/header_title.php:88
 #: includes/admin/views/editor_popup/part/button.php:62
 #@ go_pricing_textdomain
 msgid "Italic"
@@ -652,8 +648,8 @@ msgstr ""
 #: includes/admin/views/editor_popup/footer_row.php:68
 #: includes/admin/views/editor_popup/header_price.php:98
 #: includes/admin/views/editor_popup/header_price.php:132
-#: includes/admin/views/editor_popup/header_title.php:47
-#: includes/admin/views/editor_popup/header_title.php:87
+#: includes/admin/views/editor_popup/header_title.php:48
+#: includes/admin/views/editor_popup/header_title.php:88
 #: includes/admin/views/editor_popup/part/button.php:62
 #@ go_pricing_textdomain
 msgid "Strikethrough"
@@ -720,12 +716,10 @@ msgstr ""
 #: includes/admin/views/editor_popup/header_style.php:34
 #: includes/admin/views/page/table_editor.php:90
 #: includes/admin/views/page/table_editor.php:92
-#: includes/admin/views/popup/header_general.php:32
-#: includes/admin/views/popup/header_general.php:35
 #: includes/admin/views/popup/sc_button_icon.php:78
 #: includes/admin/views/popup/sc_media.php:50
-#: includes/admin/views/popup/sc_media.php:173
-#: includes/admin/views/popup/sc_media.php:339
+#: includes/admin/views/popup/sc_media.php:176
+#: includes/admin/views/popup/sc_media.php:342
 #: includes/admin/views/popup/sc_row_icon.php:109
 #@ go_pricing_textdomain
 msgid "Remove"
@@ -737,30 +731,28 @@ msgstr ""
 #: includes/admin/views/page/table_editor.php:35
 #: includes/admin/views/page/table_editor.php:90
 #: includes/admin/views/page/table_editor.php:249
-#: includes/admin/views/page/table_editor.php:282
+#: includes/admin/views/page/table_editor.php:283
 #: includes/admin/views/page/table_manager.php:152
-#: includes/admin/views/popup/header_general.php:32
 #@ go_pricing_textdomain
 msgid "Preview"
 msgstr ""
 
 #: includes/admin/views/editor_popup/general_decoration.php:86
-#: includes/admin/views/editor_popup/header_general.php:39
+#: includes/admin/views/editor_popup/header_general.php:42
 #: includes/admin/views/editor_popup/header_style.php:37
 #: includes/admin/views/page/table_editor.php:95
-#: includes/admin/views/popup/header_general.php:39
 #: includes/admin/views/popup/sc_button_icon.php:68
 #: includes/admin/views/popup/sc_button_icon.php:80
-#: includes/admin/views/popup/sc_media.php:53
-#: includes/admin/views/popup/sc_media.php:155
-#: includes/admin/views/popup/sc_media.php:160
-#: includes/admin/views/popup/sc_media.php:165
-#: includes/admin/views/popup/sc_media.php:175
-#: includes/admin/views/popup/sc_media.php:329
-#: includes/admin/views/popup/sc_media.php:341
-#: includes/admin/views/popup/sc_media.php:369
-#: includes/admin/views/popup/sc_media.php:374
-#: includes/admin/views/popup/sc_media.php:379
+#: includes/admin/views/popup/sc_media.php:56
+#: includes/admin/views/popup/sc_media.php:158
+#: includes/admin/views/popup/sc_media.php:163
+#: includes/admin/views/popup/sc_media.php:168
+#: includes/admin/views/popup/sc_media.php:178
+#: includes/admin/views/popup/sc_media.php:332
+#: includes/admin/views/popup/sc_media.php:344
+#: includes/admin/views/popup/sc_media.php:372
+#: includes/admin/views/popup/sc_media.php:377
+#: includes/admin/views/popup/sc_media.php:382
 #: includes/admin/views/popup/sc_row_icon.php:99
 #: includes/admin/views/popup/sc_row_icon.php:111
 #@ go_pricing_textdomain
@@ -768,7 +760,7 @@ msgid "Add"
 msgstr ""
 
 #: includes/admin/views/editor_popup/general_decoration.php:89
-#: includes/admin/views/popup/sc_media.php:56
+#: includes/admin/views/popup/sc_media.php:59
 #@ go_pricing_textdomain
 msgid "Enter an URL or select an image from the Media Library."
 msgstr ""
@@ -827,65 +819,52 @@ msgid "Whether to tell the search engines \"Don't follow the link\"."
 msgstr ""
 
 #: includes/admin/views/editor_popup/header_general.php:27
-#: includes/admin/views/popup/header_general.php:27
 #@ go_pricing_textdomain
 msgid "Background Image"
 msgstr ""
 
 #: includes/admin/views/editor_popup/header_general.php:33
 #: includes/admin/views/editor_popup/header_general.php:36
-#: includes/admin/views/popup/header_general.php:33
-#: includes/admin/views/popup/header_general.php:36
 #: includes/admin/views/popup/sc_media.php:51
 #@ go_pricing_textdomain
 msgid "Responsive image?"
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_general.php:42
+#: includes/admin/views/editor_popup/header_general.php:45
 #: includes/admin/views/editor_popup/header_style.php:40
-#: includes/admin/views/popup/header_general.php:42
 #@ go_pricing_textdomain
 msgid "Background image of the header."
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_general.php:56
-#: includes/admin/views/editor_popup/header_general.php:117
-#: includes/admin/views/popup/header_general.php:56
-#: includes/admin/views/popup/header_general.php:117
+#: includes/admin/views/editor_popup/header_general.php:59
+#: includes/admin/views/editor_popup/header_general.php:120
 #@ go_pricing_textdomain
 msgid "HTML content of the header."
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_general.php:71
-#: includes/admin/views/editor_popup/header_general.php:120
-#: includes/admin/views/popup/header_general.php:71
-#: includes/admin/views/popup/header_general.php:120
+#: includes/admin/views/editor_popup/header_general.php:74
+#: includes/admin/views/editor_popup/header_general.php:123
 #@ go_pricing_textdomain
 msgid "CSS Code"
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_general.php:73
-#: includes/admin/views/editor_popup/header_general.php:122
-#: includes/admin/views/popup/header_general.php:73
-#: includes/admin/views/popup/header_general.php:122
+#: includes/admin/views/editor_popup/header_general.php:76
+#: includes/admin/views/editor_popup/header_general.php:125
 #@ go_pricing_textdomain
 msgid "CSS code of the header."
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_general.php:80
-#: includes/admin/views/popup/header_general.php:80
+#: includes/admin/views/editor_popup/header_general.php:83
 #@ go_pricing_textdomain
 msgid "Type Specific Settings"
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_general.php:106
-#: includes/admin/views/popup/header_general.php:106
+#: includes/admin/views/editor_popup/header_general.php:109
 #@ go_pricing_textdomain
 msgid "Replace Header?"
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_general.php:108
-#: includes/admin/views/popup/header_general.php:108
+#: includes/admin/views/editor_popup/header_general.php:111
 #@ go_pricing_textdomain
 msgid "Whether to replace to origianal header with custom HTML & CSS code."
 msgstr ""
@@ -1005,32 +984,32 @@ msgstr ""
 msgid "Title of the pricing table."
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_title.php:43
+#: includes/admin/views/editor_popup/header_title.php:44
 #@ go_pricing_textdomain
 msgid "Font family of the title."
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_title.php:48
+#: includes/admin/views/editor_popup/header_title.php:49
 #@ go_pricing_textdomain
 msgid "Font size and line height of the title in pixels."
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_title.php:56
+#: includes/admin/views/editor_popup/header_title.php:57
 #@ go_pricing_textdomain
 msgid "Subtitle"
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_title.php:58
+#: includes/admin/views/editor_popup/header_title.php:59
 #@ go_pricing_textdomain
 msgid "Subtitle of the pricing table."
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_title.php:83
+#: includes/admin/views/editor_popup/header_title.php:84
 #@ go_pricing_textdomain
 msgid "Font family of the subtitle."
 msgstr ""
 
-#: includes/admin/views/editor_popup/header_title.php:88
+#: includes/admin/views/editor_popup/header_title.php:89
 #@ go_pricing_textdomain
 msgid "Font size and line height of the subtitle in pixels."
 msgstr ""
@@ -1116,37 +1095,34 @@ msgid "Whether to open the link in a new window."
 msgstr ""
 
 #: includes/admin/views/page/db_update.php:25
-#: includes/admin/views/page/export.php:31
 #: includes/admin/views/page/general_settings.php:20
-#: includes/admin/views/page/impex.php:25
-#: includes/admin/views/page/import.php:29
+#: includes/admin/views/page/impex.php:27
+#: includes/admin/views/page/import.php:28
 #: includes/admin/views/page/table_editor.php:35
 #@ go_pricing_textdomain
 msgid "Help"
 msgstr ""
 
 #: includes/admin/views/page/db_update.php:25
-#: includes/admin/views/page/export.php:31
 #: includes/admin/views/page/general_settings.php:20
-#: includes/admin/views/page/impex.php:25
-#: includes/admin/views/page/import.php:29
+#: includes/admin/views/page/impex.php:27
+#: includes/admin/views/page/import.php:28
 #: includes/admin/views/page/table_editor.php:35
 #@ go_pricing_textdomain
 msgid "Show"
 msgstr ""
 
 #: includes/admin/views/page/db_update.php:25
-#: includes/admin/views/page/export.php:31
 #: includes/admin/views/page/general_settings.php:20
-#: includes/admin/views/page/impex.php:25
-#: includes/admin/views/page/import.php:29
+#: includes/admin/views/page/impex.php:27
+#: includes/admin/views/page/import.php:28
 #: includes/admin/views/page/table_editor.php:35
-#: includes/admin/views/popup/parts/part_fa.php:26
+#: includes/admin/views/popup/parts/part_fa.php:34
 #: includes/admin/views/popup/parts/part_icomoon.php:29
 #: includes/admin/views/popup/parts/part_linecon.php:29
 #: includes/admin/views/popup/parts/part_material.php:29
 #: includes/admin/views/popup/sc_button_icon.php:64
-#: includes/admin/views/popup/sc_media.php:299
+#: includes/admin/views/popup/sc_media.php:302
 #: includes/admin/views/popup/sc_row_icon.php:54
 #: includes/globals/shadows.php:18
 #: includes/globals/signs.php:18
@@ -1155,11 +1131,11 @@ msgid "None"
 msgstr ""
 
 #: includes/admin/views/page/db_update.php:25
-#: includes/admin/views/page/impex.php:25
-#: includes/admin/views/page/impex.php:89
-#: includes/admin/views/page/import.php:29
-#: includes/admin/views/page/import.php:81
-#: includes/admin/views/view_editor_popup.php:42
+#: includes/admin/views/page/impex.php:27
+#: includes/admin/views/page/impex.php:100
+#: includes/admin/views/page/import.php:28
+#: includes/admin/views/page/import.php:80
+#: includes/admin/views/view_editor_popup.php:44
 #@ go_pricing_textdomain
 msgid "Next"
 msgstr ""
@@ -1176,45 +1152,35 @@ msgid "<strong>Your plugin database update is required.</strong> Create a backup
 msgstr ""
 
 #: includes/admin/views/page/db_update.php:51
-#: includes/admin/views/page/export.php:49
-#: includes/admin/views/popup/export.php:21
-#: includes/admin/views/popup/live_preview.php:21
 #@ go_pricing_textdomain
 msgid "Export Data"
 msgstr ""
 
 #: includes/admin/views/page/db_update.php:53
-#: includes/admin/views/page/export.php:51
-#: includes/admin/views/popup/export.php:23
-#: includes/admin/views/popup/live_preview.php:23
 #@ go_pricing_textdomain
 msgid "Copy the content of the textarea and save into a file on your hard drive."
 msgstr ""
 
-#: includes/admin/views/page/export.php:31
-#: includes/admin/views/page/export.php:60
 #: includes/admin/views/page/table_editor.php:249
-#: includes/admin/views/page/table_editor.php:282
+#: includes/admin/views/page/table_editor.php:283
 #@ go_pricing_textdomain
 msgid "Go to Dashboard"
 msgstr ""
 
-#: includes/admin/views/page/export.php:42
-#: includes/admin/views/page/impex.php:50
+#: includes/admin/views/page/impex.php:52
 #: includes/admin/views/page/table_manager.php:103
-#: includes/admin/views/popup/export.php:11
-#: includes/admin/views/popup/live_preview.php:36
+#: includes/admin/views/popup/live_preview.php:24
 #@ go_pricing_textdomain
 msgid "Export"
 msgstr ""
 
 #: includes/admin/views/page/general_settings.php:20
-#: includes/admin/views/page/general_settings.php:77
-#: includes/admin/views/page/general_settings.php:147
-#: includes/admin/views/page/general_settings.php:172
+#: includes/admin/views/page/general_settings.php:85
+#: includes/admin/views/page/general_settings.php:155
+#: includes/admin/views/page/general_settings.php:180
 #: includes/admin/views/page/table_editor.php:35
 #: includes/admin/views/page/table_editor.php:249
-#: includes/admin/views/page/table_editor.php:282
+#: includes/admin/views/page/table_editor.php:283
 #@ go_pricing_textdomain
 msgid "Save"
 msgstr ""
@@ -1264,164 +1230,150 @@ msgstr ""
 msgid "Set user access to the plugin."
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:68
+#: includes/admin/views/page/general_settings.php:76
 #@ go_pricing_textdomain
 msgid "Whether to enable CSS transitions."
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:84
-#: includes/admin/views/page/general_settings.php:99
+#: includes/admin/views/page/general_settings.php:92
+#: includes/admin/views/page/general_settings.php:107
 #@ go_pricing_textdomain
 msgid "Currency"
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:110
+#: includes/admin/views/page/general_settings.php:118
 #@ go_pricing_textdomain
 msgid "Currency of the price."
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:113
+#: includes/admin/views/page/general_settings.php:121
 #@ go_pricing_textdomain
 msgid "Currency Position"
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:116
+#: includes/admin/views/page/general_settings.php:124
 #@ go_pricing_textdomain
 msgid "Left (e.g. $100)"
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:117
+#: includes/admin/views/page/general_settings.php:125
 #@ go_pricing_textdomain
 msgid "Right (e.g. 100$)"
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:119
+#: includes/admin/views/page/general_settings.php:127
 #@ go_pricing_textdomain
 msgid "Currency position of the price."
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:122
+#: includes/admin/views/page/general_settings.php:130
 #@ go_pricing_textdomain
 msgid "Thousand Separator"
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:124
+#: includes/admin/views/page/general_settings.php:132
 #@ go_pricing_textdomain
 msgid "Thuousand separator of the price."
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:127
+#: includes/admin/views/page/general_settings.php:135
 #@ go_pricing_textdomain
 msgid "Decimal Separator"
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:129
+#: includes/admin/views/page/general_settings.php:137
 #@ go_pricing_textdomain
 msgid "Decimal separator of the price."
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:132
+#: includes/admin/views/page/general_settings.php:140
 #@ go_pricing_textdomain
 msgid "Number of Decimals"
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:134
+#: includes/admin/views/page/general_settings.php:142
 #@ go_pricing_textdomain
 msgid "Maximum number of decimals to show in price."
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:154
+#: includes/admin/views/page/general_settings.php:162
 #@ go_pricing_textdomain
 msgid "Custom CSS Code"
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:161
+#: includes/admin/views/page/general_settings.php:169
 #@ go_pricing_textdomain
 msgid "Code"
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:163
+#: includes/admin/views/page/general_settings.php:171
 #@ go_pricing_textdomain
 msgid "The code will be added to the plugin frontend style."
 msgstr ""
 
-#: includes/admin/views/page/impex.php:46
+#: includes/admin/views/page/impex.php:48
 #@ go_pricing_textdomain
 msgid "Select Action"
 msgstr ""
 
-#: includes/admin/views/page/impex.php:49
-#: includes/admin/views/page/import.php:44
+#: includes/admin/views/page/impex.php:51
+#: includes/admin/views/page/import.php:43
 #@ go_pricing_textdomain
 msgid "Import"
 msgstr ""
 
-#: includes/admin/views/page/impex.php:53
+#: includes/admin/views/page/impex.php:55
 #@ go_pricing_textdomain
 msgid "Import or Export table database data."
 msgstr ""
 
-#: includes/admin/views/page/impex.php:57
-#@ go_pricing_textdomain
-msgid "Import Data"
-msgstr ""
-
-#: includes/admin/views/page/impex.php:59
-#@ go_pricing_textdomain
-msgid "Open the file that contains demodata and copy its content to the textarea above, then click to the \"Next\" button."
-msgstr ""
-
-#: includes/admin/views/page/impex.php:62
+#: includes/admin/views/page/impex.php:73
+#: includes/admin/views/page/import.php:50
 #, php-format
 #@ go_pricing_textdomain
 msgid "Select Tables%s"
 msgstr ""
 
-#: includes/admin/views/page/impex.php:66
-#: includes/admin/views/page/import.php:55
+#: includes/admin/views/page/impex.php:77
+#: includes/admin/views/page/import.php:54
 #@ go_pricing_textdomain
 msgid "All tables"
 msgstr ""
 
-#: includes/admin/views/page/impex.php:66
+#: includes/admin/views/page/impex.php:77
 #@ go_pricing_textdomain
 msgid "Show / Hide"
 msgstr ""
 
-#: includes/admin/views/page/impex.php:77
-#: includes/admin/views/page/import.php:64
+#: includes/admin/views/page/impex.php:88
+#: includes/admin/views/page/import.php:63
 #@ go_pricing_textdomain
 msgid "No tables found."
 msgstr ""
 
-#: includes/admin/views/page/impex.php:80
+#: includes/admin/views/page/impex.php:91
 #@ go_pricing_textdomain
 msgid "Select the pricing tables you would like to export."
 msgstr ""
 
-#: includes/admin/views/page/import.php:51
-#@ go_pricing_textdomain
-msgid "Select Tables"
-msgstr ""
-
-#: includes/admin/views/page/import.php:67
+#: includes/admin/views/page/import.php:66
 #@ go_pricing_textdomain
 msgid "Select the pricing tables you would like to import."
 msgstr ""
 
-#: includes/admin/views/page/import.php:70
+#: includes/admin/views/page/import.php:69
 #@ go_pricing_textdomain
 msgid "Replace existing items?"
 msgstr ""
 
-#: includes/admin/views/page/import.php:72
+#: includes/admin/views/page/import.php:71
 #@ go_pricing_textdomain
 msgid "Whether to replace existing items with same ids or create new copy of them."
 msgstr ""
 
 #: includes/admin/views/page/table_editor.php:35
 #: includes/admin/views/page/table_editor.php:249
-#: includes/admin/views/page/table_editor.php:282
+#: includes/admin/views/page/table_editor.php:283
 #@ go_pricing_textdomain
 msgid "Please save the table first!"
 msgstr ""
@@ -1744,15 +1696,8 @@ msgstr ""
 msgid "Create New Table"
 msgstr ""
 
-#: includes/admin/views/popup/export.php:11
-#, php-format
-#@ go_pricing_textdomain
-msgid "Selected pricing table data (%d)"
-msgstr ""
-
-#: includes/admin/views/popup/export.php:12
 #: includes/admin/views/popup/image_preview.php:9
-#: includes/admin/views/popup/live_preview.php:11
+#: includes/admin/views/popup/live_preview.php:12
 #: includes/admin/views/popup/sc_button_icon.php:10
 #: includes/admin/views/popup/sc_font_icon.php:10
 #: includes/admin/views/popup/sc_media.php:10
@@ -1766,22 +1711,22 @@ msgstr ""
 msgid "Image Preview"
 msgstr ""
 
-#: includes/admin/views/popup/live_preview.php:10
+#: includes/admin/views/popup/live_preview.php:11
 #@ go_pricing_textdomain
 msgid "Live Preview"
 msgstr ""
 
-#: includes/admin/views/popup/live_preview.php:33
+#: includes/admin/views/popup/live_preview.php:21
 #@ go_pricing_textdomain
 msgid "Desktop View"
 msgstr ""
 
-#: includes/admin/views/popup/live_preview.php:33
+#: includes/admin/views/popup/live_preview.php:21
 #@ go_pricing_textdomain
 msgid "Tablet View"
 msgstr ""
 
-#: includes/admin/views/popup/live_preview.php:33
+#: includes/admin/views/popup/live_preview.php:21
 #@ go_pricing_textdomain
 msgid "Mobile View"
 msgstr ""
@@ -1851,13 +1796,6 @@ msgstr ""
 msgid "Iconset"
 msgstr ""
 
-#: includes/admin/views/popup/sc_button_icon.php:22
-#: includes/admin/views/popup/sc_font_icon.php:22
-#: includes/admin/views/popup/sc_row_icon.php:22
-#@ go_pricing_textdomain
-msgid "Font Awesome 4.3 (593)"
-msgstr ""
-
 #: includes/admin/views/popup/sc_button_icon.php:23
 #: includes/admin/views/popup/sc_font_icon.php:23
 #: includes/admin/views/popup/sc_row_icon.php:23
@@ -1907,7 +1845,7 @@ msgid "Icon Alignment"
 msgstr ""
 
 #: includes/admin/views/popup/sc_button_icon.php:74
-#: includes/admin/views/popup/sc_media.php:335
+#: includes/admin/views/popup/sc_media.php:338
 #: includes/admin/views/popup/sc_row_icon.php:105
 #@ go_pricing_textdomain
 msgid "Custom Icon"
@@ -1921,7 +1859,7 @@ msgstr ""
 
 #: includes/admin/views/popup/sc_button_icon.php:94
 #: includes/admin/views/popup/sc_font_icon.php:43
-#: includes/admin/views/popup/sc_media.php:417
+#: includes/admin/views/popup/sc_media.php:420
 #: includes/admin/views/popup/sc_row_icon.php:125
 #@ go_pricing_textdomain
 msgid "Insert Shortcode"
@@ -2012,22 +1950,13 @@ msgstr ""
 msgid "Type of the shortcode to edit."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:61
-#: includes/admin/views/popup/sc_media.php:78
-#: includes/admin/views/popup/sc_media.php:100
-#: includes/admin/views/popup/sc_media.php:114
-#: includes/admin/views/popup/sc_media.php:134
+#: includes/admin/views/popup/sc_media.php:64
+#: includes/admin/views/popup/sc_media.php:81
+#: includes/admin/views/popup/sc_media.php:103
+#: includes/admin/views/popup/sc_media.php:117
+#: includes/admin/views/popup/sc_media.php:137
 #@ go_pricing_textdomain
 msgid "Video ID"
-msgstr ""
-
-#: includes/admin/views/popup/sc_media.php:63
-#: includes/admin/views/popup/sc_media.php:80
-#: includes/admin/views/popup/sc_media.php:102
-#: includes/admin/views/popup/sc_media.php:116
-#: includes/admin/views/popup/sc_media.php:136
-#@ go_pricing_textdomain
-msgid "ID of the video."
 msgstr ""
 
 #: includes/admin/views/popup/sc_media.php:66
@@ -2035,236 +1964,245 @@ msgstr ""
 #: includes/admin/views/popup/sc_media.php:105
 #: includes/admin/views/popup/sc_media.php:119
 #: includes/admin/views/popup/sc_media.php:139
-#: includes/admin/views/popup/sc_media.php:201
-#: includes/admin/views/popup/sc_media.php:221
-#: includes/admin/views/popup/sc_media.php:236
-#: includes/admin/views/popup/sc_media.php:256
-#: includes/admin/views/popup/sc_media.php:403
+#@ go_pricing_textdomain
+msgid "ID of the video."
+msgstr ""
+
+#: includes/admin/views/popup/sc_media.php:69
+#: includes/admin/views/popup/sc_media.php:86
+#: includes/admin/views/popup/sc_media.php:108
+#: includes/admin/views/popup/sc_media.php:122
+#: includes/admin/views/popup/sc_media.php:142
+#: includes/admin/views/popup/sc_media.php:204
+#: includes/admin/views/popup/sc_media.php:224
+#: includes/admin/views/popup/sc_media.php:239
+#: includes/admin/views/popup/sc_media.php:259
+#: includes/admin/views/popup/sc_media.php:406
 #@ go_pricing_textdomain
 msgid "Height"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:68
-#: includes/admin/views/popup/sc_media.php:85
-#: includes/admin/views/popup/sc_media.php:107
-#: includes/admin/views/popup/sc_media.php:121
-#: includes/admin/views/popup/sc_media.php:141
+#: includes/admin/views/popup/sc_media.php:71
+#: includes/admin/views/popup/sc_media.php:88
+#: includes/admin/views/popup/sc_media.php:110
+#: includes/admin/views/popup/sc_media.php:124
+#: includes/admin/views/popup/sc_media.php:144
 #@ go_pricing_textdomain
 msgid "Height of the video in pixels (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:71
-#: includes/admin/views/popup/sc_media.php:93
-#: includes/admin/views/popup/sc_media.php:124
-#: includes/admin/views/popup/sc_media.php:144
-#: includes/admin/views/popup/sc_media.php:181
-#: includes/admin/views/popup/sc_media.php:206
-#: includes/admin/views/popup/sc_media.php:241
-#: includes/admin/views/popup/sc_media.php:383
+#: includes/admin/views/popup/sc_media.php:74
+#: includes/admin/views/popup/sc_media.php:96
+#: includes/admin/views/popup/sc_media.php:127
+#: includes/admin/views/popup/sc_media.php:147
+#: includes/admin/views/popup/sc_media.php:184
+#: includes/admin/views/popup/sc_media.php:209
+#: includes/admin/views/popup/sc_media.php:244
+#: includes/admin/views/popup/sc_media.php:386
 #@ go_pricing_textdomain
 msgid "Autoplay?"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:73
-#: includes/admin/views/popup/sc_media.php:95
-#: includes/admin/views/popup/sc_media.php:126
-#: includes/admin/views/popup/sc_media.php:146
-#: includes/admin/views/popup/sc_media.php:183
+#: includes/admin/views/popup/sc_media.php:76
+#: includes/admin/views/popup/sc_media.php:98
+#: includes/admin/views/popup/sc_media.php:129
+#: includes/admin/views/popup/sc_media.php:149
+#: includes/admin/views/popup/sc_media.php:186
 #@ go_pricing_textdomain
 msgid "Whether to play the video automatically (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:88
+#: includes/admin/views/popup/sc_media.php:91
 #@ go_pricing_textdomain
 msgid "Player Color"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:90
+#: includes/admin/views/popup/sc_media.php:93
 #@ go_pricing_textdomain
 msgid "Color of the player (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:154
+#: includes/admin/views/popup/sc_media.php:157
 #@ go_pricing_textdomain
 msgid "MP4 Source"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:156
+#: includes/admin/views/popup/sc_media.php:159
 #@ go_pricing_textdomain
 msgid "MP4 source for Safari, IE9+, iPhone, iPad, Android, and WP7."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:159
+#: includes/admin/views/popup/sc_media.php:162
 #@ go_pricing_textdomain
 msgid "WebM Source"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:161
+#: includes/admin/views/popup/sc_media.php:164
 #@ go_pricing_textdomain
 msgid "WebM/VP8 file for Firefox4, Opera, and Chrome (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:164
-#: includes/admin/views/popup/sc_media.php:373
+#: includes/admin/views/popup/sc_media.php:167
+#: includes/admin/views/popup/sc_media.php:376
 #@ go_pricing_textdomain
 msgid "OGG Source"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:166
+#: includes/admin/views/popup/sc_media.php:169
 #@ go_pricing_textdomain
 msgid "Ogg/Vorbis for older Firefox and Opera versions (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:169
+#: includes/admin/views/popup/sc_media.php:172
 #@ go_pricing_textdomain
 msgid "Poster Image URL"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:178
+#: includes/admin/views/popup/sc_media.php:181
 #@ go_pricing_textdomain
 msgid "URL of the poster image (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:186
-#: includes/admin/views/popup/sc_media.php:388
+#: includes/admin/views/popup/sc_media.php:189
+#: includes/admin/views/popup/sc_media.php:391
 #@ go_pricing_textdomain
 msgid "Loop?"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:188
+#: includes/admin/views/popup/sc_media.php:191
 #@ go_pricing_textdomain
 msgid "Whether to play the video infinitely (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:196
-#: includes/admin/views/popup/sc_media.php:231
+#: includes/admin/views/popup/sc_media.php:199
+#: includes/admin/views/popup/sc_media.php:234
 #@ go_pricing_textdomain
 msgid "Track ID"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:198
-#: includes/admin/views/popup/sc_media.php:218
-#: includes/admin/views/popup/sc_media.php:233
+#: includes/admin/views/popup/sc_media.php:201
+#: includes/admin/views/popup/sc_media.php:221
+#: includes/admin/views/popup/sc_media.php:236
 #@ go_pricing_textdomain
 msgid "ID of the audio track."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:203
-#: includes/admin/views/popup/sc_media.php:223
-#: includes/admin/views/popup/sc_media.php:238
+#: includes/admin/views/popup/sc_media.php:206
+#: includes/admin/views/popup/sc_media.php:226
+#: includes/admin/views/popup/sc_media.php:241
 #@ go_pricing_textdomain
 msgid "Height of the audio in pixels (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:208
-#: includes/admin/views/popup/sc_media.php:243
-#: includes/admin/views/popup/sc_media.php:385
+#: includes/admin/views/popup/sc_media.php:211
+#: includes/admin/views/popup/sc_media.php:246
+#: includes/admin/views/popup/sc_media.php:388
 #@ go_pricing_textdomain
 msgid "Whether to play the audio track automatically (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:216
+#: includes/admin/views/popup/sc_media.php:219
 #@ go_pricing_textdomain
 msgid "Track URL"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:251
+#: includes/admin/views/popup/sc_media.php:254
 #@ go_pricing_textdomain
 msgid "Address"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:253
+#: includes/admin/views/popup/sc_media.php:256
 #@ go_pricing_textdomain
 msgid "Address to be shown on map e.g. \"New York, USA\"."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:258
-#: includes/admin/views/popup/sc_media.php:405
+#: includes/admin/views/popup/sc_media.php:261
+#: includes/admin/views/popup/sc_media.php:408
 #@ go_pricing_textdomain
 msgid "Height of the iframe in pixels."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:261
+#: includes/admin/views/popup/sc_media.php:264
 #@ go_pricing_textdomain
 msgid "Zoom Level"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:289
+#: includes/admin/views/popup/sc_media.php:292
 #@ go_pricing_textdomain
 msgid "Marker Icon"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:344
+#: includes/admin/views/popup/sc_media.php:347
 #@ go_pricing_textdomain
 msgid "Address marker icon."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:348
+#: includes/admin/views/popup/sc_media.php:351
 #@ go_pricing_textdomain
 msgid "Market Title"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:350
+#: includes/admin/views/popup/sc_media.php:353
 #@ go_pricing_textdomain
 msgid "Title attribute for marker on map (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:353
+#: includes/admin/views/popup/sc_media.php:356
 #@ go_pricing_textdomain
 msgid "Info Window Content"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:355
+#: includes/admin/views/popup/sc_media.php:358
 #@ go_pricing_textdomain
 msgid "Content of the info window/popup (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:358
+#: includes/admin/views/popup/sc_media.php:361
 #@ go_pricing_textdomain
 msgid "Info Window by Default?"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:360
+#: includes/admin/views/popup/sc_media.php:363
 #@ go_pricing_textdomain
 msgid "Whether to show info then info window on page load (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:368
+#: includes/admin/views/popup/sc_media.php:371
 #@ go_pricing_textdomain
 msgid "MP3 Source"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:370
+#: includes/admin/views/popup/sc_media.php:373
 #@ go_pricing_textdomain
 msgid "MP3 source."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:375
+#: includes/admin/views/popup/sc_media.php:378
 #@ go_pricing_textdomain
 msgid "Ogg source (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:378
+#: includes/admin/views/popup/sc_media.php:381
 #@ go_pricing_textdomain
 msgid "WAV Source"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:380
+#: includes/admin/views/popup/sc_media.php:383
 #@ go_pricing_textdomain
 msgid "Wav source (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:390
+#: includes/admin/views/popup/sc_media.php:393
 #@ go_pricing_textdomain
 msgid "Whether to play the audio track infinitely (optional)."
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:398
+#: includes/admin/views/popup/sc_media.php:401
 #@ go_pricing_textdomain
 msgid "URL"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:400
+#: includes/admin/views/popup/sc_media.php:403
 #@ go_pricing_textdomain
 msgid "URL of the iframe."
 msgstr ""
@@ -2274,12 +2212,12 @@ msgstr ""
 msgid "Content & Style Settings"
 msgstr ""
 
-#: includes/admin/views/view_editor_popup.php:37
+#: includes/admin/views/view_editor_popup.php:39
 #@ go_pricing_textdomain
 msgid "Insert"
 msgstr ""
 
-#: includes/admin/views/view_editor_popup.php:42
+#: includes/admin/views/view_editor_popup.php:44
 #@ go_pricing_textdomain
 msgid "Previous"
 msgstr ""
@@ -2290,7 +2228,7 @@ msgstr ""
 msgid "Oops, AJAX error! Keep getting this message? Please disable AJAX request <a href=\"%s\" target=\"_blank\">here</a> and try again."
 msgstr ""
 
-#: includes/admin/views/view_page.php:19
+#: includes/admin/views/view_page.php:14
 #@ go_pricing_textdomain
 msgid "Hey, just a sec!"
 msgstr ""
@@ -3256,7 +3194,7 @@ msgstr ""
 msgid "Clean Tag"
 msgstr ""
 
-#: includes/preview.php:51
+#: includes/preview.php:56
 #@ go_pricing_textdomain
 msgid "Oops, Forbidden!"
 msgstr ""
@@ -3311,12 +3249,12 @@ msgstr ""
 msgid "http://granthweb.com/"
 msgstr ""
 
-#: includes/admin/views/popup/sc_media.php:285
+#: includes/admin/views/popup/sc_media.php:288
 #@ go_pricing_textdomain
 msgid "Zoom level of the map (optional)."
 msgstr ""
 
-#: includes/admin/views/column/column.php:85
+#: includes/admin/views/column/column.php:21
 #@ go_pricing_textdomain
 msgid "Expand / Collapse"
 msgstr ""
@@ -3337,22 +3275,23 @@ msgstr ""
 msgid "No tables found!"
 msgstr ""
 
-#: includes/admin/class_admin_page_impex.php:318
+#: includes/admin/class_admin_page_impex.php:355
+#: includes/admin/class_admin_page_impex.php:412
 #@ go_pricing_textdomain
 msgid "Import data is not compatible with the current version!"
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:477
+#: includes/admin/class_admin_page_main.php:548
 #@ go_pricing_textdomain
 msgid "Pricing \"Table Name\" is empty!"
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:480
+#: includes/admin/class_admin_page_main.php:551
 #@ go_pricing_textdomain
 msgid "Pricing \"Table ID\" is empty!"
 msgstr ""
 
-#: includes/admin/class_admin_page_main.php:483
+#: includes/admin/class_admin_page_main.php:554
 #@ go_pricing_textdomain
 msgid "Pricing \"Table ID\" can contain only lowercase letters, numbers, hyphens and underscores!"
 msgstr ""
@@ -3372,7 +3311,7 @@ msgstr ""
 msgid "Select User Role"
 msgstr ""
 
-#: includes/admin/views/page/general_settings.php:66
+#: includes/admin/views/page/general_settings.php:74
 #@ go_pricing_textdomain
 msgid "Enable CSS Transitions"
 msgstr ""
@@ -3458,16 +3397,89 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#. translators: plugin header field 'Version'
-#: go_pricing.php:0
-#@ go_pricing_textdomain
-msgid "3.0.2"
-msgstr ""
-
 #: includes/admin/views/popup/sc_button_icon.php:25
 #: includes/admin/views/popup/sc_font_icon.php:25
 #: includes/admin/views/popup/sc_row_icon.php:25
 #@ go_pricing_textdomain
 msgid "Material Icons (795)"
+msgstr ""
+
+#: includes/admin/class_admin.php:310
+#@ go_pricing_textdomain
+msgid "PHP Error in AJAX Response!"
+msgstr ""
+
+#: includes/admin/class_admin.php:311
+#@ go_pricing_textdomain
+msgid "You have reached the maximum number of columns!"
+msgstr ""
+
+#: includes/admin/class_admin.php:312
+#@ go_pricing_textdomain
+msgid "Invalid image!"
+msgstr ""
+
+#: includes/admin/class_admin_page_impex.php:329
+#@ go_pricing_textdomain
+msgid "Oops, something went wrong"
+msgstr ""
+
+#: includes/admin/views/page/impex.php:20
+#@ go_pricing_textdomain
+msgid "Unknown"
+msgstr ""
+
+#: includes/admin/views/page/impex.php:59
+#@ go_pricing_textdomain
+msgid "Upload Data"
+msgstr ""
+
+#: includes/admin/views/page/impex.php:65
+#@ go_pricing_textdomain
+msgid "Drop files here or"
+msgstr ""
+
+#: includes/admin/views/page/impex.php:66
+#@ go_pricing_textdomain
+msgid "Select Files"
+msgstr ""
+
+#: includes/admin/views/page/impex.php:70
+#@ go_pricing_textdomain
+msgid "For older browsers or with AJAX disabled, please use the \"Select Files\" button to upload files."
+msgstr ""
+
+#: includes/admin/views/page/impex.php:70
+#, php-format
+#@ go_pricing_textdomain
+msgid "Maximum upload file size: %s."
+msgstr ""
+
+#. translators: plugin header field 'Version'
+#: go_pricing.php:0
+#@ go_pricing_textdomain
+msgid "3.1.0"
+msgstr ""
+
+#: includes/admin/views/popup/parts/part_fa.php:24
+#@ go_pricing_textdomain
+msgid "All versions"
+msgstr ""
+
+#: includes/admin/views/popup/sc_button_icon.php:22
+#: includes/admin/views/popup/sc_font_icon.php:22
+#: includes/admin/views/popup/sc_row_icon.php:22
+#@ go_pricing_textdomain
+msgid "Font Awesome 4.4 (674)"
+msgstr ""
+
+#: includes/admin/views/page/general_settings.php:65
+#@ go_pricing_textdomain
+msgid "Live Preview Safe Mode"
+msgstr ""
+
+#: includes/admin/views/page/general_settings.php:67
+#@ go_pricing_textdomain
+msgid "Whether to enable Safe Mode for Live Previews. Required if the direct access of PHP files in \"wp-content\" folder is restricted. e.g. The \"Restrict wp-content access\" option of Sucuri Security plugin is enabled."
 msgstr ""
 

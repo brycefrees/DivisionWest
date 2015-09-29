@@ -4,7 +4,7 @@
  *
  * @author  Your Inspiration Themes
  * @package YITH WooCommerce Wishlist
- * @version 1.1.5
+ * @version 2.0.9
  */
 
 if ( ! defined( 'YITH_WCWL' ) ) {
@@ -234,13 +234,9 @@ if ( ! class_exists( 'YITH_WCWL_Init' ) ) {
 		 * @since 1.0.0
 		 */
 		public function add_body_class( $classes ) {
-			$wishlist_page_id = get_option( 'yith_wcwl_wishlist_page_id' );
+			$wishlist_page_id = yith_wcwl_object_id( get_option( 'yith_wcwl_wishlist_page_id' ) );
 
-			if ( is_page( $wishlist_page_id ) ||
-
-			     //WPML Compatibility
-			     defined( 'ICL_PLUGIN_PATH' ) && is_page( icl_object_id( $wishlist_page_id, 'page', false ) )
-			) {
+			if ( is_page( $wishlist_page_id ) ) {
 				$classes[] = 'woocommerce-wishlist';
 				$classes[] = 'woocommerce';
 				$classes[] = 'woocommerce-page';
@@ -362,8 +358,8 @@ if ( ! class_exists( 'YITH_WCWL_Init' ) ) {
 				'ajax_loader_url' => YITH_WCWL_URL . 'assets/images/ajax-loader.gif',
 				'remove_from_wishlist_after_add_to_cart' => get_option( 'yith_wcwl_remove_after_add_to_cart' ),
 				'labels' => array(
-					'cookie_disabled' => __( 'We are sorry, but this feature is available only if cookies are enabled on your browser.', 'yit' ),
-					'added_to_cart_message' => sprintf( '<div class="woocommerce-message">%s</div>', __( 'Product correctly added to cart', 'yit' ) )
+					'cookie_disabled' => __( 'We are sorry, but this feature is available only if cookies are enabled on your browser.', 'yith-woocommerce-wishlist' ),
+					'added_to_cart_message' => sprintf( '<div class="woocommerce-message">%s</div>', __( 'Product correctly added to cart', 'yith-woocommerce-wishlist' ) )
 				),
 				'actions' => array(
 					'add_to_wishlist_action' => 'add_to_wishlist',

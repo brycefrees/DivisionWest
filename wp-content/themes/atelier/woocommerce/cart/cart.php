@@ -4,7 +4,7 @@
  *
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     2.3.0
+ * @version     2.3.8
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -56,7 +56,7 @@ wc_print_notices();
 											$thumbnail = apply_filters( 'woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key );
 
 											if ( ! $_product->is_visible() )
-												echo esc_html($thumbnail);
+												echo $thumbnail;
 											else
 												printf( '<a href="%s">%s</a>', $_product->get_permalink(), $thumbnail );
 										?>
@@ -65,9 +65,9 @@ wc_print_notices();
 									<td class="product-name">
 										<?php
 											if ( ! $_product->is_visible() )
-												echo apply_filters( 'woocommerce_cart_item_name', $_product->get_title(), $cart_item, $cart_item_key );
+												echo apply_filters( 'woocommerce_cart_item_name', $_product->get_title(), $cart_item, $cart_item_key ) . '&nbsp;';
 											else
-												echo apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', $_product->get_permalink(), $_product->get_title() ), $cart_item, $cart_item_key );
+												echo apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s </a>', $_product->get_permalink(), $_product->get_title() ), $cart_item, $cart_item_key );
 
 											// Meta data
 											echo WC()->cart->get_item_data( $cart_item );
@@ -152,7 +152,7 @@ wc_print_notices();
 
 				<?php woocommerce_cart_totals(); ?>
 
-				<a class="continue-shopping accent" href="<?php echo get_permalink( wc_get_page_id( 'shop' ) ); ?>"><?php _e('Continue shopping', 'swiftframework'); ?></a>
+				<a class="continue-shopping accent" href="<?php echo apply_filters( 'woocommerce_continue_shopping_redirect', get_permalink( wc_get_page_id( 'shop' ) ) ); ?>"><?php _e('Continue shopping', 'swiftframework'); ?></a>
 
 			</div>
 

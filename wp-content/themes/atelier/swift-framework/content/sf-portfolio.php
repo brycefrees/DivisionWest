@@ -38,7 +38,7 @@
 			    'portfolio_filter'   => '',
 			    'pagination'         => '',
 			    'button_enabled'     => '',
-			    'hover_style'        => '',
+			    'hover_style'        => 'default',
 			    'post_type'			 => 'portfolio',
 			    'el_position'        => '',
 			    'width'              => '',
@@ -112,15 +112,16 @@
             } else {
                 $list_class .= ' gutters';
             }
-
+						
             // Thumb Type
-            if ( $hover_style == "default" && function_exists( 'sf_get_thumb_type' ) ) {
+            if ( function_exists( 'sf_get_thumb_type' ) && sf_theme_opts_name() == "sf_atelier_options" ) {
+                $list_class .= ' ' . sf_get_thumb_type();
+            } else if ( function_exists( 'sf_get_thumb_type' ) && $hover_style == "default" ) {
                 $list_class .= ' ' . sf_get_thumb_type();
             } else {
                 $list_class .= ' thumbnail-' . $hover_style;
             }
-
-
+            
             if ( $display_type == "multi-size-masonry" ) {
                 if ( $fullwidth == "yes" ) {
                     $grid_size = 'col-sm-3';
@@ -315,37 +316,52 @@
     /* PORTFOLIO FILTER
     ================================================== */
     if ( ! function_exists( 'sf_portfolio_filter' ) ) {
-        function sf_portfolio_filter( $style = "basic", $post_type = "portfolio", $parent_category = "", $frontend_display = false ) {
+        function sf_portfolio_filter($style = "basic", $post_type = "portfolio", $parent_category = "", $frontend_display = false) {
 
-            $filter_output = $tax_terms = "";
+			$filter_output = $tax_terms = "";
+			$show_all_icon = apply_filters('sf_portfolio_show_all_icon', 'ss-gridlines');
 
-            $taxonomy_name = 'category';
+			$taxonomy_name = 'category';
 
-            if ( $post_type != "post") {
-            	$taxonomy_name = $post_type . '-category';
-            }
+			if ( $post_type != "post") {
+				$taxonomy_name = $post_type . '-category';
+			}
 
-            if ( $parent_category == "" || $parent_category == "All" ) {
-                $tax_terms = sf_get_category_list( $taxonomy_name, 1, '', true );
-            } else {
-                $tax_terms = sf_get_category_list( $taxonomy_name, 1, $parent_category, true );
-            }
+			if ($parent_category == "" || $parent_category == "All") {
+				$tax_terms = sf_get_category_list($taxonomy_name, 1, '', true);
+			} else {
+				$tax_terms = sf_get_category_list($taxonomy_name, 1, $parent_category, true);
+			}
 
-            $filter_output .= '<div class="filter-wrap clearfix">' . "\n";
-            $filter_output .= '<ul class="post-filter-tabs filtering clearfix">' . "\n";
-            $filter_output .= '<li class="all selected"><a data-filter="*" href="#"><span class="item-name">' . __( "Show all", "swiftframework" ) . '</span></a></li>' . "\n";
-            foreach ( $tax_terms as $tax_term ) {
-                $term = get_term_by( 'slug', $tax_term, $taxonomy_name );
-                if ( $term ) {
-                    $filter_output .= '<li><a href="#" title="' . $term->name . '" class="' . $term->slug . '" data-filter=".' . $term->slug . '"><span class="item-name">' . $term->name . '</span></a></li>' . "\n";
-                } else {
-                    $filter_output .= '<li><a href="#" title="' . $tax_term . '" class="' . $tax_term . '" data-filter=".' . $tax_term . '"><span class="item-name">' . $tax_term . '</span></a></li>' . "\n";
-                }
-            }
-            $filter_output .= '</ul></div>' . "\n";
+		    $filter_output .= '<div class="filter-wrap clearfix">'. "\n";
+		    $filter_output .= '<ul class="post-filter-tabs filtering clearfix">'. "\n";
+		    $filter_output .= '<li class="all selected"><a data-filter="*" href="#"><i class="'.$show_all_icon.'"></i><span class="item-name">'. __("Show all", "swiftframework").'</span></a></li>'. "\n";
+			foreach ($tax_terms as $tax_term) {
+				$term = get_term_by('name', $tax_term, $taxonomy_name);
+				$term_meta = $term_icon = "";
+				if (isset($term->term_id)) {
+				$term_meta = get_option( "portfolio-category_$term->term_id" );
+				}
+				if (isset($term_meta['icon'])) {
+					$term_icon = $term_meta['icon'];
+				}
+				if ($term) {
+					$term_slug = strtolower( $term->slug );
+					$filter_output .= '<li><a href="#" title="View all ' . $term->name . ' items" class="' . $term_slug . '" data-filter=".' . $term_slug . '">';
+					if ($term_icon != "") {
+						$filter_output .= '<i class="'.$term_icon.'"></i>';
+					}
+					$filter_output .= '<span class="item-name">' . $term->name . '</span></a></li>'. "\n";
+				} else {
+					$tax_slug = strtolower( $tax_term );
+					$tax_slug = str_replace(' ', '-', $tax_slug);
+					$filter_output .= '<li><a href="#" title="View all ' . $tax_term . ' items" class="' . $tax_slug . '" data-filter=".' . $tax_slug . '"><span class="item-name">' . $tax_term . '</span></a></li>'. "\n";
+				}
+			}
+		    $filter_output .= '</ul></div>'. "\n";
 
-            return $filter_output;
-        }
+			return $filter_output;
+		}
     }
 
     /* PORTFOLIO THUMBNAIL
@@ -603,14 +619,18 @@
                 $link_config = 'href="' . $thumb_link_url . '" class="link-to-url" target="_blank"';
                 $item_icon   = apply_filters( 'sf_port_url_icon', "ss-link" );
             } else if ( $thumb_link_type == "lightbox_thumb" ) {
-                $link_config = 'href="' . $thumb_img_url . '" class="lightbox" data-rel="ilightbox[portfolio]"';
+                if ( $thumb_img_url != "" ) {
+                    $link_config = 'href="' . $thumb_img_url . '" class="lightbox" data-rel="ilightbox[portfolio]"';                    
+                }
                 $item_icon   = apply_filters( 'sf_port_lightbox_icon', "ss-view" );
             } else if ( $thumb_link_type == "lightbox_image" ) {
                 $lightbox_image_url = '';
                 foreach ( $thumb_lightbox_image as $image ) {
                     $lightbox_image_url = $image['full_url'];
                 }
-                $link_config = 'href="' . $lightbox_image_url . '" class="lightbox" data-rel="ilightbox[portfolio]"';
+                if ( $lightbox_image_url != "" ) {
+                    $link_config = 'href="' . $lightbox_image_url . '" class="lightbox" data-rel="ilightbox[portfolio]"';
+                }
                 $item_icon   = apply_filters( 'sf_port_lightbox_icon', "ss-view" );
             } else if ( $thumb_link_type == "lightbox_video" ) {
                 $link_config = 'data-video="' . $thumb_lightbox_video_url . '" href="#" class="fw-video-link"';

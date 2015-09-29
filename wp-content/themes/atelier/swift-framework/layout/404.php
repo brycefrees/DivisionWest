@@ -4,7 +4,7 @@
 ?>
 
 <div class="help-text">
-    <?php echo esc_html($error_content); ?>
+    <?php echo $error_content; ?>
 </div>
 <form method="get" class="search-form" action="<?php echo home_url(); ?>/">
     <input type="text" placeholder="<?php _e( "Search", "swiftframework" ); ?>" name="s"/>

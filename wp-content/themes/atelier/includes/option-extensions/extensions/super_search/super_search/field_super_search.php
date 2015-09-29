@@ -222,11 +222,13 @@ if( !class_exists( 'ReduxFramework_super_search' ) ) {
         
 		
 		   public function enqueue () {
-
-
-            wp_enqueue_script(
+		   
+		   
+		   $min = Redux_Functions::isMin();
+		   
+		   	wp_enqueue_script(
                 'redux-field-media-js',
-                ReduxFramework::$_url . 'assets/js/media/media' . Redux_Functions::isMin() . '.js',
+                ReduxFramework::$_url . 'inc/fields/media/field_media' . $min . '.js',
                 array( 'jquery', 'redux-js' ),
                 time(),
                 true

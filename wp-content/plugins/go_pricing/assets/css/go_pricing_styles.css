@@ -4,7 +4,7 @@
 	Plugin URI: http://granthweb.com/go-pricing
 	Description: The New Generation Pricing Tables. If you like traditional Pricing Tables, but you would like get much more out of it, then this rodded product is a useful tool for you.
 	Author: Granth
-	Version: 3.0.2
+	Version: 3.1.0
 	Author http://granthweb.com/
 
 	+----------------------------------------------------+
@@ -18,7 +18,7 @@
     [3.2] BODY
     [3.3] FOOTER & BUTTONS
     [4] ICONS
-    [5] RIBBONSloc
+    [5] RIBBONS
     [6] COLUMN SHADOWS    		
     [7] CLEAN STYLE
 	
@@ -94,16 +94,20 @@
 		position:relative;	
 		height:0; 	
 	}
-    .gw-go-header-bottom .gw-go-video-wrapper { margin-bottom:-1px; }
+	.gw-go-header-bottom .gw-go-video-wrapper { margin-bottom:-1px; }
+	.gw-go-video-wrapper > div {
+		position:static !important;
+		padding-top:100% !important;			
+	}	
 	.gw-go-video-wrapper iframe {
-        height:100%;
-        left:0;
-        margin:0;
-        border:none;
-        outline:none;
-        position:absolute;
-        top:0;
-        width:100%;
+		height:100%;
+		left:0;
+		margin:0;
+		border:none;
+		outline:none;
+		position:absolute;
+		top:0;
+		width:100%;
 	}
 	
 	/* image settings */
@@ -126,13 +130,13 @@
         max-width:100% !important;
 		width:100% !important;
 	}
-    .gw-go audio, 
-    .gw-go video {
-    	margin:0;
-        paddig:0;
-        max-width:100% !important;
+	.gw-go audio, 
+	.gw-go video {
+		margin:0;
+		paddig:0;
+		max-width:100% !important;
 		width:100% !important;        
-    }
+	}
     /* fix for google map popup & mediaelement js styling bug in some themes */
     .gw-go-gmap img { max-width: none !important; }
     .gw-go .mejs-container img {
@@ -225,12 +229,8 @@
 		box-sizing:border-box !important;		
 		float:left;
 		margin-left:-1px;
-		margin-top:20px;
-        padding:20px 0 40px;
-		padding-left:0 !important;
-		padding-right:0 !important;		
+		padding:20px 0;
 		position:relative;
-		top:-20px;		
 		-moz-transition:padding 0.2s linear, margin 0.2s linear !important;
 		-o-transition:padding 0.2s linear, margin 0.2s linear !important;		
 		-webkit-transition:padding 0.2s linear, margin 0.2s linear !important;
@@ -242,7 +242,6 @@
 		border:solid 1px #EBEBEB;
 		border-bottom:solid 2px #D3D3D3;
         border-top-width:2px;
-		margin-bottom:-20px;		
 		position:relative;
 		top:0;
 		-moz-transition:margin-top 0.2s linear, top 0.2s linear, -moz-box-shadow 0.2s linear;
@@ -254,7 +253,9 @@
 		-moz-box-shadow:0 0 20px -2px rgba(0,0,0,0);
 		-webkit-box-shadow:0 0 20px -2px rgba(0,0,0,0);
 		box-shadow:0 0 20px -2px rgba(0,0,0,0);		
+		float:none !important;		
 		overflow:hidden;
+		padding:0 !important;
 		-moz-transition:-moz-box-shadow 0.2s linear;
 		-o-transition:box-shadow 0.2s linear;
 		-webkit-transition:-webkit-box-shadow 0.2s linear;
@@ -297,12 +298,6 @@
 	.gw-go.gw-go-enlarge-current.gw-go-no-footer.gw-go-hover .gw-go-col-wrap.gw-go-hover { margin-bottom:0; }	
 	.gw-go.gw-go-enlarge-current.gw-go-no-footer .gw-go-col-wrap.gw-go-hover { margin-bottom:40px !important; }
 	
-	.gw-go.gw-go-enlarge-current .gw-go-col-wrap.gw-go-current .gw-go-col,
-	.gw-go.gw-go-enlarge-current .gw-go-col-wrap.gw-go-hover .gw-go-col,
-	.gw-go.gw-go-enlarge-current.gw-go-hover .gw-go-col-wrap.gw-go-current .gw-go-col {
-		margin-top:20px;
-		top:-20px;
-	}
 	.gw-go.gw-go-enlarge-current .gw-go-col-wrap.gw-go-current { z-index:2; }
 	.gw-go.gw-go-enlarge-current .gw-go-col-wrap.gw-go-hover { z-index:3; }
 	.gw-go.gw-go-enlarge-current.gw-go-disable-box-shadow .gw-go-col-wrap { z-index:inherit; }
@@ -503,6 +498,7 @@
 		list-style:none !important;	
 		margin:0 !important;
 		padding:10px 5px !important;
+		text-align:inherit;
 		width:100%;
 	}
 	ul.gw-go-body li .gw-go-body-cell {
@@ -513,8 +509,14 @@
 		z-index:1;
 	}
 	.gw-go-ie ul.gw-go-body li .gw-go-body-cell { display:block; }
-	
 	ul.gw-go-body li:before, ul.gw-go-body li:after { display:none !important; }
+	
+	ul.gw-go-body li .gw-go-body-cell:before, 
+	ul.gw-go-body li .gw-go-body-cell:after {
+		-webkit-box-sizing:content-box;
+		-moz-box-sizing:content-box;
+		box-sizing:content-box;
+	}	
 
 	/* Tooltip */	
 	.gw-go-tooltip {

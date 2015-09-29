@@ -18,7 +18,7 @@
         function sf_page_heading() {
 
             global $wp_query, $post, $sf_options;
-
+            
             $shop_page  = false;
             $page_title = $page_subtitle = $page_title_style = $page_title_overlay_effect = $fancy_title_image_url = $article_heading_bg = $article_heading_text = $page_heading_el_class = $page_design_style = $extra_styles = $page_title_text_align = "";
 
@@ -94,10 +94,10 @@
                     $fancy_title_image_url = $fancy_title_image['url'];
                 }
 
-                if (is_product_category()) {
+                if ( is_product_category() ) {
                 	$category = $wp_query->get_queried_object();
                 	$hero_id = get_woocommerce_term_meta( $category->term_id, 'hero_id', true  );
-                	if ($hero_id != "") {
+                	if ( $hero_id != "" && $hero_id != 0 ) {
                 		$fancy_title_image_url = wp_get_attachment_url($hero_id, 'full');
                 	}
                 }
@@ -149,7 +149,7 @@
             }
 
             // Return if product & inner heading
-            if ( function_exists( 'is_product' ) && is_product() && sf_theme_supports( 'product-inner-heading' ) && $page_title_style == "standard" ) {
+            if ( function_exists( 'is_product' ) && is_product() && sf_theme_supports( 'product-inner-heading' ) && ( $page_title_style == "standard" || $page_title_style == "" ) ) {
             	return;
             }
 
@@ -158,7 +158,7 @@
             	$page_title_style = "fancy";
             }
 
-            if ( $page_title_style == "fancy" && sf_theme_opts_name() == "sf_atelier_options" ) {
+            if ( $page_title_style == "fancy" && sf_theme_opts_name() == "sf_atelier_options" && !(function_exists( 'is_product' ) && is_product()) ) {
 	            $extra_styles = 'height: ' . $page_title_height . 'px;';
             }
 
@@ -167,7 +167,7 @@
 					global $woocommerce;
 		        	if ( $sf_options['minimal_checkout'] ) { ?>
 
-		            	<div class="minimal-checkout-return container"><a href="<?php echo esc_url( $woocommerce->cart->get_cart_url() ); ?>"><?php _e("Return to cart", "swift-framework"); ?></a></div>
+		            	<div class="minimal-checkout-return container"><a href="<?php echo esc_url( $woocommerce->cart->get_cart_url() ); ?>"><?php _e("Return to cart", "swiftframework"); ?></a></div>
 
 		        	<?php }
             	}
@@ -179,21 +179,25 @@
 
                     <div class="fancy-heading-wrap <?php echo esc_attr($page_title_style); ?>-style">
 
-                    <?php if ( $fancy_title_image_url != "" ) {
-
+                    <?php if ( $fancy_title_image_url != ""  ) {
+						
+						$bg_color_title = $bg_opacity_title = "";
+						if ($post) {
                     	$bg_color_title = sf_get_post_meta( $post->ID, 'sf_bg_color_title', true );
         	            $bg_opacity_title = sf_get_post_meta( $post->ID, 'sf_bg_opacity_title', true );
+        	            }
+        	            
         	            if ( !$bg_color_title ) {
         	                $bg_color_title = "transparent";
         	                $bg_opacity_title = "0";
         	            }
 
                     ?>
-                        <div class="page-heading fancy-heading clearfix <?php echo esc_attr($page_title_text_style); ?>-style fancy-image <?php echo esc_attr($page_heading_el_class); ?>" style="background-image: url(<?php echo esc_url($fancy_title_image_url); ?>);<?php echo esc_attr($extra_styles); ?>" data-height="<?php echo esc_attr($page_title_height); ?>">
-                        	<span class="media-overlay" style="background-color:<?php echo esc_attr($bg_color_title); ?>;opacity:<?php echo ( $bg_opacity_title/100); ?>;"></span>
+                        <div class="page-heading fancy-heading clearfix <?php echo esc_attr($page_title_text_style); ?>-style fancy-image <?php echo esc_attr($page_heading_el_class); ?>" style="background-image: url(<?php echo esc_url($fancy_title_image_url); ?>);<?php echo $extra_styles; ?>" data-height="<?php echo esc_attr($page_title_height); ?>">
+                        	<span class="media-overlay" style="background-color:<?php echo $bg_color_title; ?>;opacity:<?php echo ( $bg_opacity_title/100); ?>;"></span>
 
                     <?php } else { ?>
-                        <div class="page-heading fancy-heading <?php echo esc_attr($page_heading_el_class); ?> clearfix" data-height="<?php echo esc_attr($page_title_height); ?>" <?php echo esc_attr($article_heading_bg); ?>>
+                        <div class="page-heading fancy-heading <?php echo esc_attr($page_heading_el_class); ?> clearfix" data-height="<?php echo esc_attr($page_title_height); ?>" <?php echo $article_heading_bg; ?>>
                     <?php } ?>
 
                     <?php if ( $page_title_style == "fancy" && $page_design_style == "hero-content-split" ) {
@@ -209,22 +213,22 @@
 
                             <?php if ( is_product() ) { ?>
 
-                                <h1 class="entry-title" <?php echo esc_attr($article_heading_text); ?>><?php echo esc_attr($page_title); ?></h1>
+                                <h1 class="entry-title" <?php echo $article_heading_text;; ?>><?php echo esc_attr($page_title); ?></h1>
 
                             <?php } else { ?>
 
-                                <h1 class="entry-title" <?php echo esc_attr($article_heading_text); ?>><?php woocommerce_page_title(); ?></h1>
+                                <h1 class="entry-title" <?php echo $article_heading_text; ?>><?php woocommerce_page_title(); ?></h1>
 
                             <?php } ?>
 
                         <?php } else { ?>
 
-                            <h1 class="entry-title"><?php echo esc_attr($page_title); ?></h1>
+                            <h1 class="entry-title"><?php echo $page_title; ?></h1>
 
                         <?php } ?>
 
                         <?php if ( $page_subtitle ) { ?>
-                            <h3><?php echo esc_attr($page_subtitle); ?></h3>
+                            <h3><?php echo $page_subtitle; ?></h3>
                         <?php } ?>
 
 						<?php if ( !$remove_breadcrumbs && $breadcrumb_in_heading ) {
@@ -233,16 +237,16 @@
 
                         <?php if ( is_singular( 'portfolio' ) && ! ( sf_theme_opts_name() == "sf_joyn_options" && $pagination_style == "fs-arrow" ) ) { ?>
                             <div
-                                class="prev-item" <?php echo esc_attr($article_heading_text); ?>><?php next_post_link( '%link', $prev_icon, $enable_category_navigation, '', 'portfolio-category' ); ?></div>
+                                class="prev-item" <?php echo $article_heading_text; ?>><?php next_post_link( '%link', $prev_icon, $enable_category_navigation, '', 'portfolio-category' ); ?></div>
                             <div
-                                class="next-item" <?php echo esc_attr($article_heading_text); ?>><?php previous_post_link( '%link', $next_icon, $enable_category_navigation, '', 'portfolio-category' ); ?></div>
+                                class="next-item" <?php echo $article_heading_text; ?>><?php previous_post_link( '%link', $next_icon, $enable_category_navigation, '', 'portfolio-category' ); ?></div>
                         <?php } ?>
 
                         <?php if ( is_singular( 'galleries' ) && ! ( sf_theme_opts_name() == "sf_joyn_options" && $pagination_style == "fs-arrow" ) ) { ?>
                             <div
-                                class="prev-item" <?php echo esc_attr($article_heading_text); ?>><?php next_post_link( '%link', $prev_icon, false, '', 'gallery-category' ); ?></div>
+                                class="prev-item" <?php echo $article_heading_text; ?>><?php next_post_link( '%link', $prev_icon, false, '', 'gallery-category' ); ?></div>
                             <div
-                                class="next-item" <?php echo esc_attr($article_heading_text); ?>><?php previous_post_link( '%link', $next_icon, false, '', 'gallery-category' ); ?></div>
+                                class="next-item" <?php echo $article_heading_text; ?>><?php previous_post_link( '%link', $next_icon, false, '', 'gallery-category' ); ?></div>
                         <?php } ?>
 
                     </div>
@@ -266,9 +270,9 @@
                 <?php } else { ?>
 
                     <?php if ( $show_page_title == 2 ) { ?>
-                        <div class="page-heading ph-sort clearfix" <?php echo esc_attr($article_heading_bg); ?>>
+                        <div class="page-heading ph-sort clearfix" <?php echo $article_heading_bg; ?>>
                     <?php } else { ?>
-                        <div class="page-heading <?php echo esc_attr($page_heading_el_class); ?> clearfix" <?php echo esc_attr($article_heading_bg); ?>>
+                        <div class="page-heading <?php echo esc_attr($page_heading_el_class); ?> clearfix" <?php echo $article_heading_bg; ?>>
                     <?php } ?>
                     <div class="container">
                         <div class="heading-text">
@@ -277,11 +281,11 @@
 
                                 <?php if ( is_product() ) { ?>
 
-                                    <h1 class="entry-title" <?php echo esc_attr($article_heading_text); ?>><?php echo esc_attr($page_title); ?></h1>
+                                    <h1 class="entry-title" <?php echo $article_heading_text; ?>><?php echo esc_attr($page_title); ?></h1>
 
                                 <?php } else { ?>
 
-                                    <h1 class="entry-title" <?php echo esc_attr($article_heading_text); ?>><?php woocommerce_page_title(); ?></h1>
+                                    <h1 class="entry-title" <?php echo $article_heading_text; ?>><?php woocommerce_page_title(); ?></h1>
 
                                 <?php } ?>
 
@@ -301,58 +305,62 @@
 
                             <?php } else if ( is_category() ) { ?>
 
-                                <h1 <?php echo esc_attr($article_heading_text); ?>><?php single_cat_title(); ?></h1>
+                                <h1 <?php echo $article_heading_text; ?>><?php single_cat_title(); ?></h1>
 
                             <?php } else if ( is_archive() ) { ?>
 
                                 <?php /* If this is a tag archive */
                                 if ( is_tag() ) { ?>
-                                    <h1 <?php echo esc_attr($article_heading_text); ?>><?php _e( "Posts tagged with", "swiftframework" ); ?>
+                                    <h1 <?php echo $article_heading_text; ?>><?php _e( "Posts tagged with", "swiftframework" ); ?>
                                         &#8216;<?php single_tag_title(); ?>&#8217;</h1>
                                     <?php /* If this is a daily archive */
                                 } elseif ( is_day() ) { ?>
-                                    <h1 <?php echo esc_attr($article_heading_text); ?>><?php _e( "Archive for", "swiftframework" ); ?> <?php the_time( 'F jS, Y' ); ?></h1>
+                                    <h1 <?php echo $article_heading_text; ?>><?php _e( "Archive for", "swiftframework" ); ?> <?php the_time( 'F jS, Y' ); ?></h1>
                                     <?php /* If this is a monthly archive */
                                 } elseif ( is_month() ) { ?>
-                                    <h1 <?php echo esc_attr($article_heading_text); ?>><?php _e( "Archive for", "swiftframework" ); ?> <?php the_time( 'F, Y' ); ?></h1>
+                                    <h1 <?php echo $article_heading_text; ?>><?php _e( "Archive for", "swiftframework" ); ?> <?php the_time( 'F, Y' ); ?></h1>
                                     <?php /* If this is a yearly archive */
                                 } elseif ( is_year() ) { ?>
-                                    <h1 <?php echo esc_attr($article_heading_text); ?>><?php _e( "Archive for", "swiftframework" ); ?> <?php the_time( 'Y' ); ?></h1>
+                                    <h1 <?php echo $article_heading_text; ?>><?php _e( "Archive for", "swiftframework" ); ?> <?php the_time( 'Y' ); ?></h1>
                                     <?php /* If this is an author archive */
                                 } elseif ( is_author() ) { ?>
                                     <?php $author = get_userdata( get_query_var( 'author' ) ); ?>
                                     <?php if ( class_exists( 'ATCF_Campaigns' ) ) { ?>
-                                        <h1 <?php echo esc_attr($article_heading_text); ?>><?php _e( "Projects by", "swiftframework" ); ?> <?php echo esc_attr($author->display_name); ?></h1>
+                                        <h1 <?php echo $article_heading_text; ?>><?php _e( "Projects by", "swiftframework" ); ?> <?php echo esc_attr($author->display_name); ?></h1>
                                     <?php } else { ?>
-                                        <h1 <?php echo esc_attr($article_heading_text); ?>><?php _e( "Author archive for", "swiftframework" ); ?> <?php echo esc_attr($author->display_name); ?></h1>
+                                        <h1 <?php echo $article_heading_text; ?>><?php _e( "Author archive for", "swiftframework" ); ?> <?php echo esc_attr($author->display_name); ?></h1>
                                     <?php } ?>
                                     <?php /* If this is a paged archive */
                                 } elseif ( isset( $_GET['paged'] ) && ! empty( $_GET['paged'] ) ) { ?>
-                                    <h1 <?php echo esc_attr($article_heading_text); ?>><?php _e( "Blog Archives", "swiftframework" ); ?></h1>
+                                    <h1 <?php echo $article_heading_text; ?>><?php _e( "Blog Archives", "swiftframework" ); ?></h1>
                                 <?php } else { ?>
-                                    <h1 <?php echo esc_attr($article_heading_text); ?>><?php post_type_archive_title(); ?></h1>
+                                    <h1 <?php echo $article_heading_text; ?>><?php post_type_archive_title(); ?></h1>
                                 <?php } ?>
 
                             <?php } else if ( is_404() ) { ?>
 
-                                <h1 class="entry-title" <?php echo esc_attr($article_heading_text); ?>><?php _e( "404", "swiftframework" ); ?></h1>
-
+                                <h1 class="entry-title" <?php echo $article_heading_text; ?>><?php _e( "404", "swiftframework" ); ?></h1>
+							
+							<?php } else if ( is_home() && get_option('page_for_posts') ) { ?>
+							
+							     <h1 class="entry-title" <?php echo $article_heading_text; ?>><?php echo apply_filters('the_title',get_page( get_option('page_for_posts') )->post_title); ?></h1>
+				
                             <?php } else { ?>
 
-                                <h1 class="entry-title" <?php echo esc_attr($article_heading_text); ?>><?php echo esc_attr($page_title); ?></h1>
+                                <h1 class="entry-title" <?php echo $article_heading_text; ?>><?php echo $page_title; ?></h1>
 
                             <?php } ?>
 
                         </div>
 
                         <?php if ( is_singular( 'portfolio' ) && ! ( sf_theme_opts_name() == "sf_joyn_options" && $pagination_style == "fs-arrow" ) ) { ?>
-                            <div class="next-item" <?php echo esc_attr($article_heading_text); ?>><?php previous_post_link( '%link', $next_icon, $enable_category_navigation, '', 'portfolio-category' ); ?></div>
-                            <div class="prev-item" <?php echo esc_attr($article_heading_text); ?>><?php next_post_link( '%link', $prev_icon, $enable_category_navigation, '', 'portfolio-category' ); ?></div>
+                            <div class="next-item" <?php echo $article_heading_text; ?>><?php previous_post_link( '%link', $next_icon, $enable_category_navigation, '', 'portfolio-category' ); ?></div>
+                            <div class="prev-item" <?php echo $article_heading_text; ?>><?php next_post_link( '%link', $prev_icon, $enable_category_navigation, '', 'portfolio-category' ); ?></div>
                         <?php } ?>
 
                         <?php if ( is_singular( 'galleries' ) && ! ( sf_theme_opts_name() == "sf_joyn_options" && $pagination_style == "fs-arrow" ) ) { ?>
-                            <div class="next-item" <?php echo esc_attr($article_heading_text); ?>><?php previous_post_link( '%link', $next_icon, false, '', 'gallery-category' ); ?></div>
-                            <div class="prev-item" <?php echo esc_attr($article_heading_text); ?>><?php next_post_link( '%link', $prev_icon, false, '', 'gallery-category' ); ?></div>
+                            <div class="next-item" <?php echo $article_heading_text; ?>><?php previous_post_link( '%link', $next_icon, false, '', 'gallery-category' ); ?></div>
+                            <div class="prev-item" <?php echo $article_heading_text; ?>><?php next_post_link( '%link', $prev_icon, false, '', 'gallery-category' ); ?></div>
                         <?php } ?>
 
 						<?php if ( !$remove_breadcrumbs && $breadcrumb_in_heading ) {

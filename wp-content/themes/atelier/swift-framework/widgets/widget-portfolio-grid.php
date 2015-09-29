@@ -17,7 +17,7 @@
 
     class sf_portfolio_grid extends WP_Widget {
         function sf_portfolio_grid() {
-            parent::WP_Widget( 'sf_custom_portfolio_grid', $name = 'Swift Framework Portfolio Grid' );
+            parent::__construct( 'sf_custom_portfolio_grid', $name = 'Swift Framework Portfolio Grid' );
         }
 
         function widget( $args, $instance ) {
@@ -129,21 +129,21 @@
             ?>
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php echo __( 'Title:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'title' ); ?>"><?php echo __( 'Title:', 'swiftframework' ); ?></label>
                 <input id="<?php echo $this->get_field_id( 'title' ); ?>"
                        name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>"
                        class="widefat"/>
             </p>
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'number' ); ?>"><?php echo __( 'Number of items to show:', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'number' ); ?>"><?php echo __( 'Number of items to show:', 'swiftframework' ); ?></label>
                 <input id="<?php echo $this->get_field_id( 'number' ); ?>"
                        name="<?php echo $this->get_field_name( 'number' ); ?>" type="text"
                        value="<?php echo $number; ?>" size="3"/>
             </p>
             <p>
                 <label
-                    for="<?php echo $this->get_field_id( 'category' ); ?>"><?php _e( 'Category', 'swift-framework-admin' ); ?></label>
+                    for="<?php echo $this->get_field_id( 'category' ); ?>"><?php _e( 'Category', 'swiftframework' ); ?></label>
                 <select name="<?php echo $this->get_field_name( 'category' ); ?>"
                         id="<?php echo $this->get_field_id( 'category' ); ?>" class="">
                     <?php
